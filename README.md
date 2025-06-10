@@ -34,10 +34,6 @@ pip install -r requirements.txt
 python app.py
 ```
 
-2. Open your web browser and navigate to:
-```
-http://localhost:5000
-```
 
 ## Project Structure
 
@@ -48,22 +44,3 @@ http://localhost:5000
   - `styles.css`: Main stylesheet
   - `script.js`: JavaScript functionality
 
-## Features
-
-- Responsive design
-- Interactive UI elements
-- Portfolio showcase
-- Service descriptions
-- Testimonials
-
-## Development
-
-To contribute to this project:
-
-1. Create a new branch for your feature
-2. Make your changes
-3. Submit a pull request
-
-## License
-
-This project is for educational purposes only.
