@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
             image: 'https://cdn.decorilla.com/images/1200x740/fb9af78e-95bc-4eec-a185-ae1ade6894c6/Eclectic-Formal-Living-Room-Interior-Design-Rendering.jpg?cv=1',
             title: 'Eclectic Formal Living Room Interior Design',
             challenge: 'We want a formal living room that still feels inviting and showcases our eclectic taste.',
-            result: 'Our designer created the perfect balance between formal and comfortable. Its now our favorite room!',
+            result: 'Our designer created the perfect balance between formal and comfortable. It\'s now our favorite room!',
             client: 'Sarah'
         },
         {
