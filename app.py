@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for,flash
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import os
 
 
-import os
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'
@@ -14,6 +16,8 @@ app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'static/uploads')
 app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png'}
 
 db = SQLAlchemy(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
 # Home page route
 @app.route('/')
@@ -85,6 +89,8 @@ class UploadedImage(db.Model):
     filename = db.Column(db.String(100), nullable=False)
     filepath = db.Column(db.String(200), nullable=False)
     upload_date = db.Column(db.DateTime, default=db.func.current_timestamp())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('images', lazy=True))
     
     def delete(self):
         """Delete the image record and the associated file"""
@@ -124,36 +130,131 @@ def delete_image(image_id):
     return redirect(url_for('upload'))
 
 @app.route('/upload', methods=['GET', 'POST'])
+@login_required
 def upload():
     if request.method == 'POST':
-        # Check if the post request has the file part
-        if 'image_file' not in request.files:
-            flash('No file part')
+        if 'design_image' not in request.files:
+            flash('No file selected', 'danger')
             return redirect(request.url)
+            
+        file = request.files['design_image']
+        design_notes = request.form.get('design_notes', '')
         
-        file = request.files['image_file']
-        
-        # If user does not select file, browser submits empty file
         if file.filename == '':
-            flash('No selected file')
+            flash('No file selected', 'danger')
             return redirect(request.url)
-        
+            
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
             
-            # Save to database
-            new_image = UploadedImage(filename=filename, filepath=filepath)
-            db.session.add(new_image)
+            design = DesignImage(
+                filename=filename,
+                filepath=filepath,
+                user_id=current_user.id,
+                design_notes=design_notes
+            )
+            db.session.add(design)
             db.session.commit()
             
-            flash('Image successfully uploaded and saved to database')
+            flash('Design image uploaded successfully!', 'success')
             return redirect(url_for('upload'))
     
-    # Get all uploaded images from database
-    images = UploadedImage.query.order_by(UploadedImage.upload_date.desc()).all()
-    return render_template('upload.html', images=images)
+    designs = current_user.designs.order_by(DesignImage.upload_date.desc()).all()
+    return render_template('upload.html', designs=designs)
+
+
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(200))
+    phone = db.Column(db.String(20))
+    design_style = db.Column(db.String(50))
+    
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+    
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+    
+class DesignImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(100), nullable=False)
+    filepath = db.Column(db.String(200), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    upload_date = db.Column(db.DateTime, default=db.func.current_timestamp())
+    design_notes = db.Column(db.Text)
+
+    user = db.relationship('User', backref=db.backref('designs', lazy=True))
+
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        address = request.form['address']
+        phone = request.form['phone']
+        design_style = request.form['design_style']
+        
+        if User.query.filter_by(email=email).first():
+            flash('Email already registered', 'danger')
+            return redirect(url_for('register'))
+            
+        user = User(
+            name=name,
+            email=email,
+            address=address,
+            phone=phone,
+            design_style=design_style
+        )
+        user.set_password(password)
+        
+        db.session.add(user)
+        db.session.commit()
+        
+        login_user(user)
+        flash('Registration successful!', 'success')
+        return redirect(url_for('upload'))
+    
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
+        
+        if user and user.check_password(password):
+            login_user(user)
+            flash('Login successful', 'success')
+            return redirect(url_for('upload'))
+        else:
+            flash('Invalid email or password', 'danger')
+    
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out', 'info')
+    return redirect(url_for('home'))
+    
+
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    app.run(debug=True)
