@@ -82,21 +82,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+    ddocument.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+
+        // Only prevent if target exists on the page
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
             e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        });
+            targetElement.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
     });
+});
 
     // Scroll animations
     const animateOnScroll = () => {
