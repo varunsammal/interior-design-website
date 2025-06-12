@@ -13,9 +13,6 @@
                     <p><strong>Email:</strong> {{ current_user.email }}</p>
                     <p><strong>Member since:</strong> {{ current_user.created_at.strftime('%B %d, %Y') }}</p>
                     <p><strong>Last login:</strong> {{ current_user.last_login.strftime('%B %d, %Y %H:%M') if current_user.last_login else 'N/A' }}</p>
-                    {% if current_user.google_id %}
-                    <p><strong>Connected with:</strong> <i class="fab fa-google text-danger"></i> Google</p>
-                    {% endif %}
                 </div>
             </div>
         </div>
