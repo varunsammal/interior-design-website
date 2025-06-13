@@ -14,22 +14,14 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-<<<<<<< HEAD
-            <a class="navbar-brand" href="/">Decorilla</a>
-=======
             <a class="navbar-brand" href="{{ url_for('home') }}">Decorilla</a>
->>>>>>> origin/Abhishek
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-<<<<<<< HEAD
-                        <a class="nav-link" href="#">How It Works</a>
-=======
                         <a class="nav-link" href="{{ url_for('quiz') }}">Style Quiz</a>
->>>>>>> origin/Abhishek
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Designers</a>
@@ -38,24 +30,20 @@
                         <a class="nav-link" href="#">Portfolio</a>
                     </li>
                     <li class="nav-item">
-<<<<<<< HEAD
-                        <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Reviews</a>
-=======
                         <a class="nav-link" href="{{ url_for('pricing') }}">Pricing</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('faq') }}">FAQ</a>
->>>>>>> origin/Abhishek
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Blog</a>
+                        <a class="nav-link" href="{{ url_for('blog') }}">Blog</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('upload') }}">Upload</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
                         </li>
@@ -103,32 +91,26 @@
                         <div class="col-md-4">
                             <h6>Company</h6>
                             <ul class="list-unstyled">
-                                <li><a href="#" class="text-decoration-none">About Us</a></li>
-                                <li><a href="#" class="text-decoration-none">Careers</a></li>
-                                <li><a href="#" class="text-decoration-none">Contact</a></li>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Careers</a></li>
+                                <li><a href="#">Contact</a></li>
                             </ul>
                         </div>
                         <div class="col-md-4">
                             <h6>Services</h6>
                             <ul class="list-unstyled">
-<<<<<<< HEAD
-                                <li><a href="#" class="text-decoration-none">How It Works</a></li>
-                                <li><a href="#" class="text-decoration-none">Pricing</a></li>
-                                <li><a href="#" class="text-decoration-none">Designers</a></li>
-=======
-                                <li><a href="{{ url_for('quiz') }}" class="text-decoration-none">Style Quiz</a></li>
-                                <li><a href="{{ url_for('pricing') }}" class="text-decoration-none">Pricing</a></li>
-                                <li><a href="{{ url_for('faq') }}" class="text-decoration-none">FAQ</a></li>
->>>>>>> origin/Abhishek
+                                <li><a href="{{ url_for('quiz') }}">Style Quiz</a></li>
+                                <li><a href="{{ url_for('pricing') }}">Pricing</a></li>
+                                <li><a href="{{ url_for('faq') }}">FAQ</a></li>
                             </ul>
                         </div>
                         <div class="col-md-4">
                             <h6>Follow Us</h6>
                             <div class="social-icons">
-                                <a href="#" class="text-decoration-none me-2"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#" class="text-decoration-none me-2"><i class="fab fa-instagram"></i></a>
-                                <a href="#" class="text-decoration-none me-2"><i class="fab fa-pinterest-p"></i></a>
-                                <a href="#" class="text-decoration-none me-2"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
                             </div>
                         </div>
                     </div>
@@ -145,8 +127,6 @@
     <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
     {% block extra_js %}{% endblock %}
 </body>
-<<<<<<< HEAD
 </html> 
-=======
-</html>
->>>>>>> origin/Abhishek
+
+
