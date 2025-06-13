@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/Styles/crime_analyzer.css">
+   
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="logo">
+            <img src="../static/images/7.png" alt="Cipher Logo">
+            <h1>CIPHER</h1>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">Home Page</a></li>
+            <li><a href="2.html">Crime Analyzer</a></li>
+            <li><a href="#">Downloaded Content</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+    <div class="container">
+        <header>
+            <h1>Crime Document Analyzer</h1>
+            <p class="subtitle">Upload legal documents, reports, or JSON files to detect criminal patterns and get summaries</p>
+        </header>
+        
+        <section class="upload-section">
+            <h2>Upload Your Documents</h2>
+            <p>Supported formats: PDF, DOCX, TXT, JSON</p>
+            
+            <div class="upload-area" id="dropArea">
+                <div class="upload-icon">📁</div>
+                <h3>Drag & Drop Files Here</h3>
+                <p>or</p>
+                <input type="file" id="fileInput" class="file-input" accept=".pdf,.docx,.txt,.json" multiple>
+                <button class="btn" id="browseBtn">Browse Files</button>
+            </div>
+            
+            <div id="fileList"></div>
+            
+            <button class="btn" id="analyzeBtn" disabled>Analyze Documents</button>
+        </section>
+        
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner"></div>
+            <h3>Analyzing Documents...</h3>
+            <p>This may take a few moments</p>
+        </div>
+        
+        <section class="results-section" id="resultsSection">
+            <div class="results-header">
+                <h2>Analysis Results</h2>
+                <button class="btn btn-outline" id="newAnalysisBtn">New Analysis</button>
+            </div>
+            
+            <div id="resultsContent">
+                <!-- Results will be inserted here -->
+            </div>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Terms of Use</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Help Center</a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 Cipher. All rights reserved.
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu functionality
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('overlay');
+            
+            hamburger.addEventListener('click', function() {
+                this.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = this.classList.contains('active') ? 'hidden' : '';
+            });
+            
+            // Close menu when clicking on overlay
+            overlay.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                this.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+
+            // Document analysis functionality
+            const dropArea = document.getElementById('dropArea');
+            const fileInput = document.getElementById('fileInput');
+            const browseBtn = document.getElementById('browseBtn');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const fileList = document.getElementById('fileList');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContent = document.getElementById('resultsContent');
+            const newAnalysisBtn = document.getElementById('newAnalysisBtn');
+            
+            let uploadedFiles = [];
+            
+            // Browse files button click
+            browseBtn.addEventListener('click', () => fileInput.click());
+            
+            // File input change
+            fileInput.addEventListener('change', handleFiles);
+            
+            // Drag and drop events
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.style.borderColor = '#6c5ce7';
+                dropArea.style.backgroundColor = 'rgba(108, 92, 231, 0.05)';
+            }
+            
+            function unhighlight() {
+                dropArea.style.borderColor = '#a29bfe';
+                dropArea.style.backgroundColor = 'transparent';
+            }
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles({ target: { files } });
+            }
+            
+            function handleFiles(e) {
+                const files = e.target.files;
+                if (files.length === 0) return;
+                
+                uploadedFiles = Array.from(files);
+                displayFileList();
+                analyzeBtn.disabled = false;
+            }
+            
+            function displayFileList() {
+                fileList.innerHTML = '';
+                
+                if (uploadedFiles.length === 0) {
+                    analyzeBtn.disabled = true;
+                    return;
+                }
+                
+                const listHeader = document.createElement('h3');
+                listHeader.textContent = 'Selected Files:';
+                listHeader.style.margin = '1rem 0 0.5rem';
+                listHeader.style.textAlign = 'left';
+                fileList.appendChild(listHeader);
+                
+                uploadedFiles.forEach((file, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.style.display = 'flex';
+                    fileItem.style.justifyContent = 'space-between';
+                    fileItem.style.alignItems = 'center';
+                    fileItem.style.padding = '0.5rem';
+                    fileItem.style.borderBottom = '1px solid #eee';
+                    
+                    const fileInfo = document.createElement('div');
+                    fileInfo.style.display = 'flex';
+                    fileInfo.style.alignItems = 'center';
+                    
+                    const icon = document.createElement('span');
+                    icon.textContent = getFileIcon(file);
+                    icon.style.marginRight = '0.5rem';
+                    icon.style.fontSize = '1.2rem';
+                    
+                    const fileName = document.createElement('span');
+                    fileName.textContent = file.name;
+                    fileName.style.fontWeight = '500';
+                    
+                    fileInfo.appendChild(icon);
+                    fileInfo.appendChild(fileName);
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.textContent = '×';
+                    removeBtn.style.background = 'none';
+                    removeBtn.style.border = 'none';
+                    removeBtn.style.fontSize = '1.2rem';
+                    removeBtn.style.cursor = 'pointer';
+                    removeBtn.style.color = '#d63031';
+                    removeBtn.addEventListener('click', () => removeFile(index));
+                    
+                    fileItem.appendChild(fileInfo);
+                    fileItem.appendChild(removeBtn);
+                    
+                    fileList.appendChild(fileItem);
+                });
+            }
+            
+            function getFileIcon(file) {
+                const extension = file.name.split('.').pop().toLowerCase();
+                switch(extension) {
+                    case 'pdf': return '📄';
+                    case 'docx': return '📝';
+                    case 'txt': return '📑';
+                    case 'json': return '🔣';
+                    default: return '📁';
+                }
+            }
+            
+            function removeFile(index) {
+                uploadedFiles.splice(index, 1);
+                displayFileList();
+            }
+            
+            // Analyze button click
+            analyzeBtn.addEventListener('click', analyzeDocuments);
+            
+            function analyzeDocuments() {
+                if (uploadedFiles.length === 0) return;
+                
+                // Show loading indicator
+                loadingIndicator.style.display = 'block';
+                
+                // Simulate analysis (in a real app, you would send to a server)
+                setTimeout(() => {
+                    loadingIndicator.style.display = 'none';
+                    showResults();
+                }, 3000);
+            }
+            
+            function showResults() {
+                // Generate mock results for demo purposes
+                const mockResults = {
+                    crimeTypes: [
+                        {
+                            type: "Financial Fraud",
+                            confidence: "85%",
+                            description: "The document contains multiple indicators of financial fraud including suspicious transactions and falsified records."
+                        },
+                        {
+                            type: "Cyber Crime",
+                            confidence: "72%",
+                            description: "Evidence of unauthorized access and data exfiltration was found in the analyzed documents."
+                        }
+                    ],
+                    summary: "The analyzed documents suggest a sophisticated financial fraud operation with potential cyber crime elements. Multiple suspicious transactions totaling approximately $1.2 million were identified, along with evidence of falsified accounting records and unauthorized access to sensitive financial systems.",
+                    keywords: ["fraud", "transaction", "unauthorized", "falsified", "records", "access", "financial", "cyber", "data", "suspicious"]
+                };
+                
+                resultsContent.innerHTML = '';
+                
+                // File info
+                const fileInfo = document.createElement('div');
+                fileInfo.className = 'file-info';
+                
+                const fileIcon = document.createElement('div');
+                fileIcon.className = 'file-icon';
+                fileIcon.textContent = '📄';
+                
+                const fileName = document.createElement('div');
+                fileName.innerHTML = `<h3>${uploadedFiles[0].name}</h3><p>${formatFileSize(uploadedFiles[0].size)} • ${uploadedFiles[0].type || 'Unknown type'}</p>`;
+                
+                fileInfo.appendChild(fileIcon);
+                fileInfo.appendChild(fileName);
+                resultsContent.appendChild(fileInfo);
+                
+                // Crime types
+                const crimeTypesHeader = document.createElement('h3');
+                crimeTypesHeader.textContent = 'Detected Crime Types';
+                crimeTypesHeader.style.marginBottom = '1rem';
+                resultsContent.appendChild(crimeTypesHeader);
+                
+                mockResults.crimeTypes.forEach(crime => {
+                    const crimeElement = document.createElement('div');
+                    crimeElement.className = 'crime-type';
+                    
+                    crimeElement.innerHTML = `
+                        <h3>${crime.type} (Confidence: ${crime.confidence})</h3>
+                        <p>${crime.description}</p>
+                    `;
+                    
+                    resultsContent.appendChild(crimeElement);
+                });
+                
+                // Summary
+                const summaryElement = document.createElement('div');
+                summaryElement.className = 'summary';
+                
+                summaryElement.innerHTML = `
+                    <h3>Document Summary</h3>
+                    <p>${mockResults.summary}</p>
+                `;
+                
+                resultsContent.appendChild(summaryElement);
+                
+                // Keywords
+                const keywordsHeader = document.createElement('h3');
+                keywordsHeader.textContent = 'Key Indicators';
+                keywordsHeader.style.margin = '1.5rem 0 0.5rem';
+                resultsContent.appendChild(keywordsHeader);
+                
+                const keywordsContainer = document.createElement('div');
+                keywordsContainer.className = 'keywords';
+                
+                mockResults.keywords.forEach(keyword => {
+                    const keywordElement = document.createElement('span');
+                    keywordElement.className = 'keyword';
+                    keywordElement.textContent = keyword;
+                    keywordsContainer.appendChild(keywordElement);
+                });
+                
+                resultsContent.appendChild(keywordsContainer);
+                
+                // Show results section
+                resultsSection.style.display = 'block';
+                
+                // Scroll to results
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
+            }
+            
+            // New analysis button
+            newAnalysisBtn.addEventListener('click', () => {
+                uploadedFiles = [];
+                fileList.innerHTML = '';
+                analyzeBtn.disabled = true;
+                resultsSection.style.display = 'none';
+                fileInput.value = '';
+            });
+        });
+    </script>
+</body>
+</html>
