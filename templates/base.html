@@ -24,19 +24,16 @@
                         <a class="nav-link" href="{{ url_for('quiz') }}">Style Quiz</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Designers</a>
+                        <a class="nav-link" href="{{ url_for('portfolio') }}">Portfolio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Portfolio</a>
+                        <a class="nav-link" href="{{ url_for('blog') }}">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('pricing') }}">Pricing</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('faq') }}">FAQ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('blog') }}">Blog</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
@@ -91,15 +88,17 @@
                         <div class="col-md-4">
                             <h6>Company</h6>
                             <ul class="list-unstyled">
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Careers</a></li>
-                                <li><a href="#">Contact</a></li>
+                                <li><a href="{{ url_for('home') }}">About Us</a></li>
+                                <li><a href="{{ url_for('home') }}">Careers</a></li>
+                                <li><a href="{{ url_for('home') }}">Contact</a></li>
                             </ul>
                         </div>
                         <div class="col-md-4">
                             <h6>Services</h6>
                             <ul class="list-unstyled">
                                 <li><a href="{{ url_for('quiz') }}">Style Quiz</a></li>
+                                <li><a href="{{ url_for('portfolio') }}">Portfolio</a></li>
+                                <li><a href="{{ url_for('blog') }}">Blog</a></li>
                                 <li><a href="{{ url_for('pricing') }}">Pricing</a></li>
                                 <li><a href="{{ url_for('faq') }}">FAQ</a></li>
                             </ul>
@@ -107,10 +106,10 @@
                         <div class="col-md-4">
                             <h6>Follow Us</h6>
                             <div class="social-icons">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="{{ url_for('home') }}"><i class="fab fa-facebook-f"></i></a>
+                                <a href="{{ url_for('home') }}"><i class="fab fa-instagram"></i></a>
+                                <a href="{{ url_for('home') }}"><i class="fab fa-pinterest-p"></i></a>
+                                <a href="{{ url_for('home') }}"><i class="fab fa-twitter"></i></a>
                             </div>
                         </div>
                     </div>

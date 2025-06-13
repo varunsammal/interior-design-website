@@ -227,6 +227,10 @@ def how_it_works():
 def blog():
     return render_template('blog.html')
 
+@app.route('/portfolio')
+def portfolio():
+    return render_template('portfolio.html')
+
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload():
