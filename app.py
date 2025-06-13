@@ -119,10 +119,9 @@ def init_db():
 # Initialize database
 init_db()
 
-# Routes
 @app.route('/')
 def home():
-    designs = Design.query.all()
+    designs = DesignImage.query.all()
     return render_template('index.html', designs=designs)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -145,7 +144,7 @@ def register():
         # Create new user
         new_user = User(
             email=email,
-            username=name,  # Using name as username
+            username=name,
             password=password,
             address=address,
             phone=phone,
@@ -195,8 +194,9 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    user = current_user  # Assuming Flask-Login
-    return render_template('profile.html', user=user)
+    user = current_user
+    projects = Project.query.filter_by(user_id=current_user.id).all()
+    return render_template('profile.html', user=user, projects=projects)
 
 @app.route('/projects/new', methods=['GET', 'POST'])
 @login_required
@@ -337,9 +337,40 @@ def design_reviews(design_id):
     
     return render_template('reviews.html', design=design, reviews=reviews)
 
+@app.route('/pricing')
+def pricing():
+    return render_template('pricing.html')
+
+@app.route('/faq')
+def faq():
+    return render_template('FAQ.html')
+
+@app.route('/quiz')
+def quiz():
+    return render_template('Quiz.html')
+
+@app.route('/schedule-consultation', methods=['GET', 'POST'])
+def schedule_consultation():
+    if request.method == 'POST':
+        # Process form data here
+        first_name = request.form.get('firstName')
+        zip_code = request.form.get('zipCode')
+        phone = request.form.get('phone')
+        budget = request.form.get('budget')
+        source = request.form.get('source')
+        description = request.form.get('description')
+        
+        # You can add code here to save the consultation request to the database
+        # or send an email notification, etc.
+        
+        flash('Thank you for your consultation request! We will contact you shortly.', 'success')
+        return redirect(url_for('home'))
+    
+    return render_template('schedule_consultation.html')
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
