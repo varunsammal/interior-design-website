@@ -1,49 +1,195 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Profile Information</h4>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background: #faf8f4;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar li {
+            padding: 1rem 0;
+            color: #a08c5b;
+            cursor: pointer;
+        }
+        .sidebar li.active {
+            font-weight: bold;
+            color: #000;
+        }
+        .profile-main {
+            flex: 1;
+            padding: 2rem 4rem;
+            position: relative;
+        }
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-family: 'Playfair Display', serif;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .avatar {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+        .avatar img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #eee;
+        }
+        .camera-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #fff;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            border: 1px solid #ccc;
+            /* Add a camera icon as background-image if you want */
+        }
+        .profile-info {
+            margin-left: 2rem;
+        }
+        .profile-info h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .status {
+            color: #a08c5b;
+            font-size: 1rem;
+        }
+        .rooms {
+            margin-top: 0.5rem;
+            color: #a08c5b;
+            font-weight: bold;
+        }
+        .profile-form {
+            margin-top: 2rem;
+        }
+        .form-row {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .form-row input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .quick-links {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: #faf8f4;
+            padding: 1.5rem;
+            border-radius: 12px;
+            min-width: 180px;
+        }
+        .quick-links h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: #a08c5b;
+        }
+        .quick-links ul {
+            list-style: none;
+            padding: 0;
+        }
+        .quick-links li {
+            margin-bottom: 1rem;
+            color: #a08c5b;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <ul>
+                <li class="active">Profile</li>
+                <li>Change Your E-mail</li>
+                <li>Copy of Your E-mail</li>
+                <li>Change Password</li>
+                <li>Edit E-mail Notifications</li>
+                <li>Saved Cards</li>
+            </ul>
+        </aside>
+        <main class="profile-main">
+            <header>
+                <h1>Profile</h1>
+            </header>
+            <section class="profile-header">
+                <div class="avatar">
+                    <img src="{{ url_for('static', filename='images/your-image.jpg') }}" alt="Profile Picture">
+                    <span class="camera-icon"></span>
                 </div>
-                <div class="card-body">
-                    <p><strong>Username:</strong> {{ current_user.username }}</p>
-                    <p><strong>Email:</strong> {{ current_user.email }}</p>
-                    <p><strong>Member since:</strong> {{ current_user.created_at.strftime('%B %d, %Y') }}</p>
-                    <p><strong>Last login:</strong> {{ current_user.last_login.strftime('%B %d, %Y %H:%M') if current_user.last_login else 'N/A' }}</p>
+                <div class="profile-info">
+                    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                    <span class="status">UNKNOWN</span>
+                    <div class="rooms">
+                        <span class="room-count">2</span> NUMBER OF ROOMS
+                    </div>
                 </div>
-            </div>
-        </div>
-        
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4>My Projects</h4>
-                    <a href="{{ url_for('new_project') }}" class="btn btn-primary">New Project</a>
+            </section>
+            <form class="profile-form">
+                <div class="form-row">
+                    <input type="text" placeholder="First Name" value="{{ user.first_name }}">
+                    <input type="text" placeholder="Last Name" value="{{ user.last_name }}">
                 </div>
-                <div class="card-body">
-                    {% if projects %}
-                        <div class="list-group">
-                            {% for project in projects %}
-                            <div class="list-group-item">
-                                <h5 class="mb-1">{{ project.title }}</h5>
-                                <p class="mb-1">{{ project.description }}</p>
-                                <small>
-                                    Budget: ${{ project.budget if project.budget else 'Not specified' }} |
-                                    Status: <span class="badge bg-{{ 'success' if project.status == 'completed' else 'warning' if project.status == 'in_progress' else 'secondary' }}">{{ project.status }}</span> |
-                                    Created: {{ project.created_at.strftime('%B %d, %Y') }}
-                                </small>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p class="text-center">No projects yet. <a href="{{ url_for('new_project') }}">Create your first project</a></p>
-                    {% endif %}
+                <div class="form-row">
+                    <input type="text" placeholder="Username" value="{{ user.username }}">
+                    <input type="text" placeholder="Phone Number" value="{{ user.phone }}">
                 </div>
-            </div>
-        </div>
+                <div class="form-row">
+                    <input type="text" placeholder="Address" value="{{ user.address }}">
+                    <input type="text" placeholder="Address Line 2" value="">
+                </div>
+                <div class="form-row">
+                    <input type="text" placeholder="City" value="">
+                    <input type="text" placeholder="State/Province" value="">
+                </div>
+                <div class="form-row">
+                    <input type="text" placeholder="Zip Code" value="">
+                    <input type="text" placeholder="Country" value="">
+                </div>
+            </form>
+            <aside class="quick-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li>My Projects</li>
+                    <li>My Orders</li>
+                    <li>My Invoices</li>
+                    <li>Favorite Brands</li>
+                </ul>
+            </aside>
+        </main>
     </div>
-</div>
+</body>
+</html>
 {% endblock %} 

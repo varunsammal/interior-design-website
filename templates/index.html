@@ -20,7 +20,6 @@
                 <li><a href="#">Designers</a></li>
                 <li><a href="#">Portfolio</a></li>
                 <li><a href="#">Pricing</a></li>
-                <li><a href="#">Reviews</a></li>
                 <li><a href="{{ url_for('blog') }}">Blog</a></li>
                 <li><a href="{{ url_for('upload') }}" class="btn-primary">Upload</a></li>
                 <li><a href="/" class="btn-primary">Get Started</a></li>
@@ -45,6 +44,25 @@
         <div class="hero-content">
             <h1>Get a Designer <span>Space You'll Love</span></h1>
             <a href="/" class="btn-primary">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Add a section to list designs with review links -->
+    <section class="designs-list">
+        <div class="container">
+            <h2>Designs & Reviews</h2>
+            {% if designs %}
+                <ul>
+                {% for design in designs %}
+                    <li>
+                        <strong>{{ design.name }}</strong>
+                        <a href="{{ url_for('design_reviews', design_id=design.id) }}">Reviews</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No designs available.</p>
+            {% endif %}
         </div>
     </section>
 
