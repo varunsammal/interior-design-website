@@ -19,11 +19,13 @@ def home():
 #     # This is a placeholder - you'll create this template later
 #     return render_template('designers.html')  # For now, redirect to home
 
-# # Portfolio route
-# @app.route('/portfolio/')
-# def portfolio():
-#     # This is a placeholder - you'll create this template later
-#     return render_template('portfolio.html')  # For now, redirect to home
+#Portfolio route
+@app.route('/portfolio/')
+def portfolio():
+     # This is a placeholder - you'll create this template later
+     return render_template('portfolio.html')  # For now, redirect to home
+
+
 
 # # Pricing route
 # @app.route('/pricing/')
@@ -38,10 +40,10 @@ def home():
 #     return render_template('reviews.html')  # For now, redirect to home
 
 # # Blog route
-# @app.route('/blog/')
-# def blog():
-#     # This is a placeholder - you'll create this template later
-#     return render_template('blog.html')  # For now, redirect to home
+@app.route('/blog/')
+def blog():
+     # This is a placeholder - you'll create this template later
+     return render_template('blog.html')  # For now, redirect to home
 
 # # Contact form submission route - for static site, we'll make this a GET route
 # @app.route('/contact/')

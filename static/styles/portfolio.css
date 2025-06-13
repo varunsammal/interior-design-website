@@ -1,0 +1,133 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f8f3e0;
+}
+
+.hero {
+  position: relative;
+  height: 85vh;
+  background-image: url('https://images.adsttc.com/media/images/683d/c009/d975/1d00/01f5/5fe2/slideshow/HTHB_BTX_18-min.jpg?1748877364');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 80%;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+}
+
+.room-select {
+  font-size: 1.1rem;
+  padding: 5px 10px;
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  border-bottom: 2px solid white;
+  appearance: none;
+  outline: none;
+}
+
+.room-select option {
+  color: black;
+}
+
+.inline-select {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.toggle-buttons {
+  margin: 10px 0 20px;
+}
+
+.toggle-buttons .btn {
+  padding: 8px 20px;
+  border: 2px solid #bda375;
+  background: white;
+  color: #bda375;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.toggle-buttons .btn.active {
+  background: #bda375;
+  color: white;
+}
+
+.main-image img {
+  width: 80%;
+  max-height: 480px;
+  border-radius: 10px;
+  margin: 20px 0;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.testimonial {
+  font-style: italic;
+  color: #555;
+  max-width: 800px;
+  margin: 0 auto 50px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.project {
+  max-width: 960px;
+  margin: 60px auto;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  padding: 0 20px;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.project.show {
+  display: block;
+  opacity: 1;
+}
+
+.project img {
+  width: 80%;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: 20px 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.project h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-top: 40px;
+}

@@ -126,3 +126,82 @@ document.addEventListener('DOMContentLoaded', function() {
     // Run once on page load
     animateOnScroll();
 });
+
+
+
+// portfolio script
+
+    const beforeImage = 'https://cdn.decorilla.com/images/1200/5706645bea5fe8.24781187/Affordable-Online-Living-Dining-Room-Design-interior-design.jpg?cv=1';
+    const afterImage = 'https://cdn.decorilla.com/images/1200/e37cb232-98cf-412c-b753-64a06b2a2775/Affordable-Living-Room-Dining-Room-Combo-interior-design-1.jpg?cv=1';
+
+    function showImage(type) {
+      const img = document.getElementById('main-image');
+      const beforeBtn = document.getElementById('beforeBtn');
+      const afterBtn = document.getElementById('afterBtn');
+
+      if (type === 'before') {
+        img.src = beforeImage;
+        beforeBtn.classList.add('active');
+        afterBtn.classList.remove('active');
+      } else {
+        img.src = afterImage;
+        afterBtn.classList.add('active');
+        beforeBtn.classList.remove('active');
+      }
+    }
+
+    function filterProjects(roomType) {
+      const projects = document.querySelectorAll('.project');
+      const title = document.getElementById('hero-title');
+
+      projects.forEach(project => {
+        const roomAttr = project.getAttribute('data-room');
+        if (!roomType || roomAttr === roomType) {
+          project.classList.add('show');
+        } else {
+          project.classList.remove('show');
+        }
+      });
+
+      // Update heading dynamically
+      if (roomType === "living-room") {
+        title.textContent = "Our Real Living Room Design Makeovers";
+      } else if (roomType === "bedroom") {
+        title.textContent = "Our Real Bedroom Design Makeovers";
+      } else if (roomType === "kitchen") {
+        title.textContent = "Our Real Kitchen Design Makeovers";
+      } else if (roomType === "bathroom") {
+        title.textContent = "Our Real Bathroom Design Makeovers";
+      } else if (roomType === "home-office") {
+        title.textContent = "Our Real Home Office Design Makeovers";
+      } else {
+        title.textContent = "Our Real Interior Design Makeovers";
+      }
+    }
+
+    window.onload = () => showImage('after');
+  
+
+
+    // Blog page filtering script
+document.addEventListener('DOMContentLoaded', function () {
+  const buttons = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.story-card');
+
+  if (buttons.length > 0 && cards.length > 0) {
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all buttons
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const category = btn.getAttribute('data-category');
+
+        // Show/hide cards
+        cards.forEach(card => {
+          card.style.display = card.getAttribute('data-category') === category ? 'block' : 'none';
+        });
+      });
+    });
+  }
+});
