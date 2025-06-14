@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/reviews.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container review-container">
+    <h1 class="mb-4">Reviews for {{ design.name }}</h1>
+    
+    <!-- Review Form -->
+    <div class="card review-form-card mb-4">
+        <div class="card-body">
+            <h5 class="card-title review-form-title">Write a Review</h5>
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="rating" class="form-label">Rating</label>
+                    <select class="form-select rating-select" id="rating" name="rating" required>
+                        <option value="">Select rating</option>
+                        <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                        <option value="4">⭐⭐⭐⭐ Very Good</option>
+                        <option value="3">⭐⭐⭐ Good</option>
+                        <option value="2">⭐⭐ Fair</option>
+                        <option value="1">⭐ Poor</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="comment" class="form-label">Your Review</label>
+                    <textarea class="form-control review-textarea" id="comment" name="comment" rows="3" placeholder="Share your thoughts about this design..."></textarea>
+                </div>
+                <button type="submit" class="btn submit-review-btn">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Existing Reviews -->
+    <h3 class="mb-3">All Reviews</h3>
+    {% if reviews %}
+        {% for review in reviews %}
+            <div class="card review-card">
+                <div class="review-header">
+                    <div class="review-rating">
+                        {% for _ in range(review.rating) %}⭐{% endfor %}
+                    </div>
+                    <div class="review-date">{{ review.created_at.strftime('%B %d, %Y') }}</div>
+                </div>
+                <div class="review-content">
+                    {% if review.comment %}
+                        <p class="review-comment">{{ review.comment }}</p>
+                    {% endif %}
+                    <div class="review-author">By {{ review.user.username or 'Anonymous' }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-reviews-message">
+            No reviews yet. Be the first to review this design!
+        </div>
+    {% endif %}
+</div>
+{% endblock %} 

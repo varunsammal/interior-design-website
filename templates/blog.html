@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - Interior Design Tips & Inspiration{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Interior Design Blog</h1>
+    
+    <!-- Featured Post -->
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="card featured-post">
+                <img src="https://cdn.decorilla.com/images/1200/4b606d9a-94be-4e1e-b912-5e107b0ef3ed/Blue-White-Kitchen-Rustic-Home-Design-Rendering.jpg" class="card-img-top" alt="Featured Post">
+                <div class="card-body">
+                    <h2 class="card-title">Latest Trends in Kitchen Design for 2024</h2>
+                    <p class="card-text">Discover the most popular kitchen design trends that are making waves this year, from sustainable materials to smart technology integration.</p>
+                    <a href="#" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog Posts Grid -->
+    <div class="row">
+        <!-- Post 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="https://cdn.decorilla.com/images/1200/fb9af78e-95bc-4eec-a185-ae1ade6894c6/Eclectic-Formal-Living-Room-Interior-Design-Rendering.jpg" class="card-img-top" alt="Living Room Design">
+                <div class="card-body">
+                    <h3 class="card-title">How to Create a Cozy Living Room</h3>
+                    <p class="card-text">Learn the secrets to designing a warm and inviting living space that your family will love.</p>
+                    <a href="#" class="btn btn-outline-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post 2 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="https://cdn.decorilla.com/images/1200/a6e50faf-b4b4-4636-ac9c-7336f3f74175/SpaInspired-Master-Bathroom-Design-Rendering.jpg" class="card-img-top" alt="Bathroom Design">
+                <div class="card-body">
+                    <h3 class="card-title">Spa-Inspired Bathroom Ideas</h3>
+                    <p class="card-text">Transform your bathroom into a luxurious retreat with these spa-inspired design tips.</p>
+                    <a href="#" class="btn btn-outline-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post 3 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="https://cdn.decorilla.com/images/1200/2d8bb3bd-f143-4d72-b9fb-f39b1b5a484e/Glam-Elegant-Home-Interior-Design-Rendering.jpg" class="card-img-top" alt="Bedroom Design">
+                <div class="card-body">
+                    <h3 class="card-title">Bedroom Design: Creating Your Perfect Sanctuary</h3>
+                    <p class="card-text">Expert tips for designing a bedroom that promotes relaxation and better sleep.</p>
+                    <a href="#" class="btn btn-outline-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2 class="mb-4">Categories</h2>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="#" class="btn btn-outline-secondary">Kitchen Design</a>
+                <a href="#" class="btn btn-outline-secondary">Living Room</a>
+                <a href="#" class="btn btn-outline-secondary">Bathroom</a>
+                <a href="#" class="btn btn-outline-secondary">Bedroom</a>
+                <a href="#" class="btn btn-outline-secondary">Color Schemes</a>
+                <a href="#" class="btn btn-outline-secondary">Furniture</a>
+                <a href="#" class="btn btn-outline-secondary">Lighting</a>
+                <a href="#" class="btn btn-outline-secondary">Small Spaces</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
