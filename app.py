@@ -51,6 +51,31 @@ def blog():
 #     # For static site, we'll just show the home page
 #     return render_template('contact.html')
 
+# Story routes
+@app.route('/story1')
+def story1():
+    return render_template('stories/story1.html')
+
+@app.route('/story2')
+def story2():
+    return render_template('stories/story2.html')
+
+@app.route('/story3')
+def story3():
+    return render_template('stories/story3.html')
+
+@app.route('/story4')
+def story4():
+    return render_template('stories/story4.html')
+
+@app.route('/story5')
+def story5():
+    return render_template('stories/story5.html')
+
+@app.route('/story6')
+def story6():
+    return render_template('stories/story6.html')
+
 
 
 if __name__ == '__main__':
