@@ -59,7 +59,7 @@
                 <div class="rating-bar">
                     <span class="stars">{{ i }} <i class="fas fa-star"></i></span>
                     <div class="bar-container">
-                        <div class="bar" style="width: {{ rating_distribution[i]|default(0) }}%"></div>
+                        <div class="bar rating-{{ i }}" data-width="{{ rating_distribution[i]|default(0) }}"></div>
                     </div>
                     <span class="percentage">{{ rating_distribution[i]|default(0) }}%</span>
                 </div>
@@ -202,4 +202,17 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='javascript/reviews.js') }}"></script>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set rating bar widths
+    const bars = document.querySelectorAll('.bar');
+    bars.forEach(bar => {
+        const width = bar.getAttribute('data-width');
+        bar.style.width = width + '%';
+    });
+});
+</script>
 {% endblock %} 

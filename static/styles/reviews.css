@@ -136,6 +136,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .stars {
@@ -156,6 +157,7 @@
     background: #6e8efb;
     border-radius: 4px;
     transition: width 0.3s ease;
+    width: 0; /* Initial width, will be set by JavaScript */
 }
 
 .percentage {
