@@ -2,123 +2,96 @@
 
 {% block title %}Portfolio - Our Interior Design Projects{% endblock %}
 
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/portfolio.css') }}">
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-5">Our Portfolio</h1>
-    
-    <!-- Filter Buttons -->
-    <div class="row mb-4">
-        <div class="col-12 text-center">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-outline-primary active" data-filter="all">All</button>
-                <button type="button" class="btn btn-outline-primary" data-filter="living-room">Living Room</button>
-                <button type="button" class="btn btn-outline-primary" data-filter="kitchen">Kitchen</button>
-                <button type="button" class="btn btn-outline-primary" data-filter="bedroom">Bedroom</button>
-                <button type="button" class="btn btn-outline-primary" data-filter="bathroom">Bathroom</button>
-            </div>
-        </div>
+<div class="portfolio-container">
+    <div class="portfolio-header">
+        <h1>Our Real Interior Design Makeovers</h1>
+        <p>See how we've transformed spaces for our clients</p>
     </div>
 
-    <!-- Portfolio Grid -->
-    <div class="row g-4">
+    <div class="portfolio-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="living-room">Living Room</button>
+        <button class="filter-btn" data-filter="bedroom">Bedroom</button>
+        <button class="filter-btn" data-filter="kitchen">Kitchen</button>
+        <button class="filter-btn" data-filter="bathroom">Bathroom</button>
+        <button class="filter-btn" data-filter="home-office">Home Office</button>
+    </div>
+
+    <div class="portfolio-grid">
         <!-- Project 1 -->
-        <div class="col-md-6 col-lg-4 portfolio-item" data-category="living-room">
-            <div class="card h-100">
-                <img src="https://cdn.decorilla.com/images/1200/e1f2922e-b95b-487e-b3ca-6d0fb1010ffa/Modern-Coastal-Living-Room-and-Bedroom-Online-and-AI-Interior-Design.jpg" class="card-img-top" alt="Modern Coastal Living Room">
-                <div class="card-body">
-                    <h3 class="card-title">Modern Coastal Living Room</h3>
-                    <p class="card-text">A beautiful blend of modern design and coastal elements, creating a serene and inviting space.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-primary">Living Room</span>
-                        <button class="btn btn-outline-primary" onclick="viewDetails('modern-coastal')">View Details</button>
-                    </div>
+        <div class="portfolio-item" data-category="living-room">
+            <div class="image-comparison">
+                <img src="https://cdn.decorilla.com/images/1200/5706645bea5fe8.24781187/Affordable-Online-Living-Dining-Room-Design-interior-design.jpg" alt="Before" class="before">
+                <img src="https://cdn.decorilla.com/images/1200/e37cb232-98cf-412c-b753-64a06b2a2775/Affordable-Living-Room-Dining-Room-Combo-interior-design-1.jpg" alt="After" class="after">
+            </div>
+            <div class="portfolio-info">
+                <h3>Modern Living Room Transformation</h3>
+                <p>A complete makeover of a traditional living room into a modern, functional space.</p>
+                <div class="portfolio-meta">
+                    <span class="category">Living Room</span>
+                    <span class="location">New York, NY</span>
                 </div>
             </div>
         </div>
 
         <!-- Project 2 -->
-        <div class="col-md-6 col-lg-4 portfolio-item" data-category="living-room">
-            <div class="card h-100">
-                <img src="https://cdn.decorilla.com/images/1200/2d8bb3bd-f143-4d72-b9fb-f39b1b5a484e/Glam-Elegant-Home-Interior-Design-Rendering.jpg" class="card-img-top" alt="Glam & Elegant Home">
-                <div class="card-body">
-                    <h3 class="card-title">Glam & Elegant Home</h3>
-                    <p class="card-text">Luxurious design elements combined with elegant finishes for a sophisticated living space.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-primary">Living Room</span>
-                        <button class="btn btn-outline-primary" onclick="viewDetails('glam-elegant')">View Details</button>
-                    </div>
+        <div class="portfolio-item" data-category="kitchen">
+            <div class="image-comparison">
+                <img src="https://cdn.decorilla.com/images/1200/4b606d9a-94be-4e1e-b912-5e107b0ef3ed/Blue-White-Kitchen-Rustic-Home-Design-Rendering.jpg" alt="Before" class="before">
+                <img src="https://cdn.decorilla.com/images/1200/4b606d9a-94be-4e1e-b912-5e107b0ef3ed/Blue-White-Kitchen-Rustic-Home-Design-Rendering.jpg" alt="After" class="after">
+            </div>
+            <div class="portfolio-info">
+                <h3>Blue & White Kitchen Makeover</h3>
+                <p>A fresh and modern kitchen design with a beautiful blue and white color scheme.</p>
+                <div class="portfolio-meta">
+                    <span class="category">Kitchen</span>
+                    <span class="location">Los Angeles, CA</span>
                 </div>
             </div>
         </div>
 
         <!-- Project 3 -->
-        <div class="col-md-6 col-lg-4 portfolio-item" data-category="kitchen">
-            <div class="card h-100">
-                <img src="https://cdn.decorilla.com/images/1200/4b606d9a-94be-4e1e-b912-5e107b0ef3ed/Blue-White-Kitchen-Rustic-Home-Design-Rendering.jpg" class="card-img-top" alt="Blue & White Kitchen">
-                <div class="card-body">
-                    <h3 class="card-title">Blue & White Kitchen</h3>
-                    <p class="card-text">A fresh and modern kitchen design featuring a beautiful blue and white color scheme.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-primary">Kitchen</span>
-                        <button class="btn btn-outline-primary" onclick="viewDetails('blue-white-kitchen')">View Details</button>
-                    </div>
+        <div class="portfolio-item" data-category="bedroom">
+            <div class="image-comparison">
+                <img src="https://cdn.decorilla.com/images/1200/e1f2922e-b95b-487e-b3ca-6d0fb1010ffa/Modern-Coastal-Living-Room-and-Bedroom-Online-and-AI-Interior-Design.jpg" alt="Before" class="before">
+                <img src="https://cdn.decorilla.com/images/1200/e1f2922e-b95b-487e-b3ca-6d0fb1010ffa/Modern-Coastal-Living-Room-and-Bedroom-Online-and-AI-Interior-Design.jpg" alt="After" class="after">
+            </div>
+            <div class="portfolio-info">
+                <h3>Coastal Bedroom Retreat</h3>
+                <p>A serene bedroom transformation with coastal-inspired elements.</p>
+                <div class="portfolio-meta">
+                    <span class="category">Bedroom</span>
+                    <span class="location">Miami, FL</span>
                 </div>
             </div>
         </div>
 
         <!-- Project 4 -->
-        <div class="col-md-6 col-lg-4 portfolio-item" data-category="living-room">
-            <div class="card h-100">
-                <img src="https://cdn.decorilla.com/images/1200/fb9af78e-95bc-4eec-a185-ae1ade6894c6/Eclectic-Formal-Living-Room-Interior-Design-Rendering.jpg" class="card-img-top" alt="Eclectic Formal Living Room">
-                <div class="card-body">
-                    <h3 class="card-title">Eclectic Formal Living Room</h3>
-                    <p class="card-text">A unique blend of styles creating a formal yet comfortable living space.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-primary">Living Room</span>
-                        <button class="btn btn-outline-primary" onclick="viewDetails('eclectic-formal')">View Details</button>
-                    </div>
-                </div>
+        <div class="portfolio-item" data-category="bathroom">
+            <div class="image-comparison">
+                <img src="https://cdn.decorilla.com/images/1200/a6e50faf-b4b4-4636-ac9c-7336f3f74175/SpaInspired-Master-Bathroom-Design-Rendering.jpg" alt="Before" class="before">
+                <img src="https://cdn.decorilla.com/images/1200/a6e50faf-b4b4-4636-ac9c-7336f3f74175/SpaInspired-Master-Bathroom-Design-Rendering.jpg" alt="After" class="after">
             </div>
-        </div>
-
-        <!-- Project 5 -->
-        <div class="col-md-6 col-lg-4 portfolio-item" data-category="bathroom">
-            <div class="card h-100">
-                <img src="https://cdn.decorilla.com/images/1200/a6e50faf-b4b4-4636-ac9c-7336f3f74175/SpaInspired-Master-Bathroom-Design-Rendering.jpg" class="card-img-top" alt="Spa-Inspired Master Bathroom">
-                <div class="card-body">
-                    <h3 class="card-title">Spa-Inspired Master Bathroom</h3>
-                    <p class="card-text">A luxurious bathroom design inspired by high-end spa experiences.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-primary">Bathroom</span>
-                        <button class="btn btn-outline-primary" onclick="viewDetails('spa-bathroom')">View Details</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 6 -->
-        <div class="col-md-6 col-lg-4 portfolio-item" data-category="living-room">
-            <div class="card h-100">
-                <img src="https://cdn.decorilla.com/images/1200/e83abe8d-ee7c-4703-9c36-35c6ab6605db/Contemporary-Living-Room-Virtual-Interior-Design.jpg" class="card-img-top" alt="Contemporary Living Room">
-                <div class="card-body">
-                    <h3 class="card-title">Contemporary Living Room</h3>
-                    <p class="card-text">A modern and sophisticated living space with clean lines and elegant details.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-primary">Living Room</span>
-                        <button class="btn btn-outline-primary" onclick="viewDetails('contemporary-living')">View Details</button>
-                    </div>
+            <div class="portfolio-info">
+                <h3>Luxury Spa Bathroom</h3>
+                <p>A master bathroom transformation into a luxurious spa-like retreat.</p>
+                <div class="portfolio-meta">
+                    <span class="category">Bathroom</span>
+                    <span class="location">Chicago, IL</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Call to Action -->
-    <div class="row mt-5">
-        <div class="col-12 text-center">
-            <h2>Ready to Transform Your Space?</h2>
-            <p class="lead">Let us help you create your dream home</p>
-            <a href="{{ url_for('schedule_consultation') }}" class="btn btn-primary btn-lg">Schedule a Consultation</a>
-        </div>
+    <div class="portfolio-cta">
+        <h2>Ready to Transform Your Space?</h2>
+        <p>Let us help you create your dream home</p>
+        <a href="{{ url_for('schedule_consultation') }}" class="cta-button">Schedule a Consultation</a>
     </div>
 </div>
 {% endblock %}
