@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/designer.css') }}"/>
+{% endblock %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Meet Your Perfect Interior Designer</h1>
+      <p>Expertly matched to your style, budget, and timeline.</p>
+      <a href="{{ url_for('quiz') }}" class="btn">Take Free Style Quiz</a>
+    </div>
+  </header>
+
+  <!-- Introduction -->
+  <section class="intro">
+    <h2>How It Works</h2>
+    <p>Decorilla makes high-end interior design accessible and affordable. Here's how we match you with the perfect designer.</p>
+  </section>
+
+  <!-- Steps -->
+  <section class="steps">
+    <div class="step">
+      <img src="https://images.unsplash.com/photo-1513506003901-ad169460c038?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Step 1">
+      <div class="step-content">
+        <h3>1. Take the Style Quiz</h3>
+        <p>Share your style preferences and space requirements.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <img src="https://images.unsplash.com/photo-1628108153406-81c3a6470872?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Step 2">
+      <div class="step-content">
+        <h3>2. Get Matched</h3>
+        <p>We use AI and human expertise to find your best designer fit.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <img src="https://images.unsplash.com/photo-1631624213909-ee184136418b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Step 3">
+      <div class="step-content">
+        <h3>3. Collaborate & Finalize</h3>
+        <p>Work with your designer to create your dream space, stress-free.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <h2>What Our Clients Say</h2>
+    <blockquote>
+      "Decorilla transformed my living room beyond my expectations. The designer match was spot on!"
+    </blockquote>
+    <blockquote>
+      "I loved how easy and affordable the whole process was. Highly recommend!"
+    </blockquote>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta">
+    <h2>Ready to Get Started?</h2>
+    <a href="{{ url_for('quiz') }}" class="btn">Take the Free Style Quiz</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Your Brand. All rights reserved.</p>
+  </footer>
+{% endblock %} 

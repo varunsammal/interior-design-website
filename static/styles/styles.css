@@ -152,6 +152,7 @@ section {
 
 /* Hero Section */
 .hero {
+    margin-top: 70px;
     background-image: url('https://cdn.decorilla.com/images/2800/ac553f93-1ec5-40d0-9142-fc39457481b2/Decorilla-Online-Interior-Design.jpg?cv=1');
     background-size: cover;
     background-position: center;
