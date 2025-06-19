@@ -21,6 +21,7 @@
         body {
             background-color: #f9f9f9;
             color: #333;
+            overflow-x: hidden;
         }
         
         .container {
@@ -31,29 +32,77 @@
         
         header {
             text-align: center;
-            padding: 60px 0 40px;
+            padding: 80px 0 60px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
+            margin-bottom: 40px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(66, 133, 244, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        header.animate::before {
+            opacity: 1;
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 10px;
-            color: #333;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        header.animate h1 {
+            transform: translateY(0);
+            opacity: 1;
         }
         
         .separator {
-            width: 80px;
+            width: 100px;
             height: 4px;
-            background-color: #4285f4;
-            margin: 15px auto;
+            background: linear-gradient(90deg, #4285f4, #34a853, #fbbc05, #ea4335);
+            margin: 20px auto;
             border-radius: 2px;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.8s ease;
+        }
+        
+        header.animate .separator {
+            transform: scaleX(1);
         }
         
         header p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: #666;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease 0.2s;
+            line-height: 1.6;
+        }
+        
+        header.animate p {
+            transform: translateY(0);
+            opacity: 1;
         }
         
         .faq-categories {
@@ -61,6 +110,14 @@
             justify-content: center;
             margin-bottom: 40px;
             flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease 0.4s;
+        }
+        
+        body.loaded .faq-categories {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .category-btn {
@@ -74,6 +131,23 @@
             cursor: pointer;
             transition: all 0.3s ease;
             color: #555;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .category-btn:hover::before {
+            left: 100%;
         }
         
         .category-btn:hover, .category-btn.active {
@@ -87,6 +161,7 @@
         .faq-container {
             max-width: 800px;
             margin: 0 auto 60px;
+            perspective: 1000px;
         }
         
         .faq-content {
@@ -113,11 +188,12 @@
             position: relative;
             font-weight: 600;
             transition: all 0.3s ease;
+            transform-style: preserve-3d;
         }
         
         .faq-question:hover {
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transform: translateY(-2px);
+            transform: translateY(-2px) rotateX(5deg);
         }
         
         .faq-question::after {
@@ -135,6 +211,7 @@
             background-color: #f0f7ff;
             margin-bottom: 0;
             border-radius: 8px 8px 0 0;
+            transform: translateY(0) rotateX(0);
         }
         
         .faq-question.active::after {
@@ -146,17 +223,19 @@
             padding: 0;
             max-height: 0;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
             border-radius: 0 0 8px 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             margin-bottom: 15px;
             opacity: 0;
+            transform: translateY(-10px);
         }
         
         .faq-answer.show {
             padding: 20px;
             max-height: 1000px;
             opacity: 1;
+            transform: translateY(0);
         }
         
         .faq-answer p {
@@ -170,42 +249,101 @@
         
         .cta-section {
             text-align: center;
-            padding: 60px 0;
-            background-color: #f0f7ff;
+            padding: 80px 0;
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
             border-radius: 12px;
             margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            animation: pulse 8s infinite linear;
+            z-index: 0;
+        }
+        
+        @keyframes pulse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 1;
         }
         
         .cta-section h2 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 20px;
-            color: #333;
+            color: white;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease;
         }
         
         .cta-section p {
             max-width: 600px;
             margin: 0 auto 30px;
-            color: #666;
-            font-size: 1.1rem;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease 0.2s;
         }
         
         .cta-btn {
             display: inline-block;
-            background-color: #4285f4;
-            color: #fff;
+            background-color: white;
+            color: #4285f4;
             padding: 15px 35px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(66, 133, 244, 0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease 0.4s;
+            font-size: 1.1rem;
+        }
+        
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .cta-btn:hover::before {
+            left: 100%;
         }
         
         .cta-btn:hover {
-            background-color: #3367d6;
+            background-color: #f8f9fa;
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.4);
-            color: #fff;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            color: #3367d6;
+        }
+        
+        .cta-section.animate h2,
+        .cta-section.animate p,
+        .cta-section.animate .cta-btn {
+            transform: translateY(0);
+            opacity: 1;
         }
         
         #gallery {
@@ -218,13 +356,34 @@
         }
         
         .gallery-title h2 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease;
         }
         
         .gallery-title .separator {
             margin-bottom: 20px;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.8s ease 0.2s;
+        }
+        
+        .gallery-title p {
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease 0.4s;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        #gallery.animate h2,
+        #gallery.animate .separator,
+        #gallery.animate p {
+            transform: translateY(0) scaleX(1);
+            opacity: 1;
         }
         
         .gallery-grid {
@@ -238,11 +397,42 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform: translateY(50px);
+            opacity: 0;
+            background: white;
+            position: relative;
+        }
+        
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+        
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+        
+        .gallery-item:nth-child(1) { transition-delay: 0.1s; }
+        .gallery-item:nth-child(2) { transition-delay: 0.2s; }
+        .gallery-item:nth-child(3) { transition-delay: 0.3s; }
+        .gallery-item:nth-child(4) { transition-delay: 0.4s; }
+        
+        #gallery.animate .gallery-item {
+            transform: translateY(0);
+            opacity: 1;
         }
         
         .gallery-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.02);
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
         
@@ -251,30 +441,241 @@
             height: 250px;
             object-fit: cover;
             display: block;
+            transition: transform 0.5s ease, filter 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(1.1);
         }
         
         .gallery-item-info {
             padding: 20px;
             background-color: #fff;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .gallery-item:hover .gallery-item-info {
+            background-color: #f9f9f9;
         }
         
         .gallery-item-info h3 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 10px;
-            color: #333;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-item-info h3 {
+            color: #4285f4;
         }
         
         .gallery-item-info p {
             color: #666;
-            font-size: 0.9rem;
+            font-size: 1rem;
             margin-bottom: 0;
         }
         
+        /* Floating animation for decorative elements */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Scroll reveal animation */
+        .reveal {
+            position: relative;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 1s ease;
+        }
+        
+        .reveal.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* Footer */
         footer {
-            background-color: #f5f5f5;
-            padding: 30px 0;
-            color: #666;
+            background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
+            padding: 60px 0 30px;
+            color: #fff;
+            font-size: 1rem;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+        
+        footer.animate {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-about {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background-color: #4285f4;
+            transform: translateY(-3px);
+        }
+        
+        .footer-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #4285f4, #34a853);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .footer-links a i {
+            margin-right: 8px;
+            color: #4285f4;
+        }
+        
+        .footer-newsletter p {
+            margin-bottom: 20px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+        
+        .newsletter-btn {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-btn:hover {
+            background-color: #3367d6;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
             font-size: 0.9rem;
+        }
+        
+        /* Gallery Image Animations */
+        @keyframes floatImage {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        .gallery-item img {
+            animation: floatImage 8s ease-in-out infinite;
+        }
+        
+        .gallery-item:nth-child(1) img {
+            animation-delay: 0.2s;
+        }
+        
+        .gallery-item:nth-child(2) img {
+            animation-delay: 0.4s;
+        }
+        
+        .gallery-item:nth-child(3) img {
+            animation-delay: 0.6s;
+        }
+        
+        .gallery-item:nth-child(4) img {
+            animation-delay: 0.8s;
         }
     </style>
 </head>
@@ -329,10 +730,15 @@
     </nav>
 
     <div class="container">
-        <header>
+        <header id="page-header">
             <h1>Frequently Asked Questions</h1>
             <div class="separator"></div>
-            <p>Explore and get to know more about Decorilla</p>
+            <p>Explore and get to know more about Decorilla's interior design services. Find answers to all your questions about our process, pricing, designers, and more.</p>
+            
+            <!-- Decorative floating elements -->
+            <div style="position: absolute; top: 20%; left: 5%; width: 30px; height: 30px; background-color: rgba(66, 133, 244, 0.1); border-radius: 50%; z-index: -1;" class="floating"></div>
+            <div style="position: absolute; bottom: 10%; right: 10%; width: 40px; height: 40px; background-color: rgba(66, 133, 244, 0.1); border-radius: 50%; z-index: -1;" class="floating" style="animation-delay: 0.5s;"></div>
+            <div style="position: absolute; top: 30%; right: 15%; width: 20px; height: 20px; background-color: rgba(66, 133, 244, 0.1); border-radius: 50%; z-index: -1;" class="floating" style="animation-delay: 1s;"></div>
         </header>
         
         <div class="faq-categories">
@@ -346,13 +752,13 @@
         <div class="faq-container">
             <!-- General FAQs -->
             <div id="general-faq" class="faq-content active">
-                <div class="faq-question">What is Decorilla?</div>
+                <div class="faq-question reveal">What is Decorilla?</div>
                 <div class="faq-answer">
                     <p>Decorilla is an online interior design service that connects you with experienced interior designers who create custom room designs based on your style, budget, and needs. We offer a convenient and affordable alternative to traditional interior design services.</p>
                     <p>Our platform allows you to work with top interior designers remotely, receive multiple design concepts, and shop for furniture and decor with exclusive discounts.</p>
                 </div>
                 
-                <div class="faq-question">How does online interior design work?</div>
+                <div class="faq-question reveal">How does online interior design work?</div>
                 <div class="faq-answer">
                     <p>Our online interior design process is simple:</p>
                     <p>1. Start by taking our style quiz and telling us about your space, preferences, and budget.</p>
@@ -362,12 +768,12 @@
                     <p>5. Shop for your items with our exclusive discounts and transform your space!</p>
                 </div>
                 
-                <div class="faq-question">What areas do you service?</div>
+                <div class="faq-question reveal">What areas do you service?</div>
                 <div class="faq-answer">
                     <p>Decorilla provides online interior design services worldwide! Since our service is completely online, we can work with clients anywhere. Our designers are based in various locations around the globe, bringing diverse perspectives and expertise to your project.</p>
                 </div>
                 
-                <div class="faq-question">What makes Decorilla different from other online design services?</div>
+                <div class="faq-question reveal">What makes Decorilla different from other online design services?</div>
                 <div class="faq-answer">
                     <p>Decorilla stands out from other online interior design services in several ways:</p>
                     <p>- Multiple design concepts from different designers</p>
@@ -382,24 +788,24 @@
             
             <!-- Pricing FAQs -->
             <div id="pricing-faq" class="faq-content">
-                <div class="faq-question">How much does Decorilla cost?</div>
+                <div class="faq-question reveal">How much does Decorilla cost?</div>
                 <div class="faq-answer">
                     <p>Decorilla offers different packages to suit various needs and budgets. Our packages start at $449 per room for the Bronze package, $549 for Silver, and $849 for Gold. Each package includes multiple design concepts, 3D renderings, a shopping list, and implementation guidance.</p>
                     <p>The difference between packages is primarily in the experience level of designers you'll work with and the level of detail in your final design package.</p>
                 </div>
                 
-                <div class="faq-question">Do you offer any discounts?</div>
+                <div class="faq-question reveal">Do you offer any discounts?</div>
                 <div class="faq-answer">
                     <p>Yes! One of the biggest benefits of working with Decorilla is our exclusive trade discounts. Our clients receive up to 45% off retail prices at over 350 furniture and decor retailers. These savings often cover the cost of our design services.</p>
                     <p>We also occasionally offer promotional discounts on our design packages. Sign up for our newsletter to stay informed about special offers.</p>
                 </div>
                 
-                <div class="faq-question">Is there a money-back guarantee?</div>
+                <div class="faq-question reveal">Is there a money-back guarantee?</div>
                 <div class="faq-answer">
                     <p>Yes, we offer a satisfaction guarantee. If you're not happy with your initial design concepts, you can request a full refund within 3 days of receiving them. After this period, if you're not satisfied with your designer's work, we'll match you with a new designer at no additional cost.</p>
                 </div>
                 
-                <div class="faq-question">Do I have to purchase furniture through Decorilla?</div>
+                <div class="faq-question reveal">Do I have to purchase furniture through Decorilla?</div>
                 <div class="faq-answer">
                     <p>No, you're not required to purchase furniture or decor through Decorilla. We provide you with a complete shopping list, and you're free to purchase items wherever you prefer.</p>
                     <p>However, by using our shopping links, you'll benefit from our exclusive trade discounts at many retailers, which can save you a significant amount of money.</p>
@@ -408,7 +814,7 @@
             
             <!-- Design Process FAQs -->
             <div id="process-faq" class="faq-content">
-                <div class="faq-question">How long does the design process take?</div>
+                <div class="faq-question reveal">How long does the design process take?</div>
                 <div class="faq-answer">
                     <p>The typical timeline for our design process is:</p>
                     <p>- Initial design concepts: 5-7 days after completing your design brief</p>
@@ -417,7 +823,7 @@
                     <p>Most projects are completed within 2-3 weeks, though this can vary based on the complexity of the project and the number of revision rounds needed.</p>
                 </div>
                 
-                <div class="faq-question">What information do I need to provide?</div>
+                <div class="faq-question reveal">What information do I need to provide?</div>
                 <div class="faq-answer">
                     <p>To get started, you'll need to provide:</p>
                     <p>- Photos of your space</p>
@@ -429,13 +835,13 @@
                     <p>The more information you provide, the better your designer can understand your needs and create a design that's perfect for you.</p>
                 </div>
                 
-                <div class="faq-question">Can I keep some of my existing furniture?</div>
+                <div class="faq-question reveal">Can I keep some of my existing furniture?</div>
                 <div class="faq-answer">
                     <p>Absolutely! Many of our clients want to incorporate existing pieces into their new design. Simply let your designer know which items you want to keep, and they'll integrate them into your design.</p>
                     <p>It's helpful to provide photos and measurements of these pieces so your designer can accurately include them in your 3D renderings.</p>
                 </div>
                 
-                <div class="faq-question">How many revisions can I request?</div>
+                <div class="faq-question reveal">How many revisions can I request?</div>
                 <div class="faq-answer">
                     <p>All of our packages include unlimited revisions during the design process. We want to ensure you're completely satisfied with your final design.</p>
                     <p>Most clients go through 2-3 rounds of revisions before approving their final design, but you can request as many changes as needed until you're happy with the result.</p>
@@ -444,13 +850,13 @@
             
             <!-- Designers FAQs -->
             <div id="designers-faq" class="faq-content">
-                <div class="faq-question">Who are Decorilla's designers?</div>
+                <div class="faq-question reveal">Who are Decorilla's designers?</div>
                 <div class="faq-answer">
                     <p>Decorilla works with a curated network of professional interior designers from around the world. Our designers have diverse backgrounds, styles, and expertise, allowing us to match you with the perfect designer for your project.</p>
                     <p>All Decorilla designers are vetted for their experience, portfolio quality, and client satisfaction. Many have formal education in interior design and years of professional experience.</p>
                 </div>
                 
-                <div class="faq-question">How are designers matched to my project?</div>
+                <div class="faq-question reveal">How are designers matched to my project?</div>
                 <div class="faq-answer">
                     <p>We match designers to your project based on several factors:</p>
                     <p>- Your style preferences (determined through our style quiz)</p>
@@ -460,13 +866,13 @@
                     <p>This matching process ensures you work with designers who understand your vision and have experience with similar projects.</p>
                 </div>
                 
-                <div class="faq-question">Can I choose my designer?</div>
+                <div class="faq-question reveal">Can I choose my designer?</div>
                 <div class="faq-answer">
                     <p>Yes! After receiving initial design concepts from multiple designers, you can choose your favorite to work with for the remainder of your project.</p>
                     <p>You can also browse our designer profiles and request specific designers when starting your project, though availability may vary.</p>
                 </div>
                 
-                <div class="faq-question">How do I communicate with my designer?</div>
+                <div class="faq-question reveal">How do I communicate with my designer?</div>
                 <div class="faq-answer">
                     <p>Communication with your designer happens through our online platform. You'll have a dedicated project board where you can exchange messages, share inspiration, provide feedback, and review designs.</p>
                     <p>Depending on your package, you may also have the option for video calls with your designer for more direct communication.</p>
@@ -475,7 +881,7 @@
             
             <!-- Technical FAQs -->
             <div id="technical-faq" class="faq-content">
-                <div class="faq-question">What's included in my final design package?</div>
+                <div class="faq-question reveal">What's included in my final design package?</div>
                 <div class="faq-answer">
                     <p>Your final design package includes:</p>
                     <p>- Realistic 3D renderings of your space</p>
@@ -487,19 +893,19 @@
                     <p>Higher-tier packages may include additional items like multiple layout options, lighting plans, or custom furniture recommendations.</p>
                 </div>
                 
-                <div class="faq-question">How accurate are the 3D renderings?</div>
+                <div class="faq-question reveal">How accurate are the 3D renderings?</div>
                 <div class="faq-answer">
                     <p>Our 3D renderings are highly realistic and accurately represent how your space will look after implementation. We use professional 3D modeling software to create detailed visualizations that include your exact room dimensions, lighting conditions, and selected furniture and decor items.</p>
                     <p>These renderings help you visualize the final result before making any purchases or changes to your space.</p>
                 </div>
                 
-                <div class="faq-question">Can I access my design after the project is complete?</div>
+                <div class="faq-question reveal">Can I access my design after the project is complete?</div>
                 <div class="faq-answer">
                     <p>Yes, you'll have permanent access to your design package through your Decorilla account. You can log in anytime to view your designs, shopping list, and all project communications.</p>
                     <p>This allows you to implement your design at your own pace and refer back to the materials whenever needed.</p>
                 </div>
                 
-                <div class="faq-question">What if I need help implementing my design?</div>
+                <div class="faq-question reveal">What if I need help implementing my design?</div>
                 <div class="faq-answer">
                     <p>Your design package includes implementation guidelines to help you bring your design to life. If you need additional assistance, we offer implementation support services that can help with:</p>
                     <p>- Coordinating furniture deliveries</p>
@@ -511,10 +917,12 @@
             </div>
         </div>
         
-        <div class="cta-section">
-            <h2>Ready to transform your space?</h2>
-            <p>Get started with our award-winning designers today and create a home you'll love.</p>
-            <a href="{{ url_for('home') }}" class="cta-btn">Start Your Project</a>
+        <div class="cta-section" id="cta-section">
+            <div class="cta-content">
+                <h2>Ready to transform your space?</h2>
+                <p>Get started with our award-winning designers today and create a home you'll love.</p>
+                <a href="{{ url_for('home') }}" class="cta-btn">Start Your Project</a>
+            </div>
         </div>
         
         <section id="gallery">
@@ -561,46 +969,55 @@
     </div>
     
     <!-- Footer -->
-    <footer class="bg-light mt-5 py-4">
+    <footer id="page-footer">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>Decorilla</h5>
-                    <p>Best Online Interior Design Service</p>
-                </div>
-                <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h6>Company</h6>
-                            <ul class="list-unstyled">
-                                <li><a href="#" class="text-decoration-none">About Us</a></li>
-                                <li><a href="#" class="text-decoration-none">Careers</a></li>
-                                <li><a href="#" class="text-decoration-none">Contact</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4">
-                            <h6>Services</h6>
-                            <ul class="list-unstyled">
-                                <li><a href="{{ url_for('quiz') }}" class="text-decoration-none">Style Quiz</a></li>
-                                <li><a href="{{ url_for('pricing') }}" class="text-decoration-none">Pricing</a></li>
-                                <li><a href="{{ url_for('faq') }}" class="text-decoration-none">FAQ</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4">
-                            <h6>Follow Us</h6>
-                            <div class="social-icons">
-                                <a href="#" class="text-decoration-none me-2"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#" class="text-decoration-none me-2"><i class="fab fa-instagram"></i></a>
-                                <a href="#" class="text-decoration-none me-2"><i class="fab fa-pinterest-p"></i></a>
-                                <a href="#" class="text-decoration-none me-2"><i class="fab fa-twitter"></i></a>
-                            </div>
-                        </div>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">Decorilla</div>
+                    <p class="footer-about">Decorilla is a premier online interior design service connecting clients with top designers worldwide. We make professional interior design accessible and affordable for everyone.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('home') }}"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="{{ url_for('quiz') }}"><i class="fas fa-chevron-right"></i> Style Quiz</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Designers</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Portfolio</a></li>
+                        <li><a href="{{ url_for('pricing') }}"><i class="fas fa-chevron-right"></i> Pricing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Residential Design</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Commercial Design</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Virtual Design</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Renovation Planning</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Furniture Selection</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Newsletter</h3>
+                    <p class="footer-newsletter">Subscribe to our newsletter for design tips, special offers, and the latest trends in interior design.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your Email Address">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
             </div>
-            <hr>
-            <div class="text-center">
-                <p class="mb-0">&copy; 2024 Decorilla. All rights reserved.</p>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Decorilla. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -609,6 +1026,48 @@
     <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Trigger initial animations
+            document.querySelector('header').classList.add('animate');
+            document.body.classList.add('loaded');
+            
+            // Scroll reveal animation
+            function revealOnScroll() {
+                const elements = document.querySelectorAll('.reveal');
+                const windowHeight = window.innerHeight;
+                const revealPoint = 100;
+                
+                elements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - revealPoint) {
+                        element.classList.add('active');
+                    }
+                });
+                
+                // Check CTA section
+                const ctaSection = document.getElementById('cta-section');
+                const ctaTop = ctaSection.getBoundingClientRect().top;
+                if (ctaTop < windowHeight - 100) {
+                    ctaSection.classList.add('animate');
+                }
+                
+                // Check gallery section
+                const gallerySection = document.getElementById('gallery');
+                const galleryTop = gallerySection.getBoundingClientRect().top;
+                if (galleryTop < windowHeight - 100) {
+                    gallerySection.classList.add('animate');
+                }
+                
+                // Check footer
+                const footer = document.getElementById('page-footer');
+                const footerTop = footer.getBoundingClientRect().top;
+                if (footerTop < windowHeight - 100) {
+                    footer.classList.add('animate');
+                }
+            }
+            
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Run once on load
+            
             // Category switching
             const categoryButtons = document.querySelectorAll('.category-btn');
             categoryButtons.forEach(button => {
@@ -625,6 +1084,14 @@
                     // Show the selected FAQ content
                     const category = this.getAttribute('data-category');
                     document.getElementById(`${category}-faq`).classList.add('active');
+                    
+                    // Animate the new questions
+                    const questions = document.querySelectorAll(`#${category}-faq .faq-question`);
+                    questions.forEach((q, i) => {
+                        setTimeout(() => {
+                            q.classList.add('active');
+                        }, i * 100);
+                    });
                 });
             });
             
@@ -672,6 +1139,15 @@
                     this.style.transform = '';
                     this.style.boxShadow = '';
                 });
+            });
+            
+            // Floating animation for decorative elements
+            const floatingElements = document.querySelectorAll('.floating');
+            floatingElements.forEach(el => {
+                const delay = Math.random() * 2;
+                const duration = 3 + Math.random() * 2;
+                el.style.animationDelay = `${delay}s`;
+                el.style.animationDuration = `${duration}s`;
             });
         });
     </script>
