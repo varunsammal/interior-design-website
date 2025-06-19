@@ -179,6 +179,7 @@
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
     transition: transform 0.2s ease;
 }
 
@@ -189,6 +190,7 @@
 .review-header {
     display: flex;
     justify-content: space-between;
+
     align-items: flex-start;
     margin-bottom: 1rem;
 }
@@ -227,10 +229,12 @@
 .review-date {
     color: #666;
     font-size: 0.9rem;
+
 }
 
 .review-rating {
     color: #ffc107;
+
 }
 
 .review-actions {
@@ -262,10 +266,12 @@
 
 .btn-delete:hover {
     color: #dc3545;
+
 }
 
 .review-content {
     color: #333;
+
     line-height: 1.6;
     margin-bottom: 1rem;
 }
@@ -559,5 +565,4 @@ textarea:focus {
 
     .pagination {
         flex-wrap: wrap;
-    }
 } 

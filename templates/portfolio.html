@@ -2,6 +2,7 @@
 
 {% block title %}Portfolio - Our Interior Design Projects{% endblock %}
 
+
 {% block head_extra %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/portfolio.css') }}">
 {% endblock %}
@@ -35,11 +36,13 @@
                 <div class="portfolio-meta">
                     <span class="category">Living Room</span>
                     <span class="location">New York, NY</span>
+
                 </div>
             </div>
         </div>
 
         <!-- Project 2 -->
+
         <div class="portfolio-item" data-category="kitchen">
             <div class="image-comparison">
                 <img src="https://cdn.decorilla.com/images/1200/4b606d9a-94be-4e1e-b912-5e107b0ef3ed/Blue-White-Kitchen-Rustic-Home-Design-Rendering.jpg" alt="Before" class="before">
@@ -51,11 +54,13 @@
                 <div class="portfolio-meta">
                     <span class="category">Kitchen</span>
                     <span class="location">Los Angeles, CA</span>
+
                 </div>
             </div>
         </div>
 
         <!-- Project 3 -->
+
         <div class="portfolio-item" data-category="bedroom">
             <div class="image-comparison">
                 <img src="https://cdn.decorilla.com/images/1200/e1f2922e-b95b-487e-b3ca-6d0fb1010ffa/Modern-Coastal-Living-Room-and-Bedroom-Online-and-AI-Interior-Design.jpg" alt="Before" class="before">
@@ -67,11 +72,13 @@
                 <div class="portfolio-meta">
                     <span class="category">Bedroom</span>
                     <span class="location">Miami, FL</span>
+
                 </div>
             </div>
         </div>
 
         <!-- Project 4 -->
+
         <div class="portfolio-item" data-category="bathroom">
             <div class="image-comparison">
                 <img src="https://cdn.decorilla.com/images/1200/a6e50faf-b4b4-4636-ac9c-7336f3f74175/SpaInspired-Master-Bathroom-Design-Rendering.jpg" alt="Before" class="before">
@@ -83,6 +90,7 @@
                 <div class="portfolio-meta">
                     <span class="category">Bathroom</span>
                     <span class="location">Chicago, IL</span>
+
                 </div>
             </div>
         </div>
@@ -98,4 +106,5 @@
 
 {% block scripts_extra %}
 <script src="{{ url_for('static', filename='javascript/portfolio.js') }}"></script>
+
 {% endblock %} 

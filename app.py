@@ -25,7 +25,6 @@ migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
-
 # Ensure the instance folder exists
 try:
     os.makedirs(app.instance_path)
@@ -54,12 +53,14 @@ class User(UserMixin, db.Model):
     designs = db.relationship('DesignImage', backref='user', lazy='dynamic')
 
     def __init__(self, email, username=None, password=None, address=None, phone=None, design_style=None, profile_image=None):
+
         self.email = email
         self.username = username
         self.address = address
         self.phone = phone
         self.design_style = design_style
         self.profile_image = profile_image
+
         if password:
             self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
@@ -103,6 +104,7 @@ class DesignImage(db.Model):
 
 class Review(db.Model):
     __tablename__ = 'reviews'
+
     
     id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.Integer, nullable=False)
@@ -129,6 +131,7 @@ def load_user(user_id):
 # Create database tables
 def init_db():
     with app.app_context():
+
         # Create all tables
         db.create_all()
         
@@ -270,9 +273,11 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
+
     print(f"DEBUG: Profile image for user {current_user.id}: {current_user.profile_image}")
     projects = Project.query.filter_by(user_id=current_user.id).all()
     return render_template('profile.html', user=current_user, projects=projects, DesignImage=DesignImage)
+
 
 @app.route('/projects/new', methods=['GET', 'POST'])
 @login_required
@@ -305,9 +310,11 @@ def blog():
 def portfolio():
     return render_template('portfolio.html')
 
+
 @app.route('/designers')
 def designers():
     return render_template('designer.html')
+
 
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
@@ -372,7 +379,9 @@ def delete_design():
         flash('Design deleted successfully', 'success')
     except Exception as e:
         db.session.rollback()
+
         print(f"Error deleting design: {e}")
+
         flash('An error occurred while deleting the design', 'danger')
     
     return redirect(url_for('upload'))
@@ -380,6 +389,7 @@ def delete_design():
 @app.route('/design/<int:design_id>/reviews', methods=['GET', 'POST'])
 @login_required
 def design_reviews(design_id):
+
     try:
         design = DesignImage.query.get_or_404(design_id)
         
@@ -473,6 +483,7 @@ def schedule_consultation():
         return redirect(url_for('home'))
     
     return render_template('schedule_consultation.html')
+
 
 def generate_sample_reviews():
     sample_reviews = [
@@ -688,6 +699,7 @@ def edit_profile():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

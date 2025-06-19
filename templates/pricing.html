@@ -1,13 +1,16 @@
+
 {% extends "base.html" %}
 
 {% block title %}Pricing | Decorilla{% endblock %}
 
 {% block head_extra %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/pricing.css') }}">
+
 {% endblock %}
 
 {% block content %}
 <div class="container">
+
     <div class="header">
         <img src="https://via.placeholder.com/1200x400" alt="Interior Design" class="header-image">
         <h1>Our Pricing Plans</h1>
@@ -24,14 +27,17 @@
                 <a href="#" data-rooms="3">3 Rooms</a>
                 <a href="#" data-rooms="4">4 Rooms</a>
                 <a href="#" data-rooms="5">5+ Rooms</a>
-            </div>
+ </div>
         </div>
     </div>
+
+
 
     <div class="packages">
         <div class="package bronze">
             <h3>Bronze Package</h3>
             <div class="price-box">
+
                 <span class="price">$299</span> <small>/ room</small>
             </div>
             <p>Perfect for small updates and single room designs.</p>
@@ -110,8 +116,10 @@
             <div class="col-md-4">
                 <h5>Satisfaction Guaranteed</h5>
                 <p>We work until you are completely happy with your design.</p>
+
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
+

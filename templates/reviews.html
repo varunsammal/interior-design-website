@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 
+
 {% block title %}Design Reviews{% endblock %}
 
 {% block head_extra %}
+
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/reviews.css') }}">
 {% endblock %}
 
 {% block content %}
+
 <div class="reviews-container">
     <div class="reviews-header">
         <div class="reviews-header-content">
@@ -215,4 +218,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
 {% endblock %} 
