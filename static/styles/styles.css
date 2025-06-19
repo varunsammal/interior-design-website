@@ -94,60 +94,65 @@ section {
     padding: 80px 0;
 }
 
-/* Navigation */
+/* Modernized Navbar and Footer Styles */
 .navbar {
-    position: fixed;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    position: sticky;
     top: 0;
-    left: 0;
-    width: 100%;
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    padding: 15px 0;
+    z-index: 1030;
+    background: #fff;
 }
-
-.navbar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo a {
-    font-size: 1.8rem;
+.navbar-brand {
     font-weight: 700;
-    color: var(--primary-color);
+    letter-spacing: 1px;
 }
-
-.nav-links {
-    display: flex;
-    align-items: center;
-}
-
-.nav-links li {
-    margin-left: 25px;
-}
-
-.nav-links a {
+.navbar-nav .nav-link {
     font-weight: 500;
-    transition: var(--transition);
+    margin-right: 0.5rem;
+    transition: color 0.2s;
 }
-
-.nav-links a:hover {
-    color: var(--primary-color);
+.navbar-nav .nav-link.active, .navbar-nav .nav-link:hover {
+    color: #007bff;
 }
-
-.hamburger {
-    display: none;
-    cursor: pointer;
+.navbar-toggler {
+    border: none;
 }
-
-.bar {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px auto;
-    background-color: var(--dark-color);
-    transition: var(--transition);
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+footer {
+    background: #23272b;
+    color: #f8f9fa;
+}
+footer a {
+    color: #f8f9fa;
+    transition: color 0.2s;
+}
+footer a:hover {
+    color: #007bff;
+}
+.social-icons a {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+    color: #f8f9fa;
+}
+.social-icons a:hover {
+    color: #007bff;
+}
+.footer-divider {
+    border-top: 1px solid #444;
+}
+@media (max-width: 991.98px) {
+    .navbar-nav {
+        text-align: center;
+    }
+    .navbar-nav .nav-link {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    .navbar-nav.mb-2.mb-lg-0 {
+        margin-bottom: 1rem !important;
+    }
 }
 
 /* Hero Section */
@@ -562,5 +567,60 @@ footer {
     
     .testimonial-text blockquote {
         font-size: 1.2rem;
+    }
+}
+
+/* Overlay Transparent Navbar Styles */
+.custom-navbar {
+    background: rgba(0, 0, 0, 0.85) !important;
+    box-shadow: none;
+    transition: background 0.3s;
+}
+.navbar-overlay {
+    background: rgba(0, 0, 0, 0.85) !important;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1030;
+}
+.custom-navbar .navbar-brand,
+.custom-navbar .nav-link,
+.custom-navbar .btn {
+    color: #fff !important;
+}
+.custom-navbar .nav-link {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-right: 1.2rem;
+    transition: color 0.2s;
+}
+.custom-navbar .nav-link.active,
+.custom-navbar .nav-link:hover {
+    color: #d4c08a !important;
+    text-decoration: underline;
+}
+.custom-navbar .btn-outline-light {
+    border: 1px solid #fff;
+    color: #fff;
+    background: transparent;
+    transition: background 0.2s, color 0.2s;
+}
+.custom-navbar .btn-outline-light:hover {
+    background: #fff;
+    color: #23272b;
+}
+@media (max-width: 991.98px) {
+    .custom-navbar .navbar-nav {
+        text-align: center;
+    }
+    .custom-navbar .nav-link {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    .custom-navbar .navbar-nav.mb-2.mb-lg-0 {
+        margin-bottom: 1rem !important;
     }
 }

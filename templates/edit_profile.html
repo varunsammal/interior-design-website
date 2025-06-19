@@ -14,7 +14,11 @@
             <div class="profile-picture-section">
                 <label>Profile Picture</label>
                 <div class="profile-picture-preview-area">
-                    <img id="currentProfilePic" src="{{ url_for('static', filename='uploads/profile_pics/' + user.profile_image) if user.profile_image else url_for('static', filename='images/default_profile.png') }}" alt="Profile Picture" class="{{ 'd-block' if user.profile_image else 'd-none' }}">
+                    {% if user.profile_image %}
+                        <img id="currentProfilePic" src="/static/uploads/{{ user.profile_image }}" alt="Profile Picture" class="d-block">
+                    {% else %}
+                        <img id="currentProfilePic" src="{{ url_for('static', filename='images/default_profile.png') }}" alt="Profile Picture" class="d-none">
+                    {% endif %}
                     <img id="newProfilePicPreview" src="" alt="New Profile Picture" class="d-none">
                     <i id="defaultProfileIcon" class="fas fa-user-circle {{ 'd-none' if user.profile_image else 'd-block' }}"></i>
                 </div>

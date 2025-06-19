@@ -6,23 +6,23 @@
 
 {% block content %}
   <!-- Hero Section -->
-  <header class="hero">
+  <header class="hero glassmorphism animate-fade-in">
     <div class="hero-content">
-      <h1>Meet Your Perfect Interior Designer</h1>
-      <p>Expertly matched to your style, budget, and timeline.</p>
-      <a href="{{ url_for('quiz') }}" class="btn">Take Free Style Quiz</a>
+      <h1 class="hero-title">Meet Your Perfect Interior Designer</h1>
+      <p class="hero-subtitle">Expertly matched to your style, budget, and timeline.</p>
+      <a href="{{ url_for('quiz') }}" class="btn btn-gradient animate-pop">Take Free Style Quiz</a>
     </div>
   </header>
 
   <!-- Introduction -->
-  <section class="intro">
+  <section class="intro animate-fade-in-up">
     <h2>How It Works</h2>
     <p>Decorilla makes high-end interior design accessible and affordable. Here's how we match you with the perfect designer.</p>
   </section>
 
   <!-- Steps -->
   <section class="steps">
-    <div class="step">
+    <div class="step card-modern animate-fade-in-up">
       <img src="https://images.unsplash.com/photo-1513506003901-ad169460c038?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Step 1">
       <div class="step-content">
         <h3>1. Take the Style Quiz</h3>
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="step">
+    <div class="step card-modern animate-fade-in-up">
       <img src="https://images.unsplash.com/photo-1628108153406-81c3a6470872?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Step 2">
       <div class="step-content">
         <h3>2. Get Matched</h3>
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div class="step">
+    <div class="step card-modern animate-fade-in-up">
       <img src="https://images.unsplash.com/photo-1631624213909-ee184136418b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Step 3">
       <div class="step-content">
         <h3>3. Collaborate & Finalize</h3>
@@ -48,24 +48,17 @@
   </section>
 
   <!-- Testimonials -->
-  <section class="testimonials">
+  <section class="testimonials animate-fade-in-up">
     <h2>What Our Clients Say</h2>
-    <blockquote>
-      "Decorilla transformed my living room beyond my expectations. The designer match was spot on!"
-    </blockquote>
-    <blockquote>
-      "I loved how easy and affordable the whole process was. Highly recommend!"
-    </blockquote>
+    <div class="testimonial-cards">
+      <blockquote class="testimonial-card">"Decorilla transformed my living room beyond my expectations. The designer match was spot on!"</blockquote>
+      <blockquote class="testimonial-card">"I loved how easy and affordable the whole process was. Highly recommend!"</blockquote>
+    </div>
   </section>
 
   <!-- Call to Action -->
-  <section class="cta">
+  <section class="cta animate-fade-in-up">
     <h2>Ready to Get Started?</h2>
-    <a href="{{ url_for('quiz') }}" class="btn">Take the Free Style Quiz</a>
+    <a href="{{ url_for('quiz') }}" class="btn btn-gradient animate-pop">Take the Free Style Quiz</a>
   </section>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Your Brand. All rights reserved.</p>
-  </footer>
 {% endblock %} 
