@@ -20,45 +20,161 @@ body {
     background: var(--light-gray);
 }
 
-/* Navigation */
+/* Modernized Navbar and Footer Styles */
 .navbar {
-    background: var(--white);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1rem 0;
-}
 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    background: #fff;
+}
 .navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
-
-.nav-link {
-    color: var(--text-color);
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    transition: color 0.3s ease;
+.navbar-nav .nav-link {
+    font-weight: 500;
+    margin-right: 0.5rem;
+    transition: color 0.2s;
 }
-
-.nav-link:hover {
-    color: var(--primary-color);
+.navbar-nav .nav-link.active, .navbar-nav .nav-link:hover {
+    color: #007bff;
 }
-
-/* Buttons */
-.btn {
-    display: inline-block;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
+.navbar-toggler {
     border: none;
 }
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+footer {
+    background: #23272b;
+    color: #f8f9fa;
+}
+footer a {
+    color: #f8f9fa;
+    transition: color 0.2s;
+}
+footer a:hover {
+    color: #007bff;
+}
+.social-icons a {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+    color: #f8f9fa;
+}
+.social-icons a:hover {
+    color: #007bff;
+}
+.footer-divider {
+    border-top: 1px solid #444;
+}
+@media (max-width: 991.98px) {
+    .navbar-nav {
+        text-align: center;
+    }
+    .navbar-nav .nav-link {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    .navbar-nav.mb-2.mb-lg-0 {
+        margin-bottom: 1rem !important;
+    }
+}
 
-.btn-primary {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: var(--white);
+/* Hero Section */
+.hero {
+    margin-top: 70px;
+    background-image: url('https://cdn.decorilla.com/images/2800/ac553f93-1ec5-40d0-9142-fc39457481b2/Decorilla-Online-Interior-Design.jpg?cv=1');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 30px;
+    line-height: 1.2;
+}
+
+.hero h1 span {
+    display: block;
+    font-size: 3rem;
+}
+
+.award-badge {
+    margin-top: 30px;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Services Section */
+.services {
+    background-color: var(--light-color);
+}
+
+.service-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.service-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    transition: var(--transition);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+}
+
+.service-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+/* Testimonial Section */
+.testimonial {
+    background-color: #f9f9f9;
+}
+
+.testimonial-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .btn-primary:hover {
@@ -187,8 +303,77 @@ body {
     margin-bottom: 1rem;
 }
 
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-} 
+
+@media (max-width: 576px) {
+    section {
+        padding: 60px 0;
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero h1 span {
+        font-size: 2rem;
+    }
+    
+    .testimonial-text blockquote {
+        font-size: 1.2rem;
+    }
+}
+
+/* Overlay Transparent Navbar Styles */
+.custom-navbar {
+    background: rgba(0, 0, 0, 0.85) !important;
+    box-shadow: none;
+    transition: background 0.3s;
+}
+.navbar-overlay {
+    background: rgba(0, 0, 0, 0.85) !important;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1030;
+}
+.custom-navbar .navbar-brand,
+.custom-navbar .nav-link,
+.custom-navbar .btn {
+    color: #fff !important;
+}
+.custom-navbar .nav-link {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-right: 1.2rem;
+    transition: color 0.2s;
+}
+.custom-navbar .nav-link.active,
+.custom-navbar .nav-link:hover {
+    color: #d4c08a !important;
+    text-decoration: underline;
+}
+.custom-navbar .btn-outline-light {
+    border: 1px solid #fff;
+    color: #fff;
+    background: transparent;
+    transition: background 0.2s, color 0.2s;
+}
+.custom-navbar .btn-outline-light:hover {
+    background: #fff;
+    color: #23272b;
+}
+@media (max-width: 991.98px) {
+    .custom-navbar .navbar-nav {
+        text-align: center;
+    }
+    .custom-navbar .nav-link {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    .custom-navbar .navbar-nav.mb-2.mb-lg-0 {
+        margin-bottom: 1rem !important;
+    }
+}
+

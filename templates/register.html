@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/register.css') }}">
+{% endblock %}
+
+{% block title %}Register | Decorilla{% endblock %}
+
+
 {% block content %}
 <div class="register-container">
     <div class="register-wrapper">
@@ -94,174 +102,5 @@
     </div>
 </div>
 
-<style>
-.register-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    padding: 2rem;
-}
 
-.register-wrapper {
-    display: flex;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 1000px;
-    max-width: 100%;
-}
-
-.register-left {
-    flex: 1;
-    background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
-    padding: 3rem;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.register-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    font-weight: 700;
-}
-
-.register-header p {
-    font-size: 1.1rem;
-    opacity: 0.9;
-}
-
-.register-features {
-    margin-top: 3rem;
-}
-
-.feature {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-.feature i {
-    font-size: 1.5rem;
-    margin-right: 1rem;
-}
-
-.register-right {
-    flex: 1;
-    padding: 3rem;
-}
-
-.form-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.form-header h2 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 0.5rem;
-}
-
-.form-header p {
-    color: #666;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.input-icon {
-    position: relative;
-}
-
-.input-icon i {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
-}
-
-.input-icon input,
-.input-icon select {
-    width: 100%;
-    padding: 12px 15px 12px 45px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-.input-icon input:focus,
-.input-icon select:focus {
-    border-color: #6e8efb;
-    box-shadow: 0 0 0 2px rgba(110, 142, 251, 0.2);
-    outline: none;
-}
-
-.register-btn {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.register-btn i {
-    margin-left: 10px;
-    transition: transform 0.3s ease;
-}
-
-.register-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(110, 142, 251, 0.4);
-}
-
-.register-btn:hover i {
-    transform: translateX(5px);
-}
-
-.form-footer {
-    text-align: center;
-    margin-top: 2rem;
-    color: #666;
-}
-
-.login-link {
-    color: #6e8efb;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-.login-link:hover {
-    color: #a777e3;
-}
-
-@media (max-width: 768px) {
-    .register-wrapper {
-        flex-direction: column;
-    }
-    
-    .register-left {
-        padding: 2rem;
-    }
-    
-    .register-right {
-        padding: 2rem;
-    }
-}
-</style>
 {% endblock %}

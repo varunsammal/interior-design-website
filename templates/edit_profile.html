@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/edit_profile.css') }}">
+{% endblock %}
+
+{% block title %}Edit Profile | Decorilla{% endblock %}
+
+{% block content %}
+<div class="edit-profile-container">
+    <div class="edit-profile-card">
+        <h2>Edit Your Profile</h2>
+        <form method="POST" class="edit-profile-form" enctype="multipart/form-data">
+            <div class="profile-picture-section">
+                <label>Profile Picture</label>
+                <div class="profile-picture-preview-area">
+                    {% if user.profile_image %}
+                        <img id="currentProfilePic" src="/static/uploads/{{ user.profile_image }}" alt="Profile Picture" class="d-block">
+                    {% else %}
+                        <img id="currentProfilePic" src="{{ url_for('static', filename='images/default_profile.png') }}" alt="Profile Picture" class="d-none">
+                    {% endif %}
+                    <img id="newProfilePicPreview" src="" alt="New Profile Picture" class="d-none">
+                    <i id="defaultProfileIcon" class="fas fa-user-circle {{ 'd-none' if user.profile_image else 'd-block' }}"></i>
+                </div>
+                <input type="file" id="profile_image" name="profile_image" accept="image/*" class="d-none">
+                <input type="hidden" id="remove_profile_image" name="remove_profile_image" value="0">
+                <div class="profile-picture-actions">
+                    <button type="button" id="changePictureBtn" class="btn-secondary">Change Picture</button>
+                    <button type="button" id="removePictureBtn" class="btn-danger {{ 'd-block' if user.profile_image else 'd-none' }}">Remove Picture</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" value="{{ user.address or '' }}">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone" value="{{ user.phone or '' }}">
+            </div>
+            <div class="form-group">
+                <label for="design_style">Preferred Design Style</label>
+                <select id="design_style" name="design_style">
+                    <option value="">Select a style</option>
+                    <option value="Modern" {% if user.design_style == 'Modern' %}selected{% endif %}>Modern</option>
+                    <option value="Minimalist" {% if user.design_style == 'Minimalist' %}selected{% endif %}>Minimalist</option>
+                    <option value="Bohemian" {% if user.design_style == 'Bohemian' %}selected{% endif %}>Bohemian</option>
+                    <option value="Industrial" {% if user.design_style == 'Industrial' %}selected{% endif %}>Industrial</option>
+                    <option value="Mid-Century Modern" {% if user.design_style == 'Mid-Century Modern' %}selected{% endif %}>Mid-Century Modern</option>
+                    <option value="Traditional" {% if user.design_style == 'Traditional' %}selected{% endif %}>Traditional</option>
+                    <option value="Farmhouse" {% if user.design_style == 'Farmhouse' %}selected{% endif %}>Farmhouse</option>
+                    <option value="Coastal" {% if user.design_style == 'Coastal' %}selected{% endif %}>Coastal</option>
+                    <option value="Scandinavian" {% if user.design_style == 'Scandinavian' %}selected{% endif %}>Scandinavian</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Save Changes</button>
+                <a href="{{ url_for('profile') }}" class="btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="{{ url_for('static', filename='javascript/edit_profile.js') }}"></script>
+{% endblock %} 
