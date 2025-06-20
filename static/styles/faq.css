@@ -4,7 +4,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
+    
 }
 
 body {
@@ -239,4 +239,6 @@ header p {
     width: 100%;
     height: 200px;
     object-fit: cover;
-} 
+}
+
+/* Restrict Montserrat font to FAQ content only *

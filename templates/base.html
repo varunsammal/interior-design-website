@@ -141,53 +141,55 @@
     {% endblock %}
 
     <!-- Footer -->
-    <footer class="mt-5 py-4">
+    <footer id="page-footer" class="animate">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-3 mb-md-0">
-
-                    <h5>Decorilla</h5>
-                    <p>Best Online Interior Design Service</p>
-                </div>
-                <div class="col-md-8">
-                    <div class="row">
-
-                        <div class="col-md-4 mb-3 mb-md-0">
-                            <h6>Company</h6>
-                            <ul class="list-unstyled">
-                                <li><a href="#" class="text-decoration-none">About Us</a></li>
-                                <li><a href="#" class="text-decoration-none">Careers</a></li>
-                                <li><a href="#" class="text-decoration-none">Contact</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4 mb-3 mb-md-0">
-                            <h6>Services</h6>
-                            <ul class="list-unstyled">
-                                <li><a href="{{ url_for('quiz') }}" class="text-decoration-none">Style Quiz</a></li>
-                                <li><a href="{{ url_for('pricing') }}" class="text-decoration-none">Pricing</a></li>
-                                <li><a href="{{ url_for('faq') }}" class="text-decoration-none">FAQ</a></li>
-
-                            </ul>
-                        </div>
-                        <div class="col-md-4">
-                            <h6>Follow Us</h6>
-                            <div class="social-icons">
-
-                                <a href="#" class="me-2"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#" class="me-2"><i class="fab fa-instagram"></i></a>
-                                <a href="#" class="me-2"><i class="fab fa-pinterest-p"></i></a>
-                                <a href="#" class="me-2"><i class="fab fa-twitter"></i></a>
-
-                            </div>
-                        </div>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">Decorilla</div>
+                    <p class="footer-about">Decorilla is a premier online interior design service connecting clients with top designers worldwide. We make professional interior design accessible and affordable for everyone.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('home') }}"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="{{ url_for('quiz') }}"><i class="fas fa-chevron-right"></i> Style Quiz</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Designers</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Portfolio</a></li>
+                        <li><a href="{{ url_for('pricing') }}"><i class="fas fa-chevron-right"></i> Pricing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Residential Design</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Commercial Design</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Virtual Design</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Renovation Planning</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Furniture Selection</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Newsletter</h3>
+                    <p class="footer-newsletter">Subscribe to our newsletter for design tips, special offers, and the latest trends in interior design.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your Email Address">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
             </div>
-
-            <hr class="footer-divider">
-
-            <div class="text-center">
-                <p class="mb-0">&copy; 2024 Decorilla. All rights reserved.</p>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Decorilla. All rights reserved.</p>
             </div>
         </div>
     </footer>

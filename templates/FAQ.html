@@ -681,54 +681,64 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar {% if request.endpoint == 'home' %}navbar-overlay{% endif %}">
+
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('home') }}">Decorilla</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('quiz') }}">Style Quiz</a>
+                        <a class="nav-link text-uppercase" href="{{ url_for('quiz') }}">Style Quiz</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Designers</a>
+                        <a class="nav-link text-uppercase" href="{{ url_for('designers') }}">Designers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Portfolio</a>
+                        <a class="nav-link text-uppercase" href="{{ url_for('portfolio') }}">Portfolio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('pricing') }}">Pricing</a>
+                        <a class="nav-link text-uppercase" href="{{ url_for('reviews') }}">Reviews</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ url_for('faq') }}">FAQ</a>
+                        <a class="nav-link text-uppercase" href="{{ url_for('pricing') }}">Pricing</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Blog</a>
+                        <a class="nav-link text-uppercase" href="{{ url_for('faq') }}">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase" href="{{ url_for('blog') }}">Blog</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav">
+                <ul class="navbar-nav mb-2 mb-lg-0 align-items-lg-center">
                     {% if current_user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('upload') }}">
+                            <i class="fas fa-upload"></i> Upload
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-primary text-white ms-2" href="{{ url_for('register') }}">Register</a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light ms-2 px-3 py-1" href="{{ url_for('register') }}">Register</a>
+                    </li>
+
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
-
     <div class="container">
         <header id="page-header">
             <h1>Frequently Asked Questions</h1>
