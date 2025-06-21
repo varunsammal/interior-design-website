@@ -1,164 +1,312 @@
-
 {% extends "base.html" %}
 
 {% block title %}Best Online Interior Design Service | Decorilla{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content">
-        <h1>Get a Designer <span>Space You'll Love</span></h1>
-        {% if current_user.is_authenticated %}
-            <a href="{{ url_for('upload') }}" class="btn-primary">Upload Your Design</a>
-        {% else %}
-            <a href="{{ url_for('register') }}" class="btn-primary">Get Started</a>
-        {% endif %}
-    </div>
-</section>
-
-<!-- Designs & Reviews Section (Optional - if designs are available) -->
-{% if designs %}
-<section class="designs-list">
-    <div class="container">
-        <h2>Designs & Reviews</h2>
-        <ul>
-        {% for design in designs %}
-            <li>
-                <strong>{{ design.name }}</strong>
-                <a href="{{ url_for('design_reviews', design_id=design.id) }}">Reviews</a>
-            </li>
-        {% endfor %}
-        </ul>
-    </div>
-</section>
-{% endif %}
-
-<!-- Services Section -->
-<section class="services">
-    <div class="container">
-        <h2>Work Online With The Finest Interior Designers</h2>
-        <p class="subtitle">Get award-winning personalized online interior design help</p>
-        
-        <div class="service-cards">
-            <div class="service-card">
-                <i class="fas fa-tag"></i>
-                <h3>Up to 45% off at +350 furniture stores</h3>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Transform Your Space with <span class="highlight">Expert Interior Design</span></h1>
+            <p class="hero-subtitle">Work with award-winning designers to create your dream home. Get personalized design concepts, 3D visualizations, and exclusive furniture discounts.</p>
+            <div class="hero-buttons">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('upload') }}" class="btn-primary">Upload Your Design</a>
+                    <a href="{{ url_for('portfolio') }}" class="btn-secondary">View Portfolio</a>
+                {% else %}
+                    <a href="{{ url_for('register') }}" class="btn-primary">Get Started Today</a>
+                    <a href="{{ url_for('portfolio') }}" class="btn-secondary">View Our Work</a>
+                {% endif %}
             </div>
-            <div class="service-card">
-                <i class="fas fa-paint-brush"></i>
-                <h3>Concepts from multiple top designers</h3>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-comments"></i>
-                <h3>One-on-one interior design consultation</h3>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-cube"></i>
-                <h3>3D model of your space</h3>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-palette"></i>
-                <h3>Color palette & floor plan</h3>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- Testimonial Section -->
-<section class="testimonial">
-    <div class="container">
-        <div class="testimonial-content">
-            <div class="testimonial-image">
-                <img src="https://cdn.decorilla.com/imgp/jpg/d28e76cb-139a-49e3-83c8-ccadfd1a99aa/Martha-Stewart-virtual-interior-design-review.jpg" alt="Testimonial User">
-            </div>
-            <div class="testimonial-text">
-                <blockquote>
-                    "We recommend Decorilla as the best online interior design service due to its comprehensive full-service offerings."
-                </blockquote>
-                <div class="testimonial-author">
-                    <img src="https://cdn.decorilla.com/images/1200/a67d9ab3-931b-48e2-b62a-1a833d41b424/Martha-Stewart-Online-Interior-Design-Review.png?cv=1" alt="Martha Stewart" class="author-logo">
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">1000+</span>
+                    <span class="stat-label">Happy Clients</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Expert Designers</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">45%</span>
+                    <span class="stat-label">Avg. Savings</span>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Portfolio Section -->
-<section class="portfolio">
-    <div class="container">
-        <div class="portfolio-showcase">
-            <div class="portfolio-image">
-                <img src="https://cdn.decorilla.com/images/1200x740/e1f2922e-b95b-487e-b3ca-6d0fb1010ffa/Modern-Coastal-Living-Room-and-Bedroom-Online-and-AI-Interior-Design.jpg?cv=1" alt="Modern Coastal Living Room">
-            </div>
-            <div class="portfolio-details">
-                <h3>Modern Coastal Living Room and Bedroom Makeover</h3>
-                <div class="challenge">
-                    <h4>Client's Challenge</h4>
-                    <p>We would like a more minimal look with Feng Shui and natural elements that highlight our beautiful green view.</p>
+    <!-- Client Challenge & Results Section -->
+    <section class="challenge-results">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="challenge-content">
+                        <h2>Real Client Transformation</h2>
+                        <div class="challenge-card">
+                            <h3>The Challenge</h3>
+                            <p>"We needed help creating a cohesive, modern look for our living space while staying within budget. Our furniture didn't match, and the room felt cramped and outdated."</p>
+                            <div class="client-info">
+                                <strong>- Sarah & Mike, San Francisco</strong>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <h3>The Result</h3>
+                            <p>"Our designer completely transformed our space! The room feels larger, more sophisticated, and everything flows perfectly together. We saved over $2,000 with the furniture discounts."</p>
+                            <div class="result-highlights">
+                                <span class="highlight-item">✓ 30% larger feel</span>
+                                <span class="highlight-item">✓ $2,000+ saved</span>
+                                <span class="highlight-item">✓ 2-week turnaround</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="result">
-                    <h4>Result</h4>
+                <div class="col-lg-6">
+                    <div class="transformation-images">
+                        <div class="before-after">
+                            <div class="image-container">
+                                <img src="https://cdn.decorilla.com/images/1200x740/e1f2922e-b95b-487e-b3ca-6d0fb1010ffa/Modern-Coastal-Living-Room-and-Bedroom-Online-and-AI-Interior-Design.jpg?cv=1" alt="After: Modern Living Room" class="transformation-img">
+                                <div class="image-label">After</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="container">
+            <h2>Work Online With The Finest Interior Designers</h2>
+            <p class="subtitle">Get award-winning personalized online interior design help</p>
+            
+            <div class="service-cards">
+                {% if service_cards %}
+                    {% for card in service_cards %}
+                        <div class="service-card">
+                            <div class="service-image">
+                                {% if card.image_url %}
+                                    <img src="{{ card.image_url }}" alt="{{ card.title }}">
+                                {% endif %}
+                                <div class="service-overlay">
+                                    {% if card.icon_class %}
+                                        <i class="{{ card.icon_class }}"></i>
+                                    {% else %}
+                                        <i class="fas fa-star"></i>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="service-content">
+                                <h3>{{ card.title }}</h3>
+                                {% if card.description %}
+                                    <p>{{ card.description }}</p>
+                                {% endif %}
+                                {% if card.button_text and card.button_link %}
+                                    <a href="{{ card.button_link }}" class="btn btn-outline">{{ card.button_text }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <!-- Fallback to static cards if no dynamic cards exist -->
+                    <div class="service-card">
+                        <div class="service-image">
+                            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Furniture Discounts">
+                            <div class="service-overlay">
+                                <i class="fas fa-tag"></i>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h3>Up to 45% off at +350 furniture stores</h3>
+                            <p>Save thousands with our exclusive trade discounts at top furniture retailers worldwide.</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Testimonial Section -->
+    <section class="featured-testimonial">
+        <div class="container">
+            <div class="testimonial-wrapper">
+                <div class="testimonial-quote">
+                    <i class="fas fa-quote-left quote-icon"></i>
                     <blockquote>
-                        "We got the relaxing dream home we always wanted. Wanda was fun to work with and paid attention to every single detail."
+                        "We recommend Decorilla as the best online interior design service due to its comprehensive full-service offerings and exceptional designer quality."
                     </blockquote>
-                    <p class="client-name">- Kris</p>
+                    <div class="testimonial-author">
+                        <img src="https://cdn.decorilla.com/images/1200/a67d9ab3-931b-48e2-b62a-1a833d41b424/Martha-Stewart-Online-Interior-Design-Review.png?cv=1" alt="Martha Stewart Living" class="author-logo">
+                        <div class="author-info">
+                            <span class="author-name">Martha Stewart Living</span>
+                            <span class="author-title">Home & Design Authority</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">4.9</span>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="stat-label">Average Rating</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">2,500+</span>
+                        <span class="stat-label">Reviews</span>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <div class="portfolio-thumbnails">
-            <div class="thumbnail active">
-                <img src="https://cdn.decorilla.com/images/150/e1f2922e-b95b-487e-b3ca-6d0fb1010ffa/Modern-Coastal-Living-Room-and-Bedroom-Online-and-AI-Interior-Design.jpg?cv=1" alt="Modern Coastal Living Room">
-            </div>
-            <div class="thumbnail">
-                <img src="https://cdn.decorilla.com/images/150/2d8bb3bd-f143-4d72-b9fb-f39b1b5a484e/Glam-Elegant-Home-Interior-Design-Rendering.jpg?cv=1" alt="Glam & Elegant Home">
-            </div>
-            <div class="thumbnail">
-                <img src="https://cdn.decorilla.com/images/150/4b606d9a-94be-4e1e-b912-5e107b0ef3ed/Blue-White-Kitchen-Rustic-Home-Design-Rendering.jpg?cv=1" alt="Blue & White Kitchen">
-            </div>
-            <div class="thumbnail">
-                <img src="https://cdn.decorilla.com/images/150/fb9af78e-95bc-4eec-a185-ae1ade6894c6/Eclectic-Formal-Living-Room-Interior-Design-Rendering.jpg?cv=1" alt="Eclectic Formal Living Room">
-            </div>
-            <div class="thumbnail">
-                <img src="https://cdn.decorilla.com/images/150/a6e50faf-b4b4-4636-ac9c-7336f3f74175/SpaInspired-Master-Bathroom-Design-Rendering.jpg?cv=1" alt="Spa-Inspired Master Bathroom">
+    </section>
+
+    <!-- Image Slider Section -->
+    <section class="image-slider-section">
+        <div class="portfolio-header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="header-badge">
+                        <i class="fas fa-award"></i>
+                        <span>Award-Winning Designs</span>
+                    </div>
+                    <h2>
+                        <span class="highlight-text">Portfolio</span> 
+                        <span class="main-text">Gallery</span>
+                    </h2>
+                    <p class="subtitle">Experience breathtaking interior transformations that have redefined luxury living spaces across the globe</p>
+                    <div class="portfolio-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Projects Completed</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">25+</span>
+                            <span class="stat-label">Countries Served</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">98%</span>
+                            <span class="stat-label">Client Satisfaction</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="scroll-indicator">
+                    <div class="scroll-arrow">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <span>Scroll to explore</span>
+                </div>
             </div>
         </div>
-
-    </div>
-</section>
-
-<!-- Savings Section -->
-<section class="savings">
-    <div class="container">
-        <h2>Decorilla Can Pay for Itself</h2>
-        <p class="subtitle">We pass on our furniture discount at +350 vendors so you save money</p>
-        
-        <div class="gallery">
-            <div class="gallery-item">
-                <img src="https://cdn.decorilla.com/images/927/e83abe8d-ee7c-4703-9c36-35c6ab6605db/Contemporary-Living-Room-Virtual-Interior-Design.jpg?cv=1" alt="Contemporary Living Room">
-            </div>
-            <div class="gallery-item">
-                <img src="https://cdn.decorilla.com/images/927/ebf7a798-dded-43c2-be6f-45de4b95b317/Dining-Room-online-interior-design-help-1.jpg?cv=1" alt="Dining Room Design">
-            </div>
-            <div class="gallery-item">
-                <img src="https://cdn.decorilla.com/images/927/fad18b6a-6ebc-4de4-abcb-35129b7260df/Dining-Room-online-interior-design-help-2.jpg?cv=1" alt="Dining Room Design">
-            </div>
-            <div class="gallery-item">
-                <img src="https://cdn.decorilla.com/images/927/1d61e6a6-ef37-4b9d-adc1-6a818f4783de/Dining-Room-online-interior-design-help-3.jpeg?cv=1" alt="Dining Room Design">
-
+            
+            <div class="image-slider">
+                <div class="slider-container">
+                    <div class="slide active">
+                        <img src="https://cdn.decorilla.com/images/1200x740/e1f2922e-b95b-487e-b3ca-6d0fb1010ffa/Modern-Coastal-Living-Room-and-Bedroom-Online-and-AI-Interior-Design.jpg?cv=1" alt="Modern Coastal Living Room">
+                        <div class="slide-content">
+                            <h3>Modern Coastal Living Room</h3>
+                            <p>A serene space blending natural elements with contemporary design</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <img src="https://cdn.decorilla.com/images/1200/2d8bb3bd-f143-4d72-b9fb-f39b1b5a484e/Glam-Elegant-Home-Interior-Design-Rendering.jpg?cv=1" alt="Glam & Elegant Home">
+                        <div class="slide-content">
+                            <h3>Glam & Elegant Home</h3>
+                            <p>Luxurious finishes meet sophisticated design in this stunning makeover</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <img src="https://cdn.decorilla.com/images/1200/4b606d9a-94be-4e1e-b912-5e107b0ef3ed/Blue-White-Kitchen-Rustic-Home-Design-Rendering.jpg?cv=1" alt="Blue & White Kitchen">
+                        <div class="slide-content">
+                            <h3>Blue & White Kitchen</h3>
+                            <p>Classic color palette with modern functionality and timeless appeal</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <img src="https://cdn.decorilla.com/images/1200/fb9af78e-95bc-4eec-a185-ae1ade6894c6/Eclectic-Formal-Living-Room-Interior-Design-Rendering.jpg?cv=1" alt="Eclectic Formal Living Room">
+                        <div class="slide-content">
+                            <h3>Eclectic Formal Living Room</h3>
+                            <p>Bold patterns and rich textures create a vibrant yet refined atmosphere</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <img src="https://cdn.decorilla.com/images/1200/a6e50faf-b4b4-4636-ac9c-7336f3f74175/SpaInspired-Master-Bathroom-Design-Rendering.jpg?cv=1" alt="Spa-Inspired Master Bathroom">
+                        <div class="slide-content">
+                            <h3>Spa-Inspired Master Bathroom</h3>
+                            <p>Transform your daily routine into a luxurious spa experience</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide">
+                        <img src="https://cdn.decorilla.com/images/927/e83abe8d-ee7c-4703-9c36-35c6ab6605db/Contemporary-Living-Room-Virtual-Interior-Design.jpg?cv=1" alt="Contemporary Living Room">
+                        <div class="slide-content">
+                            <h3>Contemporary Living Room</h3>
+                            <p>Clean lines and neutral tones create a peaceful modern sanctuary</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation arrows -->
+                <button class="slider-btn prev-btn" onclick="changeSlide(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-btn next-btn" onclick="changeSlide(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <!-- Dots indicator -->
+                <div class="slider-dots">
+                    <span class="dot active" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                    <span class="dot" onclick="currentSlide(4)"></span>
+                    <span class="dot" onclick="currentSlide(5)"></span>
+                    <span class="dot" onclick="currentSlide(6)"></span>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <!-- Savings Section -->
+    <section class="savings">
+        <div class="container">
+            <h2>Decorilla Can Pay for Itself</h2>
+            <p class="subtitle">We pass on our furniture discount at +350 vendors so you save money</p>
+            
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="https://cdn.decorilla.com/images/927/e83abe8d-ee7c-4703-9c36-35c6ab6605db/Contemporary-Living-Room-Virtual-Interior-Design.jpg?cv=1" alt="Contemporary Living Room">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://cdn.decorilla.com/images/927/ebf7a798-dded-43c2-be6f-45de4b95b317/Dining-Room-online-interior-design-help-1.jpg?cv=1" alt="Dining Room Design">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://cdn.decorilla.com/images/927/fad18b6a-6ebc-4de4-abcb-35129b7260df/Dining-Room-online-interior-design-help-2.jpg?cv=1" alt="Dining Room Design">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://cdn.decorilla.com/images/927/1d61e6a6-ef37-4b9d-adc1-6a818f4783de/Dining-Room-online-interior-design-help-3.jpeg?cv=1" alt="Dining Room Design">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Transform Your Space?</h2>
+            <p>Get started with our award-winning designers today</p>
+            <a href="{{ url_for('home') }}" class="btn-primary">Get Started</a>
+        </div>
+    </section>
 
 
-<!-- CTA Section -->
-<section class="cta">
-    <div class="container">
-        <h2>Ready to Transform Your Space?</h2>
-        <p>Get started with our award-winning designers today</p>
-        <a href="{{ url_for('home') }}" class="btn-primary">Get Started</a>
-    </div>
-</section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
 {% endblock %}

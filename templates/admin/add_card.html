@@ -1,0 +1,214 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Add New Card{% endblock %}
+{% block page_title %}Add New Card{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Create New Card</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="title" class="form-label">Title *</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="card_type" class="form-label">Card Type *</label>
+                            <select class="form-select" id="card_type" name="card_type" required>
+                                <option value="">Select Type</option>
+                                <option value="service">Service</option>
+                                <option value="portfolio">Portfolio</option>
+                                <option value="designer">Designer</option>
+                                <option value="pricing">Pricing</option>
+                                <option value="testimonial">Testimonial</option>
+                                <option value="feature">Feature</option>
+                                <option value="blog">Blog</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="page" class="form-label">Page *</label>
+                            <select class="form-select" id="page" name="page" required>
+                                <option value="">Select Page</option>
+                                <option value="index">Home</option>
+                                <option value="portfolio">Portfolio</option>
+                                <option value="pricing">Pricing</option>
+                                <option value="designers">Designers</option>
+                                <option value="blog">Blog</option>
+                                <option value="about">About</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="order_position" class="form-label">Order Position</label>
+                            <input type="number" class="form-control" id="order_position" name="order_position" value="0" min="0">
+                            <small class="form-text text-muted">Lower numbers appear first</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image_url" class="form-label">Image URL</label>
+                        <input type="url" class="form-control" id="image_url" name="image_url">
+                        <small class="form-text text-muted">Enter a full URL to an image</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="icon_class" class="form-label">Icon Class</label>
+                            <input type="text" class="form-control" id="icon_class" name="icon_class" placeholder="fas fa-heart">
+                            <small class="form-text text-muted">FontAwesome icon class (e.g., fas fa-heart)</small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="text" class="form-control" id="price" name="price" placeholder="$99">
+                            <small class="form-text text-muted">For pricing cards</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="button_text" class="form-label">Button Text</label>
+                            <input type="text" class="form-control" id="button_text" name="button_text" placeholder="Learn More">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="button_link" class="form-label">Button Link</label>
+                            <input type="text" class="form-control" id="button_link" name="button_link" placeholder="/contact">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="features" class="form-label">Features</label>
+                        <textarea class="form-control" id="features" name="features" rows="3" placeholder="Feature 1|Feature 2|Feature 3"></textarea>
+                        <small class="form-text text-muted">Separate features with | (pipe) character</small>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('admin_cards') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Cards
+                        </a>
+                        <button type="submit" class="btn btn-admin">
+                            <i class="fas fa-save"></i> Create Card
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Preview</h5>
+            </div>
+            <div class="card-body">
+                <div id="card-preview" class="border rounded p-3 text-center">
+                    <div id="preview-image" class="mb-3" style="display: none;">
+                        <img id="preview-img" src="" alt="Preview" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
+                    </div>
+                    <div id="preview-icon" class="mb-3" style="display: none;">
+                        <i class="fa-2x text-primary"></i>
+                    </div>
+                    <h6 id="preview-title" class="text-muted">Enter title to see preview</h6>
+                    <p id="preview-description" class="small text-muted"></p>
+                    <div id="preview-price" class="badge bg-success" style="display: none;"></div>
+                    <div id="preview-button" style="display: none;">
+                        <button class="btn btn-primary btn-sm" disabled></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li><strong>Card Types:</strong></li>
+                    <li><small>• Service: Feature highlights</small></li>
+                    <li><small>• Portfolio: Project showcases</small></li>
+                    <li><small>• Pricing: Service packages</small></li>
+                    <li><small>• Designer: Team members</small></li>
+                    <li class="mt-2"><strong>Order Position:</strong></li>
+                    <li><small>Controls display order (0 = first)</small></li>
+                    <li class="mt-2"><strong>Images:</strong></li>
+                    <li><small>Use high-quality images for best results</small></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const titleInput = document.getElementById('title');
+    const descriptionInput = document.getElementById('description');
+    const imageUrlInput = document.getElementById('image_url');
+    const iconClassInput = document.getElementById('icon_class');
+    const priceInput = document.getElementById('price');
+    const buttonTextInput = document.getElementById('button_text');
+    
+    const previewTitle = document.getElementById('preview-title');
+    const previewDescription = document.getElementById('preview-description');
+    const previewImage = document.getElementById('preview-image');
+    const previewImg = document.getElementById('preview-img');
+    const previewIcon = document.getElementById('preview-icon');
+    const previewPrice = document.getElementById('preview-price');
+    const previewButton = document.getElementById('preview-button');
+    
+    function updatePreview() {
+        // Title
+        previewTitle.textContent = titleInput.value || 'Enter title to see preview';
+        
+        // Description
+        previewDescription.textContent = descriptionInput.value || '';
+        
+        // Image
+        if (imageUrlInput.value) {
+            previewImg.src = imageUrlInput.value;
+            previewImage.style.display = 'block';
+            previewIcon.style.display = 'none';
+        } else if (iconClassInput.value) {
+            previewIcon.querySelector('i').className = iconClassInput.value + ' fa-2x text-primary';
+            previewIcon.style.display = 'block';
+            previewImage.style.display = 'none';
+        } else {
+            previewImage.style.display = 'none';
+            previewIcon.style.display = 'none';
+        }
+        
+        // Price
+        if (priceInput.value) {
+            previewPrice.textContent = priceInput.value;
+            previewPrice.style.display = 'inline-block';
+        } else {
+            previewPrice.style.display = 'none';
+        }
+        
+        // Button
+        if (buttonTextInput.value) {
+            previewButton.querySelector('button').textContent = buttonTextInput.value;
+            previewButton.style.display = 'block';
+        } else {
+            previewButton.style.display = 'none';
+        }
+    }
+    
+    // Add event listeners
+    [titleInput, descriptionInput, imageUrlInput, iconClassInput, priceInput, buttonTextInput].forEach(input => {
+        input.addEventListener('input', updatePreview);
+    });
+});
+</script>
+{% endblock %}

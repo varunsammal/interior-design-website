@@ -25,6 +25,13 @@ migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
+
+# Import and initialize models
+import models
+models.db = db
+models.bcrypt = bcrypt
+models.init_models()
+from models import User, Project, Design, DesignImage, Review, AdminUser, Card, FAQ, QuizQuestion, PortfolioItem
 # Ensure the instance folder exists
 try:
     os.makedirs(app.instance_path)
@@ -33,96 +40,6 @@ except OSError:
 
 # Ensure upload folder exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
-# Database Models
-class User(UserMixin, db.Model):
-    __tablename__ = 'users'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(60), nullable=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    last_login = db.Column(db.DateTime, nullable=True)
-    is_active = db.Column(db.Boolean, default=True)
-    address = db.Column(db.String(200))
-    phone = db.Column(db.String(20))
-    design_style = db.Column(db.String(50))
-    profile_image = db.Column(db.String(200), nullable=True)
-    projects = db.relationship('Project', backref='user', lazy=True)
-    designs = db.relationship('DesignImage', backref='user', lazy='dynamic')
-
-    def __init__(self, email, username=None, password=None, address=None, phone=None, design_style=None, profile_image=None):
-
-        self.email = email
-        self.username = username
-        self.address = address
-        self.phone = phone
-        self.design_style = design_style
-        self.profile_image = profile_image
-
-        if password:
-            self.password = bcrypt.generate_password_hash(password).decode('utf-8')
-
-    def check_password(self, password):
-        if not self.password:
-            return False
-        return bcrypt.check_password_hash(self.password, password)
-
-class Project(db.Model):
-    __tablename__ = 'projects'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=True)
-    budget = db.Column(db.Float, nullable=True)
-    status = db.Column(db.String(20), default='pending')
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    designs = db.relationship('Design', backref='project', lazy=True)
-
-class Design(db.Model):
-    __tablename__ = 'designs'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=True)
-    image_url = db.Column(db.String(200), nullable=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)
-
-class DesignImage(db.Model):
-    __tablename__ = 'design_images'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    filename = db.Column(db.String(100), nullable=False)
-    filepath = db.Column(db.String(200), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    upload_date = db.Column(db.DateTime, default=db.func.current_timestamp())
-    design_notes = db.Column(db.Text)
-
-class Review(db.Model):
-    __tablename__ = 'reviews'
-
-    
-    id = db.Column(db.Integer, primary_key=True)
-    rating = db.Column(db.Integer, nullable=False)
-    comment = db.Column(db.Text)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    design_id = db.Column(db.Integer, db.ForeignKey('design_images.id'), nullable=False)
-    helpful_count = db.Column(db.Integer, default=0)
-    
-    # Relationships
-    user = db.relationship('User', backref=db.backref('reviews', lazy=True))
-    design = db.relationship('DesignImage', backref=db.backref('reviews', lazy=True))
-
-    def __init__(self, rating, comment, user_id, design_id):
-        self.rating = rating
-        self.comment = comment
-        self.user_id = user_id
-        self.design_id = design_id
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -194,6 +111,148 @@ def init_db():
             print(f"Error updating schema: {str(e)}")
             # Continue with the application even if schema update fails
             pass
+        
+        # Add new columns to existing users table
+        try:
+            with db.engine.connect() as connection:
+                inspector = db.inspect(db.engine)
+                if 'users' in inspector.get_table_names():
+                    columns = [col['name'] for col in inspector.get_columns('users')]
+                    
+                    if 'is_admin' not in columns:
+                        with connection.begin() as transaction:
+                            connection.execute(db.text('ALTER TABLE users ADD COLUMN is_admin BOOLEAN DEFAULT FALSE'))
+                            print("Added 'is_admin' column to 'users' table.")
+                            transaction.commit()
+                    
+                    if 'user_type' not in columns:
+                        with connection.begin() as transaction:
+                            connection.execute(db.text("ALTER TABLE users ADD COLUMN user_type VARCHAR(20) DEFAULT 'user'"))
+                            print("Added 'user_type' column to 'users' table.")
+                            transaction.commit()
+                    
+                    # Make username NOT NULL and add constraints if needed
+                    if 'username' in columns:
+                        with connection.begin() as transaction:
+                            # First, set any NULL usernames to a default value
+                            connection.execute(db.text("UPDATE users SET username = CONCAT('user_', id) WHERE username IS NULL"))
+                            # Then make the column NOT NULL
+                            connection.execute(db.text('ALTER TABLE users ALTER COLUMN username SET NOT NULL'))
+                            print("Updated 'username' column constraints in 'users' table.")
+                            transaction.commit()
+                    
+                    # Make email nullable
+                    if 'email' in columns:
+                        with connection.begin() as transaction:
+                            connection.execute(db.text('ALTER TABLE users ALTER COLUMN email DROP NOT NULL'))
+                            print("Made 'email' column nullable in 'users' table.")
+                            transaction.commit()
+        except Exception as e:
+            print(f"Error updating users table schema: {e}")
+
+        # Migrate existing admin users to the unified user system
+        try:
+            admin_users = AdminUser.query.all()
+            for admin_user in admin_users:
+                # Check if this admin user already exists in the unified users table
+                existing_user = User.query.filter_by(username=admin_user.username).first()
+                if not existing_user:
+                    # Create a new user with admin privileges
+                    unified_admin = User(
+                        username=admin_user.username,
+                        email=f"{admin_user.username}@admin.decorilla.com",  # Temporary email
+                        is_admin=True,
+                        user_type='admin'
+                    )
+                    # Copy the hashed password directly
+                    unified_admin.password = admin_user.password
+                    db.session.add(unified_admin)
+                    print(f"Migrated admin user: {admin_user.username}")
+                else:
+                    # Update existing user to be admin
+                    existing_user.is_admin = True
+                    existing_user.user_type = 'admin'
+                    print(f"Updated existing user to admin: {existing_user.username}")
+            
+            db.session.commit()
+        except Exception as e:
+            print(f"Error migrating admin users: {e}")
+            db.session.rollback()
+
+        # Create default admin user if none exists in the unified system
+        if not User.query.filter_by(is_admin=True).first():
+            admin = User(
+                username='admin',
+                email='admin@decorilla.com',
+                password='admin123',
+                is_admin=True,
+                user_type='admin'
+            )
+            db.session.add(admin)
+            try:
+                db.session.commit()
+                print("Created default admin user in unified system (username: admin, password: admin123)")
+            except Exception as e:
+                print(f"Error creating unified admin user: {e}")
+        
+        # Create sample service cards if none exist
+        if not Card.query.filter_by(card_type='service').first():
+            sample_cards = [
+                Card(
+                    title="Up to 45% off at +350 furniture stores",
+                    description="Save thousands with our exclusive trade discounts at top furniture retailers worldwide.",
+                    image_url="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+                    card_type="service",
+                    page="index",
+                    icon_class="fas fa-tag",
+                    order_position=1
+                ),
+                Card(
+                    title="Concepts from multiple top designers",
+                    description="Choose from multiple design concepts created by our award-winning interior designers.",
+                    image_url="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+                    card_type="service",
+                    page="index",
+                    icon_class="fas fa-paint-brush",
+                    order_position=2
+                ),
+                Card(
+                    title="One-on-one interior design consultation",
+                    description="Work directly with your designer through personalized consultations and feedback sessions.",
+                    image_url="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1826&q=80",
+                    card_type="service",
+                    page="index",
+                    icon_class="fas fa-comments",
+                    order_position=3
+                ),
+                Card(
+                    title="3D model of your space",
+                    description="Visualize your new space with detailed 3D renderings before making any purchases.",
+                    image_url="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+                    card_type="service",
+                    page="index",
+                    icon_class="fas fa-cube",
+                    order_position=4
+                ),
+                Card(
+                    title="Color palette & floor plan",
+                    description="Get professional color schemes and detailed floor plans tailored to your style and space.",
+                    image_url="https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80",
+                    card_type="service",
+                    page="index",
+                    icon_class="fas fa-palette",
+                    order_position=5
+                )
+            ]
+            
+            for card in sample_cards:
+                db.session.add(card)
+            
+            try:
+                db.session.commit()
+                print("Created sample service cards")
+            except Exception as e:
+                print(f"Error creating sample cards: {e}")
 
 # Initialize database
 init_db()
@@ -201,7 +260,14 @@ init_db()
 @app.route('/')
 def home():
     designs = DesignImage.query.all()
-    return render_template('index.html', designs=designs)
+    # Get dynamic cards for homepage
+    service_cards = Card.query.filter_by(
+        page='index', 
+        card_type='service', 
+        is_active=True
+    ).order_by(Card.order_position).all()
+    
+    return render_template('index.html', designs=designs, service_cards=service_cards)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -216,14 +282,19 @@ def register():
         design_style = request.form.get('design_style')
         
         # Check if email already exists
-        if User.query.filter_by(email=email).first():
+        if email and User.query.filter_by(email=email).first():
             flash('Email already registered', 'danger')
+            return redirect(url_for('register'))
+        
+        # Check if username already exists
+        if User.query.filter_by(username=name).first():
+            flash('Username already taken', 'danger')
             return redirect(url_for('register'))
             
         # Create new user
         new_user = User(
-            email=email,
             username=name,
+            email=email,
             password=password,
             address=address,
             phone=phone,
@@ -246,26 +317,48 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        # If already logged in and is admin, redirect to admin dashboard
+        if current_user.is_admin:
+            return redirect(url_for('admin_dashboard'))
+        else:
+            return redirect(url_for('home'))
+    
     if request.method == 'POST':
-        email = request.form.get('email')
+        username = request.form.get('username')
         password = request.form.get('password')
-        user = User.query.filter_by(email=email).first()
+        
+        # Find user by username
+        user = User.query.filter_by(username=username).first()
         
         if user and user.check_password(password):
             login_user(user)
             user.last_login = datetime.utcnow()
             db.session.commit()
-            flash('Login successful!', 'success')
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+            
+            if user.is_admin:
+                # Set session variables for admin template compatibility
+                session['admin_logged_in'] = True
+                session['admin_id'] = user.id
+                session['admin_username'] = user.username
+                flash('Admin login successful! Welcome to the admin dashboard.', 'success')
+                return redirect(url_for('admin_dashboard'))
+            else:
+                flash('Login successful! Welcome back.', 'success')
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
-            flash('Invalid email or password', 'danger')
+            flash('Invalid username or password', 'danger')
+    
     return render_template('login.html')
 
 @app.route('/logout')
 @login_required
 def logout():
+    # Clear admin session variables if they exist
+    session.pop('admin_logged_in', None)
+    session.pop('admin_id', None)
+    session.pop('admin_username', None)
+    
     logout_user()
     flash('You have been logged out successfully', 'info')
     return redirect(url_for('home'))
@@ -308,7 +401,21 @@ def blog():
 
 @app.route('/portfolio')
 def portfolio():
-    return render_template('portfolio.html')
+    # Get active portfolio items
+    portfolio_items = PortfolioItem.query.filter_by(is_active=True).order_by(PortfolioItem.order_position).all()
+    
+    # Get featured items
+    featured_items = PortfolioItem.query.filter_by(is_active=True, is_featured=True).order_by(PortfolioItem.order_position).limit(6).all()
+    
+    # Get unique categories and styles for filtering
+    categories = db.session.query(PortfolioItem.category).filter(PortfolioItem.is_active==True).distinct().all()
+    styles = db.session.query(PortfolioItem.style).filter(PortfolioItem.is_active==True).distinct().all()
+    
+    return render_template('portfolio.html', 
+                         portfolio_items=portfolio_items,
+                         featured_items=featured_items,
+                         categories=[c[0] for c in categories if c[0]],
+                         styles=[s[0] for s in styles if s[0]])
 
 
 @app.route('/designers')
@@ -459,11 +566,24 @@ def pricing():
 
 @app.route('/faq')
 def faq():
-    return render_template('FAQ.html')
+    # Get active FAQs ordered by position
+    faqs = FAQ.query.filter_by(is_active=True).order_by(FAQ.order_position).all()
+    
+    # Group FAQs by category
+    categorized_faqs = {}
+    for faq_item in faqs:
+        category = faq_item.category or 'General'
+        if category not in categorized_faqs:
+            categorized_faqs[category] = []
+        categorized_faqs[category].append(faq_item)
+    
+    return render_template('FAQ.html', categorized_faqs=categorized_faqs)
 
 @app.route('/quiz')
 def quiz():
-    return render_template('Quiz.html')
+    # Get active quiz questions ordered by position
+    quiz_questions = QuizQuestion.query.filter_by(is_active=True).order_by(QuizQuestion.order_position).all()
+    return render_template('Quiz.html', quiz_questions=quiz_questions)
 
 @app.route('/schedule-consultation', methods=['GET', 'POST'])
 def schedule_consultation():
@@ -699,6 +819,583 @@ def edit_profile():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Admin Helper Functions
+def is_admin():
+    # Check both session-based and user-based admin status for compatibility
+    return (current_user.is_authenticated and current_user.is_admin) or session.get('admin_logged_in', False)
+
+def admin_required(f):
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            flash('Please log in to access this page', 'danger')
+            return redirect(url_for('login'))
+        if not current_user.is_admin:
+            flash('Admin access required', 'danger')
+            return redirect(url_for('home'))
+        return f(*args, **kwargs)
+    decorated_function.__name__ = f.__name__
+    return decorated_function
+
+# Admin Routes
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    # Redirect to unified login system
+    return redirect(url_for('login'))
+
+@app.route('/admin/logout')
+@admin_required
+def admin_logout():
+    # Use the unified logout system
+    return redirect(url_for('logout'))
+
+@app.route('/admin')
+@app.route('/admin/dashboard')
+@admin_required
+def admin_dashboard():
+    # Get statistics
+    total_cards = Card.query.count()
+    active_cards = Card.query.filter_by(is_active=True).count()
+    total_users = User.query.count()
+    total_reviews = Review.query.count()
+    total_faqs = FAQ.query.count()
+    active_faqs = FAQ.query.filter_by(is_active=True).count()
+    total_portfolio = PortfolioItem.query.count()
+    active_portfolio = PortfolioItem.query.filter_by(is_active=True).count()
+    total_quiz = QuizQuestion.query.count()
+    active_quiz = QuizQuestion.query.filter_by(is_active=True).count()
+    
+    # Get recent items
+    recent_cards = Card.query.order_by(Card.created_at.desc()).limit(3).all()
+    recent_faqs = FAQ.query.order_by(FAQ.created_at.desc()).limit(3).all()
+    recent_portfolio = PortfolioItem.query.order_by(PortfolioItem.created_at.desc()).limit(3).all()
+    
+    stats = {
+        'total_cards': total_cards,
+        'active_cards': active_cards,
+        'total_users': total_users,
+        'total_reviews': total_reviews,
+        'total_faqs': total_faqs,
+        'active_faqs': active_faqs,
+        'total_portfolio': total_portfolio,
+        'active_portfolio': active_portfolio,
+        'total_quiz': total_quiz,
+        'active_quiz': active_quiz
+    }
+    
+    return render_template('admin/dashboard.html', 
+                         stats=stats, 
+                         recent_cards=recent_cards,
+                         recent_faqs=recent_faqs,
+                         recent_portfolio=recent_portfolio)
+
+@app.route('/admin/cards')
+@admin_required
+def admin_cards():
+    page = request.args.get('page', 1, type=int)
+    card_type = request.args.get('type', '')
+    page_filter = request.args.get('page_filter', '')
+    
+    query = Card.query
+    
+    if card_type:
+        query = query.filter(Card.card_type == card_type)
+    if page_filter:
+        query = query.filter(Card.page == page_filter)
+    
+    cards = query.order_by(Card.page, Card.order_position).paginate(
+        page=page, per_page=10, error_out=False
+    )
+    
+    # Get unique card types and pages for filters
+    card_types = db.session.query(Card.card_type).distinct().all()
+    pages = db.session.query(Card.page).distinct().all()
+    
+    return render_template('admin/cards.html', 
+                         cards=cards, 
+                         card_types=[ct[0] for ct in card_types],
+                         pages=[p[0] for p in pages])
+
+@app.route('/admin/cards/add', methods=['GET', 'POST'])
+@admin_required
+def admin_add_card():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        description = request.form.get('description')
+        image_url = request.form.get('image_url')
+        card_type = request.form.get('card_type')
+        page = request.form.get('page')
+        price = request.form.get('price')
+        features = request.form.get('features')
+        button_text = request.form.get('button_text')
+        button_link = request.form.get('button_link')
+        icon_class = request.form.get('icon_class')
+        order_position = int(request.form.get('order_position', 0))
+        
+        try:
+            card = Card(
+                title=title,
+                description=description,
+                image_url=image_url,
+                card_type=card_type,
+                page=page,
+                price=price,
+                features=features,
+                button_text=button_text,
+                button_link=button_link,
+                icon_class=icon_class,
+                order_position=order_position
+            )
+            
+            db.session.add(card)
+            db.session.commit()
+            flash('Card added successfully!', 'success')
+            return redirect(url_for('admin_cards'))
+        
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error adding card: {str(e)}', 'danger')
+    
+    return render_template('admin/add_card.html')
+
+@app.route('/admin/cards/edit/<int:card_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_card(card_id):
+    card = Card.query.get_or_404(card_id)
+    
+    if request.method == 'POST':
+        card.title = request.form.get('title')
+        card.description = request.form.get('description')
+        card.image_url = request.form.get('image_url')
+        card.card_type = request.form.get('card_type')
+        card.page = request.form.get('page')
+        card.price = request.form.get('price')
+        card.features = request.form.get('features')
+        card.button_text = request.form.get('button_text')
+        card.button_link = request.form.get('button_link')
+        card.icon_class = request.form.get('icon_class')
+        card.order_position = int(request.form.get('order_position', 0))
+        card.is_active = 'is_active' in request.form
+        card.updated_at = datetime.utcnow()
+        
+        try:
+            db.session.commit()
+            flash('Card updated successfully!', 'success')
+            return redirect(url_for('admin_cards'))
+        
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating card: {str(e)}', 'danger')
+    
+    return render_template('admin/edit_card.html', card=card)
+
+@app.route('/admin/cards/delete/<int:card_id>', methods=['POST'])
+@admin_required
+def admin_delete_card(card_id):
+    card = Card.query.get_or_404(card_id)
+    
+    try:
+        db.session.delete(card)
+        db.session.commit()
+        flash('Card deleted successfully!', 'success')
+    
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting card: {str(e)}', 'danger')
+    
+    return redirect(url_for('admin_cards'))
+
+@app.route('/admin/cards/toggle/<int:card_id>', methods=['POST'])
+@admin_required
+def admin_toggle_card(card_id):
+    card = Card.query.get_or_404(card_id)
+    card.is_active = not card.is_active
+    
+    try:
+        db.session.commit()
+        status = 'activated' if card.is_active else 'deactivated'
+        flash(f'Card {status} successfully!', 'success')
+    
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error toggling card status: {str(e)}', 'danger')
+    
+    return redirect(url_for('admin_cards'))
+
+# FAQ Admin Routes
+@app.route('/admin/faqs')
+@admin_required
+def admin_faqs():
+    page = request.args.get('page', 1, type=int)
+    category = request.args.get('category', '')
+    
+    query = FAQ.query
+    if category:
+        query = query.filter(FAQ.category == category)
+    
+    faqs = query.order_by(FAQ.order_position).paginate(
+        page=page, per_page=10, error_out=False
+    )
+    
+    # Get unique categories for filters
+    categories = db.session.query(FAQ.category).distinct().all()
+    
+    return render_template('admin/faqs.html', 
+                         faqs=faqs, 
+                         categories=[c[0] for c in categories if c[0]])
+
+@app.route('/admin/faqs/add', methods=['GET', 'POST'])
+@admin_required
+def admin_add_faq():
+    if request.method == 'POST':
+        question = request.form.get('question')
+        answer = request.form.get('answer')
+        category = request.form.get('category')
+        order_position = int(request.form.get('order_position', 0))
+        
+        try:
+            faq = FAQ(
+                question=question,
+                answer=answer,
+                category=category,
+                order_position=order_position
+            )
+            db.session.add(faq)
+            db.session.commit()
+            flash('FAQ added successfully!', 'success')
+            return redirect(url_for('admin_faqs'))
+        
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error adding FAQ: {str(e)}', 'danger')
+    
+    return render_template('admin/add_faq.html')
+
+@app.route('/admin/faqs/edit/<int:faq_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_faq(faq_id):
+    faq = FAQ.query.get_or_404(faq_id)
+    
+    if request.method == 'POST':
+        faq.question = request.form.get('question')
+        faq.answer = request.form.get('answer')
+        faq.category = request.form.get('category')
+        faq.order_position = int(request.form.get('order_position', 0))
+        faq.is_active = 'is_active' in request.form
+        faq.updated_at = datetime.utcnow()
+        
+        try:
+            db.session.commit()
+            flash('FAQ updated successfully!', 'success')
+            return redirect(url_for('admin_faqs'))
+        
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating FAQ: {str(e)}', 'danger')
+    
+    return render_template('admin/edit_faq.html', faq=faq)
+
+@app.route('/admin/faqs/toggle/<int:faq_id>', methods=['POST'])
+@admin_required
+def admin_toggle_faq(faq_id):
+    faq = FAQ.query.get_or_404(faq_id)
+    
+    try:
+        faq.is_active = not faq.is_active
+        db.session.commit()
+        status = 'activated' if faq.is_active else 'deactivated'
+        flash(f'FAQ {status} successfully!', 'success')
+    
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error toggling FAQ: {str(e)}', 'danger')
+    
+    return redirect(url_for('admin_faqs'))
+
+@app.route('/admin/faqs/delete/<int:faq_id>', methods=['POST'])
+@admin_required
+def admin_delete_faq(faq_id):
+    faq = FAQ.query.get_or_404(faq_id)
+    
+    try:
+        db.session.delete(faq)
+        db.session.commit()
+        flash('FAQ deleted successfully!', 'success')
+    
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting FAQ: {str(e)}', 'danger')
+    
+    return redirect(url_for('admin_faqs'))
+
+# Portfolio Admin Routes
+@app.route('/admin/portfolio')
+@admin_required
+def admin_portfolio():
+    page = request.args.get('page', 1, type=int)
+    category = request.args.get('category', '')
+    style = request.args.get('style', '')
+    
+    query = PortfolioItem.query
+    if category:
+        query = query.filter(PortfolioItem.category == category)
+    if style:
+        query = query.filter(PortfolioItem.style == style)
+    
+    portfolio_items = query.order_by(PortfolioItem.order_position).paginate(
+        page=page, per_page=10, error_out=False
+    )
+    
+    # Get unique categories and styles for filters
+    categories = db.session.query(PortfolioItem.category).distinct().all()
+    styles = db.session.query(PortfolioItem.style).distinct().all()
+    
+    return render_template('admin/portfolio.html', 
+                         portfolio_items=portfolio_items,
+                         categories=[c[0] for c in categories if c[0]],
+                         styles=[s[0] for s in styles if s[0]])
+
+@app.route('/admin/portfolio/add', methods=['GET', 'POST'])
+@admin_required
+def admin_add_portfolio():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        description = request.form.get('description')
+        image_url = request.form.get('image_url')
+        category = request.form.get('category')
+        style = request.form.get('style')
+        before_image = request.form.get('before_image')
+        project_details = request.form.get('project_details')
+        client_name = request.form.get('client_name')
+        location = request.form.get('location')
+        completion_date = request.form.get('completion_date')
+        order_position = int(request.form.get('order_position', 0))
+        
+        # Parse date if provided
+        parsed_date = None
+        if completion_date:
+            try:
+                parsed_date = datetime.strptime(completion_date, '%Y-%m-%d').date()
+            except ValueError:
+                pass
+        
+        try:
+            portfolio_item = PortfolioItem(
+                title=title,
+                description=description,
+                image_url=image_url,
+                category=category,
+                style=style,
+                before_image=before_image,
+                project_details=project_details,
+                client_name=client_name,
+                location=location,
+                completion_date=parsed_date,
+                order_position=order_position
+            )
+            db.session.add(portfolio_item)
+            db.session.commit()
+            flash('Portfolio item added successfully!', 'success')
+            return redirect(url_for('admin_portfolio'))
+        
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error adding portfolio item: {str(e)}', 'danger')
+    
+    return render_template('admin/add_portfolio.html')
+
+@app.route('/admin/portfolio/edit/<int:item_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_portfolio(item_id):
+    portfolio_item = PortfolioItem.query.get_or_404(item_id)
+    
+    if request.method == 'POST':
+        portfolio_item.title = request.form.get('title')
+        portfolio_item.description = request.form.get('description')
+        portfolio_item.image_url = request.form.get('image_url')
+        portfolio_item.category = request.form.get('category')
+        portfolio_item.style = request.form.get('style')
+        portfolio_item.before_image = request.form.get('before_image')
+        portfolio_item.project_details = request.form.get('project_details')
+        portfolio_item.client_name = request.form.get('client_name')
+        portfolio_item.location = request.form.get('location')
+        portfolio_item.order_position = int(request.form.get('order_position', 0))
+        portfolio_item.is_featured = 'is_featured' in request.form
+        portfolio_item.is_active = 'is_active' in request.form
+        
+        # Parse date if provided
+        completion_date = request.form.get('completion_date')
+        if completion_date:
+            try:
+                portfolio_item.completion_date = datetime.strptime(completion_date, '%Y-%m-%d').date()
+            except ValueError:
+                portfolio_item.completion_date = None
+        else:
+            portfolio_item.completion_date = None
+        
+        portfolio_item.updated_at = datetime.utcnow()
+        
+        try:
+            db.session.commit()
+            flash('Portfolio item updated successfully!', 'success')
+            return redirect(url_for('admin_portfolio'))
+        
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating portfolio item: {str(e)}', 'danger')
+    
+    return render_template('admin/edit_portfolio.html', portfolio_item=portfolio_item)
+
+@app.route('/admin/portfolio/toggle/<int:item_id>', methods=['POST'])
+@admin_required
+def admin_toggle_portfolio(item_id):
+    portfolio_item = PortfolioItem.query.get_or_404(item_id)
+    
+    try:
+        portfolio_item.is_active = not portfolio_item.is_active
+        db.session.commit()
+        status = 'activated' if portfolio_item.is_active else 'deactivated'
+        flash(f'Portfolio item {status} successfully!', 'success')
+    
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error toggling portfolio item: {str(e)}', 'danger')
+    
+    return redirect(url_for('admin_portfolio'))
+
+@app.route('/admin/portfolio/delete/<int:item_id>', methods=['POST'])
+@admin_required
+def admin_delete_portfolio(item_id):
+    portfolio_item = PortfolioItem.query.get_or_404(item_id)
+    
+    try:
+        db.session.delete(portfolio_item)
+        db.session.commit()
+        flash('Portfolio item deleted successfully!', 'success')
+    
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting portfolio item: {str(e)}', 'danger')
+    
+    return redirect(url_for('admin_portfolio'))
+
+# Quiz Admin Routes
+@app.route('/admin/quiz')
+@admin_required
+def admin_quiz():
+    page = request.args.get('page', 1, type=int)
+    question_type = request.args.get('type', '')
+    
+    query = QuizQuestion.query
+    if question_type:
+        query = query.filter(QuizQuestion.question_type == question_type)
+    
+    questions = query.order_by(QuizQuestion.order_position).paginate(
+        page=page, per_page=10, error_out=False
+    )
+    
+    # Get unique question types for filters
+    question_types = db.session.query(QuizQuestion.question_type).distinct().all()
+    
+    return render_template('admin/quiz.html', 
+                         questions=questions,
+                         question_types=[qt[0] for qt in question_types if qt[0]])
+
+@app.route('/admin/quiz/add', methods=['GET', 'POST'])
+@admin_required
+def admin_add_quiz():
+    if request.method == 'POST':
+        question_text = request.form.get('question_text')
+        question_type = request.form.get('question_type')
+        image_left = request.form.get('image_left')
+        image_right = request.form.get('image_right')
+        style_left = request.form.get('style_left')
+        style_right = request.form.get('style_right')
+        options = request.form.get('options')
+        order_position = int(request.form.get('order_position', 0))
+        
+        try:
+            quiz_question = QuizQuestion(
+                question_text=question_text,
+                question_type=question_type,
+                image_left=image_left,
+                image_right=image_right,
+                style_left=style_left,
+                style_right=style_right,
+                options=options,
+                order_position=order_position
+            )
+            db.session.add(quiz_question)
+            db.session.commit()
+            flash('Quiz question added successfully!', 'success')
+            return redirect(url_for('admin_quiz'))
+        
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error adding quiz question: {str(e)}', 'danger')
+    
+    return render_template('admin/add_quiz.html')
+
+@app.route('/admin/quiz/edit/<int:question_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_quiz(question_id):
+    quiz_question = QuizQuestion.query.get_or_404(question_id)
+    
+    if request.method == 'POST':
+        quiz_question.question_text = request.form.get('question_text')
+        quiz_question.question_type = request.form.get('question_type')
+        quiz_question.image_left = request.form.get('image_left')
+        quiz_question.image_right = request.form.get('image_right')
+        quiz_question.style_left = request.form.get('style_left')
+        quiz_question.style_right = request.form.get('style_right')
+        quiz_question.options = request.form.get('options')
+        quiz_question.order_position = int(request.form.get('order_position', 0))
+        quiz_question.is_active = 'is_active' in request.form
+        quiz_question.updated_at = datetime.utcnow()
+        
+        try:
+            db.session.commit()
+            flash('Quiz question updated successfully!', 'success')
+            return redirect(url_for('admin_quiz'))
+        
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating quiz question: {str(e)}', 'danger')
+    
+    return render_template('admin/edit_quiz.html', quiz_question=quiz_question)
+
+@app.route('/admin/quiz/toggle/<int:question_id>', methods=['POST'])
+@admin_required
+def admin_toggle_quiz(question_id):
+    quiz_question = QuizQuestion.query.get_or_404(question_id)
+    
+    try:
+        quiz_question.is_active = not quiz_question.is_active
+        db.session.commit()
+        status = 'activated' if quiz_question.is_active else 'deactivated'
+        flash(f'Quiz question {status} successfully!', 'success')
+    
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error toggling quiz question: {str(e)}', 'danger')
+    
+    return redirect(url_for('admin_quiz'))
+
+@app.route('/admin/quiz/delete/<int:question_id>', methods=['POST'])
+@admin_required
+def admin_delete_quiz(question_id):
+    quiz_question = QuizQuestion.query.get_or_404(question_id)
+    
+    try:
+        db.session.delete(quiz_question)
+        db.session.commit()
+        flash('Quiz question deleted successfully!', 'success')
+    
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting quiz question: {str(e)}', 'danger')
+    
+    return redirect(url_for('admin_quiz'))
 
 
 if __name__ == '__main__':

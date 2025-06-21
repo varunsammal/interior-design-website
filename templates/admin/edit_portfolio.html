@@ -1,0 +1,228 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Edit Portfolio Item{% endblock %}
+{% block page_title %}Edit Portfolio Item{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Edit Portfolio Item</h5>
+                <div>
+                    <span class="badge bg-{% if portfolio_item.is_active %}success{% else %}danger{% endif %}">
+                        {% if portfolio_item.is_active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                    {% if portfolio_item.is_featured %}
+                        <span class="badge bg-warning">Featured</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="title" class="form-label">Title *</label>
+                            <input type="text" class="form-control" id="title" name="title" value="{{ portfolio_item.title }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="order_position" class="form-label">Order Position</label>
+                            <input type="number" class="form-control" id="order_position" name="order_position" 
+                                   value="{{ portfolio_item.order_position }}" min="0">
+                            <small class="form-text text-muted">Lower numbers appear first</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3">{{ portfolio_item.description or '' }}</textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="image_url" class="form-label">Main Image URL *</label>
+                            <input type="url" class="form-control" id="image_url" name="image_url" 
+                                   value="{{ portfolio_item.image_url }}" required>
+                            <small class="form-text text-muted">High-quality image showcasing the design</small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="before_image" class="form-label">Before Image URL</label>
+                            <input type="url" class="form-control" id="before_image" name="before_image" 
+                                   value="{{ portfolio_item.before_image or '' }}">
+                            <small class="form-text text-muted">Optional: Before transformation image</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="category">
+                                <option value="">Select Category</option>
+                                <option value="living_room" {% if portfolio_item.category == 'living_room' %}selected{% endif %}>Living Room</option>
+                                <option value="bedroom" {% if portfolio_item.category == 'bedroom' %}selected{% endif %}>Bedroom</option>
+                                <option value="kitchen" {% if portfolio_item.category == 'kitchen' %}selected{% endif %}>Kitchen</option>
+                                <option value="bathroom" {% if portfolio_item.category == 'bathroom' %}selected{% endif %}>Bathroom</option>
+                                <option value="office" {% if portfolio_item.category == 'office' %}selected{% endif %}>Office</option>
+                                <option value="dining_room" {% if portfolio_item.category == 'dining_room' %}selected{% endif %}>Dining Room</option>
+                                <option value="outdoor" {% if portfolio_item.category == 'outdoor' %}selected{% endif %}>Outdoor</option>
+                                <option value="commercial" {% if portfolio_item.category == 'commercial' %}selected{% endif %}>Commercial</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="style" class="form-label">Style</label>
+                            <select class="form-select" id="style" name="style">
+                                <option value="">Select Style</option>
+                                <option value="modern" {% if portfolio_item.style == 'modern' %}selected{% endif %}>Modern</option>
+                                <option value="contemporary" {% if portfolio_item.style == 'contemporary' %}selected{% endif %}>Contemporary</option>
+                                <option value="traditional" {% if portfolio_item.style == 'traditional' %}selected{% endif %}>Traditional</option>
+                                <option value="minimalist" {% if portfolio_item.style == 'minimalist' %}selected{% endif %}>Minimalist</option>
+                                <option value="rustic" {% if portfolio_item.style == 'rustic' %}selected{% endif %}>Rustic</option>
+                                <option value="industrial" {% if portfolio_item.style == 'industrial' %}selected{% endif %}>Industrial</option>
+                                <option value="scandinavian" {% if portfolio_item.style == 'scandinavian' %}selected{% endif %}>Scandinavian</option>
+                                <option value="coastal" {% if portfolio_item.style == 'coastal' %}selected{% endif %}>Coastal</option>
+                                <option value="eclectic" {% if portfolio_item.style == 'eclectic' %}selected{% endif %}>Eclectic</option>
+                                <option value="elegant" {% if portfolio_item.style == 'elegant' %}selected{% endif %}>Elegant</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="client_name" class="form-label">Client Name</label>
+                            <input type="text" class="form-control" id="client_name" name="client_name" 
+                                   value="{{ portfolio_item.client_name or '' }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" 
+                                   value="{{ portfolio_item.location or '' }}" placeholder="City, State">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="completion_date" class="form-label">Completion Date</label>
+                            <input type="date" class="form-control" id="completion_date" name="completion_date" 
+                                   value="{% if portfolio_item.completion_date %}{{ portfolio_item.completion_date.strftime('%Y-%m-%d') }}{% endif %}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="project_details" class="form-label">Project Details</label>
+                        <textarea class="form-control" id="project_details" name="project_details" rows="4" 
+                                  placeholder="Additional project information, challenges, solutions, etc.">{{ portfolio_item.project_details or '' }}</textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="is_active" name="is_active" 
+                                       {% if portfolio_item.is_active %}checked{% endif %}>
+                                <label class="form-check-label" for="is_active">
+                                    Active (visible on website)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" 
+                                       {% if portfolio_item.is_featured %}checked{% endif %}>
+                                <label class="form-check-label" for="is_featured">
+                                    Featured (show on homepage)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('admin_portfolio') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Portfolio
+                        </a>
+                        <button type="submit" class="btn btn-admin">
+                            <i class="fas fa-save"></i> Update Portfolio Item
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Current Image</h5>
+            </div>
+            <div class="card-body text-center">
+                <img src="{{ portfolio_item.image_url }}" alt="{{ portfolio_item.title }}" 
+                     class="img-fluid mb-3" style="max-height: 200px; border-radius: 8px;">
+                {% if portfolio_item.before_image %}
+                    <p><strong>Before Image:</strong></p>
+                    <img src="{{ portfolio_item.before_image }}" alt="Before" 
+                         class="img-fluid" style="max-height: 150px; border-radius: 8px;">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Item Information</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>ID:</strong> {{ portfolio_item.id }}</p>
+                <p><strong>Category:</strong> 
+                    {% if portfolio_item.category %}
+                        <span class="badge bg-primary">{{ portfolio_item.category.replace('_', ' ').title() }}</span>
+                    {% else %}
+                        <span class="badge bg-secondary">No Category</span>
+                    {% endif %}
+                </p>
+                <p><strong>Style:</strong> 
+                    {% if portfolio_item.style %}
+                        <span class="badge bg-success">{{ portfolio_item.style.title() }}</span>
+                    {% else %}
+                        <span class="badge bg-secondary">No Style</span>
+                    {% endif %}
+                </p>
+                <p><strong>Status:</strong> 
+                    <span class="badge bg-{% if portfolio_item.is_active %}success{% else %}danger{% endif %}">
+                        {% if portfolio_item.is_active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                </p>
+                <p><strong>Featured:</strong> 
+                    <span class="badge bg-{% if portfolio_item.is_featured %}warning{% else %}secondary{% endif %}">
+                        {% if portfolio_item.is_featured %}Yes{% else %}No{% endif %}
+                    </span>
+                </p>
+                <p><strong>Created:</strong> {{ portfolio_item.created_at.strftime('%m/%d/%Y %I:%M %p') }}</p>
+                <p class="mb-0"><strong>Updated:</strong> {{ portfolio_item.updated_at.strftime('%m/%d/%Y %I:%M %p') }}</p>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <form method="POST" action="{{ url_for('admin_delete_portfolio', item_id=portfolio_item.id) }}" 
+                          onsubmit="return confirm('Are you sure you want to delete this portfolio item? This action cannot be undone.')">
+                        <button type="submit" class="btn btn-outline-danger w-100">
+                            <i class="fas fa-trash"></i> Delete Portfolio Item
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imageUrlInput = document.getElementById('image_url');
+    
+    imageUrlInput.addEventListener('input', function() {
+        // Update preview would go here if needed
+    });
+});
+</script>
+{% endblock %}
