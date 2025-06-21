@@ -89,10 +89,7 @@ body {
     gap: 8px;
 }
 
-.sidebar-header h4::before {
-    content: "⚡";
-    font-size: 1.5rem;
-}
+
 
 .sidebar-header small {
     color: var(--text-secondary);
