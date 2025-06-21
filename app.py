@@ -200,6 +200,53 @@ init_db()
 
 @app.route('/')
 def home():
+    return render_template('index.html')
+
+
+
+#Portfolio route
+@app.route('/portfolio/')
+def portfolio():
+     # This is a placeholder - you'll create this template later
+     return render_template('portfolio.html')  # For now, redirect to home
+
+
+
+
+# # Blog route
+@app.route('/blog/')
+def blog():
+     # This is a placeholder - you'll create this template later
+     return render_template('blog.html')  # For now, redirect to home
+
+
+
+
+# Story routes
+@app.route('/story1')
+def story1():
+    return render_template('stories/story1.html')
+
+@app.route('/story2')
+def story2():
+    return render_template('stories/story2.html')
+
+@app.route('/story3')
+def story3():
+    return render_template('stories/story3.html')
+
+@app.route('/story4')
+def story4():
+    return render_template('stories/story4.html')
+
+@app.route('/story5')
+def story5():
+    return render_template('stories/story5.html')
+
+@app.route('/story6')
+def story6():
+    return render_template('stories/story6.html')
+
     designs = DesignImage.query.all()
     return render_template('index.html', designs=designs)
 
@@ -699,6 +746,7 @@ def edit_profile():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 
 if __name__ == '__main__':

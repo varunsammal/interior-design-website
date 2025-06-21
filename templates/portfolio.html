@@ -1,3 +1,8 @@
+
+
+
+  
+
 {% extends "base.html" %}
 
 {% block title %}Portfolio - Our Interior Design Projects{% endblock %}
@@ -8,93 +13,147 @@
 {% endblock %}
 
 {% block content %}
-<div class="portfolio-container">
-    <div class="portfolio-header">
-        <h1>Our Real Interior Design Makeovers</h1>
-        <p>See how we've transformed spaces for our clients</p>
+  <div class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1 id="hero-title">Our Real Interior Design Makeovers</h1>
+      <p>
+        Explore our transformations for:
+        <span class="inline-select">
+          <select class="room-select" onchange="filterProjects(this.value)">
+            <option value="">All Rooms</option>
+            <option value="living-room">Living Room</option>
+            <option value="bedroom">Bedroom</option>
+            <option value="kitchen">Kitchen</option>
+            <option value="bathroom">Bathroom</option>
+            <option value="home-office">Home Office</option>
+          </select>
+        </span>
+      </p>
     </div>
+  </div>
 
-    <div class="portfolio-filters">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="living-room">Living Room</button>
-        <button class="filter-btn" data-filter="bedroom">Bedroom</button>
-        <button class="filter-btn" data-filter="kitchen">Kitchen</button>
-        <button class="filter-btn" data-filter="bathroom">Bathroom</button>
-        <button class="filter-btn" data-filter="home-office">Home Office</button>
+  <!-- Projects Section -->
+  <div class="project show" data-room="living-room">
+    <h2>Sleek & Modern Living Room Interior Design</h2>
+    <div class="toggle-buttons">
+      <button class="btn" id="beforeBtn" onclick="showImage('before')">Before</button>
+      <button class="btn active" id="afterBtn" onclick="showImage('after')">After</button>
     </div>
-
-    <div class="portfolio-grid">
-        <!-- Project 1 -->
-        <div class="portfolio-item" data-category="living-room">
-            <div class="image-comparison">
-                <img src="https://cdn.decorilla.com/images/1200/5706645bea5fe8.24781187/Affordable-Online-Living-Dining-Room-Design-interior-design.jpg" alt="Before" class="before">
-                <img src="https://cdn.decorilla.com/images/1200/e37cb232-98cf-412c-b753-64a06b2a2775/Affordable-Living-Room-Dining-Room-Combo-interior-design-1.jpg" alt="After" class="after">
-            </div>
-            <div class="portfolio-info">
-                <h3>Modern Living Room Transformation</h3>
-                <p>A complete makeover of a traditional living room into a modern, functional space.</p>
-                <div class="portfolio-meta">
-                    <span class="category">Living Room</span>
-                    <span class="location">New York, NY</span>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 2 -->
-
-        <div class="portfolio-item" data-category="kitchen">
-            <div class="image-comparison">
-                <img src="https://cdn.decorilla.com/images/1200/4b606d9a-94be-4e1e-b912-5e107b0ef3ed/Blue-White-Kitchen-Rustic-Home-Design-Rendering.jpg" alt="Before" class="before">
-                <img src="https://cdn.decorilla.com/images/1200/4b606d9a-94be-4e1e-b912-5e107b0ef3ed/Blue-White-Kitchen-Rustic-Home-Design-Rendering.jpg" alt="After" class="after">
-            </div>
-            <div class="portfolio-info">
-                <h3>Blue & White Kitchen Makeover</h3>
-                <p>A fresh and modern kitchen design with a beautiful blue and white color scheme.</p>
-                <div class="portfolio-meta">
-                    <span class="category">Kitchen</span>
-                    <span class="location">Los Angeles, CA</span>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 3 -->
-
-        <div class="portfolio-item" data-category="bedroom">
-            <div class="image-comparison">
-                <img src="https://cdn.decorilla.com/images/1200/e1f2922e-b95b-487e-b3ca-6d0fb1010ffa/Modern-Coastal-Living-Room-and-Bedroom-Online-and-AI-Interior-Design.jpg" alt="Before" class="before">
-                <img src="https://cdn.decorilla.com/images/1200/e1f2922e-b95b-487e-b3ca-6d0fb1010ffa/Modern-Coastal-Living-Room-and-Bedroom-Online-and-AI-Interior-Design.jpg" alt="After" class="after">
-            </div>
-            <div class="portfolio-info">
-                <h3>Coastal Bedroom Retreat</h3>
-                <p>A serene bedroom transformation with coastal-inspired elements.</p>
-                <div class="portfolio-meta">
-                    <span class="category">Bedroom</span>
-                    <span class="location">Miami, FL</span>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 4 -->
-
-        <div class="portfolio-item" data-category="bathroom">
-            <div class="image-comparison">
-                <img src="https://cdn.decorilla.com/images/1200/a6e50faf-b4b4-4636-ac9c-7336f3f74175/SpaInspired-Master-Bathroom-Design-Rendering.jpg" alt="Before" class="before">
-                <img src="https://cdn.decorilla.com/images/1200/a6e50faf-b4b4-4636-ac9c-7336f3f74175/SpaInspired-Master-Bathroom-Design-Rendering.jpg" alt="After" class="after">
-            </div>
-            <div class="portfolio-info">
-                <h3>Luxury Spa Bathroom</h3>
-                <p>A master bathroom transformation into a luxurious spa-like retreat.</p>
-                <div class="portfolio-meta">
-                    <span class="category">Bathroom</span>
-                    <span class="location">Chicago, IL</span>
-
-                </div>
-            </div>
-        </div>
+    <div class="main-image">
+      <img id="main-image" src="" alt="Living Room Design">
     </div>
+    <p class="testimonial">“Thank you for all of the beautiful ideas! I just love my new living room design...” – Liz</p>
+  </div>
+
+  <div class="project show" data-room="living-room">
+    <h2>Black and White Living Room Design</h2>
+    <img src="https://cdn.decorilla.com/images/1200/b2568252-ff4a-4400-bc9b-78762d09cb8d/Online-Living-Room-Design-interior-design-service.jpg?cv=1" alt="Black and White Living Room Design">
+    <p class="testimonial">“I got the interior design of my dreams!” – Michelle</p>
+  </div>
+
+  <div class="project show" data-room="living-room">
+    <h2>Elegant Black & White Living Room Design</h2>
+    <img src="https://cdn.decorilla.com/images/1200/852e22a4-0f5e-428a-a804-23f83907b884/Living-Room-Dining-Room-Combo-online-interior-designers-1.png?cv=1" alt="Black and White Living Room Design">
+    <p class="testimonial">“We love it! Your interior design ideas are beautiful. We can't wait to complete the rest of the home.  - Nadia” – Michelle</p>
+  </div>
+
+  <div class="project show" data-room="living-room">
+    <h2>Bright Mid-Century Modern Living Room Remodel</h2>
+    <img src="https://cdn.decorilla.com/images/1200/c6673df8-9b4c-4f47-adab-e96978885f08/Bright-MidCentury-Modern-Living-Room-Remodel.jpeg?cv=1" alt="Black and White Living Room Design">
+    
+  </div>
+
+  <div class="project show" data-room="living-room">
+    <h2>Modern Rustic Living Room Interior Design</h2>
+    <img src="https://cdn.decorilla.com/images/1200/5f4e8562-6841-421a-af0a-1eaea4b1f78d/Living-Room-Design-interior-design-help-1.png?cv=1" alt="Black and White Living Room Design">
+    
+  </div>
+
+  <div class="project show" data-room="bedroom">
+    <h2>Modern Coastal Bedroom Renovation</h2>
+    <img src="https://cdn.decorilla.com/images/1200/b9d925c3-68ef-4a6f-95e9-1a4d3cf3cc66/Online-Bedroom-Design-interior-design-samples-1.jpg?cv=1" alt="Modern Coastal Bedroom">
+    <p class="testimonial">“Our bedroom designer was phenomenal!” – Kris</p>
+  </div>
+
+  <div class="project show" data-room="bedroom">
+    <h2>Classy Black & White Bedroom Design</h2>
+    <img src="https://cdn.decorilla.com/images/1200/e462a026-28b4-4c74-b00f-72c23d5a64d5/Affordable-Bedroom-Design-interior-design.jpeg?cv=1" alt="Classy Black & White Bedroom">
+    <p class="testimonial">“The designer went above and beyond!” – Dave</p>
+  </div>
+
+  <div class="project show" data-room="bedroom">
+    <h2>Glamorous Bedroom Transformation</h2>
+    <img src="https://cdn.decorilla.com/images/1200/994c0119-9250-4736-935f-242308d7a64e/Glamorous-Bedroom-Transformation.jpg?cv=1" alt="Classy Black & White Bedroom">
+    <p class="testimonial">“We love it! Your bedroom interior designs are beautiful. We can't wait to complete the rest of the home.  - Nadia” </p>
+  </div>
+
+  <div class="project show" data-room="bedroom">
+    <h2>Floral Eclectic Bedroom Interior Design Project</h2>
+    <img src="https://cdn.decorilla.com/images/1200/1abfe377-d87a-4641-8145-016eb1cd7fc3/Floral-Eclectic-Bedroom-Interior-Design-Project.png?cv=1" alt="Classy Black & White Bedroom">
+    
+  </div>
+
+  <div class="project show" data-room="home-office">
+    <h2>Classy Transitional Home Office Design</h2>
+    <img src="https://cdn.decorilla.com/images/1200/0e2c37a9-a02a-4fb8-a014-e1bb629c17db/Online-Home-Small-Office-Design-online-interior-designers.jpeg?cv=1" alt="Classy Home Office">
+    <p class="testimonial">“In love with my home office!” – George and Scott</p>
+  </div>
+
+    <div class="project show" data-room="home-office">
+    <h2>Contemporary Glam Dining Room & Home Office</h2>
+    <img src="https://cdn.decorilla.com/images/1200/2e545a4e-ee14-4ce2-9481-c2f5c8c20a25/Contemporary-Glam-Dining-Room-Home-Office.jpg?cv=1" alt="Classy Home Office">
+    <p class="testimonial">“My house looks amazing now! I really enjoyed the whole process and that gave us such peace, so now we can enjoy all of the rooms. Fantastic experience!" - Francis</p>
+  </div>
+
+  <div class="project show" data-room="home-office">
+    <h2>Bold Masculine Vaulted Ceilings Home Design</h2>
+    <img src="https://cdn.decorilla.com/images/1200/2338e73d-8357-4b92-b8aa-6177492c850c/Bold-Masculine-Vaulted-Ceilings-Home-Design.jpg?cv=1" alt="Classy Home Office">
+    <p class="testimonial">“Highly recommend Decorilla if you are looking for high end interior design needs."- Andrea</p>
+  </div>
+
+  <div class="project show" data-room="kitchen">
+    <h2>Sleek and Modern Kitchen Remodel</h2>
+    <img src="https://cdn.decorilla.com/images/1200/2466f6eb-bfbd-469c-a670-8344eb614a2f/Online-Kitchen-Design-online-interior-designers.png?cv=1" alt="Sleek Kitchen">
+    <p class="testimonial">“If I could give 6 stars I would!” – Justin</p>
+  </div>
+
+  <div class="project show" data-room="kitchen">
+    <h2>Modern Minimalist Kitchen Desig</h2>
+    <img src="https://cdn.decorilla.com/images/1200/33e9d08a-fe6b-4fad-a5ff-e2330c3ad2e9/Modern-Minimalist-Kitchen-Design.jpeg?cv=1" alt="Sleek Kitchen">
+    <p class="testimonial">“If I could give 6 stars I would! The team at Decorilla is amazing and worked with me to get exactly what I needed for my kitchen renovation.” – Justin</p>
+  </div>
+
+  <div class="project show" data-room="kitchen">
+    <h2>Masculine Kitchen & Bar Renovation</h2>
+    <img src="https://cdn.decorilla.com/images/1200/d941fce4-24b7-4cb4-a255-a015183cde8f/Masculine-Kitchen-Bar-Renovation.jpeg?cv=1" alt="Sleek Kitchen">
+    <p class="testimonial">“Absolutely thrilled with my new kitchen design! The color scheme, choice of appliances, and overall layout exceeded my expectations. Kudos to the designer for a fantastic job!" - Christopher</p>
+  </div>
+  
+   <div class="project show" data-room="kitchen">
+    <h2>Biophilic Kitchen Renovation</h2>
+    <img src="https://cdn.decorilla.com/images/800/56975a12-25ca-42cd-87b8-5d996fb94c5c/Affordable-Kitchen-Remodel-interior-design-1.jpg?cv=1" alt="Sleek Kitchen">
+    
+  </div>
+
+  <div class="project show" data-room="bathroom">
+    <h2>Luxurious & Relaxing Coastal Bathroom Renovation</h2>
+    <img src="https://cdn.decorilla.com/images/1200/355187b6-40ea-4289-b20b-b21acd7fe7b7/Luxurious-Relaxing-Coastal-Bathroom-Renovation.jpeg?cv=1" alt="Coastal Bathroom Design">
+    <p class="testimonial">“I love my rooms! Decorilla has been a fantastic experience, the process was so easy and my designer did a great job capturing what I wanted” – Kaya</p>
+  </div>
+
+  <div class="project show" data-room="bathroom">
+    <h2>Natural Wooden Bathroom Remodel</h2>
+    <img src="https://cdn.decorilla.com/images/1200/343a5a73-b403-4de0-8bd6-5bd192058be0/Bathroom-Remodel-interior-design-service.jpeg?cv=1" alt="Coastal Bathroom Design">
+    <p class="testimonial">"I really enjoyed the whole process! My designer and the Decorilla team made this so easy for me!"  - Dessi</p>
+  </div>
+
+   <div class="project show" data-room="bathroom">
+    <h2>Bold Masculine Vaulted Ceilings Bathroom Remodel</h2>
+    <img src="https://cdn.decorilla.com/images/1200/d3324cdd-5194-4407-abf3-03bb2ee327da/Bold-Masculine-Vaulted-Ceilings-Bathroom-Remodel.jpg?cv=1" alt="Coastal Bathroom Design">
+    <p class="testimonial">"Highly recommend Decorilla if you are looking for high end interior design needs."- Andrea</p>
+  </div>
+
 
     <div class="portfolio-cta">
         <h2>Ready to Transform Your Space?</h2>
@@ -108,3 +167,4 @@
 <script src="{{ url_for('static', filename='javascript/portfolio.js') }}"></script>
 
 {% endblock %} 
+
