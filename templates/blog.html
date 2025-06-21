@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Interior Blog | Vlog Page</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles/blog.css') }}">
 
-</head>
-<body>
 
-  <!-- Hero Section -->
+
+{% extends "base.html" %}
+
+{% block title %}Blog - Interior Design Tips & Inspiration{% endblock %}
+
+{% block content %}
+ <!-- Hero Section -->
   <section class="hero">
     <div class="hero-text">
       <h1 style="margin: 0; line-height: 1.2;">Interior Design Styles 101:</h1>
@@ -239,13 +235,10 @@ Real Stories
 
   </div>
 </section>
-
+{% endblock %} 
+      
+{% block scripts_extra %}
 <!-- Filtering Script -->
 <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
 
-
-
-
-
-</body>
-</html>
+{% endblock %} 

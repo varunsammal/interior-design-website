@@ -1,0 +1,124 @@
+
+{% extends "base.html" %}
+
+{% block title %}Pricing | Decorilla{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/pricing.css') }}">
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="header">
+        <img src="https://via.placeholder.com/1200x400" alt="Interior Design" class="header-image">
+        <h1>Our Pricing Plans</h1>
+        <p>Find the perfect design package for your needs</p>
+    </div>
+
+    <div class="room-selection">
+        <h2>Select Number of Rooms</h2>
+        <div class="dropdown">
+            <button class="dropdown-btn" id="roomCountDropdown">1 Room</button>
+            <div class="dropdown-content">
+                <a href="#" data-rooms="1">1 Room</a>
+                <a href="#" data-rooms="2">2 Rooms</a>
+                <a href="#" data-rooms="3">3 Rooms</a>
+                <a href="#" data-rooms="4">4 Rooms</a>
+                <a href="#" data-rooms="5">5+ Rooms</a>
+ </div>
+        </div>
+    </div>
+
+
+
+    <div class="packages">
+        <div class="package bronze">
+            <h3>Bronze Package</h3>
+            <div class="price-box">
+
+                <span class="price">$299</span> <small>/ room</small>
+            </div>
+            <p>Perfect for small updates and single room designs.</p>
+            <ul>
+                <li>Concept Board</li>
+                <li>Shopping List</li>
+                <li>2D Floor Plan</li>
+            </ul>
+            <button class="btn btn-primary">Choose Plan</button>
+        </div>
+        <div class="package silver">
+            <h3>Silver Package</h3>
+            <div class="price-box">
+                <span class="price">$499</span> <small>/ room</small>
+            </div>
+            <p>Ideal for comprehensive room redesigns and consultations.</p>
+            <ul>
+                <li>Everything in Bronze</li>
+                <li>3D Renderings</li>
+                <li>Designer Q&A</li>
+            </ul>
+            <button class="btn btn-primary">Choose Plan</button>
+        </div>
+        <div class="package gold">
+            <h3>Gold Package</h3>
+            <div class="price-box">
+                <span class="price">$799</span> <small>/ room</small>
+            </div>
+            <p>Our premium package for full home transformations and custom designs.</p>
+            <ul>
+                <li>Everything in Silver</li>
+                <li>Personal Project Manager</li>
+                <li>On-site Consultation (where available)</li>
+            </ul>
+            <button class="btn btn-primary">Choose Plan</button>
+        </div>
+    </div>
+
+    <div class="image-section">
+        <img src="https://via.placeholder.com/1200x500" alt="Design Process" class="design-image">
+    </div>
+
+    <div class="extra-help">
+        <h3>Need Extra Help?</h3>
+        <p>Our designers are here to assist you with additional services.</p>
+        <div class="help-options">
+            <div class="help-option">
+                <h4>Additional Revision</h4>
+                <p>Get extra design revisions to perfect your space.</p>
+                <span class="help-price">$99</span>
+            </div>
+            <div class="help-option">
+                <h4>Furniture Assembly</h4>
+                <p>Professional assembly of your new furniture.</p>
+                <span class="help-price">Starting at $75</span>
+            </div>
+            <div class="help-option">
+                <h4>Space Planning</h4>
+                <p>Detailed floor plans and layout optimizations.</p>
+                <span class="help-price">$149</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="features">
+        <h2>Why Choose Decorilla?</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Experienced Designers</h5>
+                <p>Work with top-tier interior designers who understand your vision.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Affordable Packages</h5>
+                <p>High-quality design services without breaking the bank.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Satisfaction Guaranteed</h5>
+                <p>We work until you are completely happy with your design.</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

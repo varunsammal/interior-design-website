@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/quiz.css') }}">
+{% endblock %}
+
+{% block title %}Interior Style Selector{% endblock %}
+
+{% block content %}
+
+    <!-- Animated background elements -->
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    
+    <!-- Content -->
+    <div class="header-container">
+        <h2>Click on the style you prefer</h2>
+        <p>Point us to the styles you like by clicking on an image</p>
+    </div>
+    
+    <div class="comparison-container" id="comparisonContainer">
+        <img src="" class="style-option" onclick="selectImage(1)" id="leftImage">
+        <div class="or-text" onclick="loadNewPair()">OR</div>
+        <img src="" class="style-option" onclick="selectImage(2)" id="rightImage">
+    </div>
+    
+    <div class="dots-container" id="dotsContainer">
+        <!-- Empty dots will be created dynamically -->
+    </div>
+    
+    <button class="skip-btn" onclick="skipAll()">SKIP ALL</button>
+{% endblock %}
+
+{% block scripts_extra %}
+    <script src="{{ url_for('static', filename='javascript/quiz.js') }}"></script>
+{% endblock %}

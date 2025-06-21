@@ -1,13 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Portfolio - Interior Makeovers</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles/portfolio.css') }}">
- 
-</head>
-<body>
 
+
+
+  
+
+{% extends "base.html" %}
+
+{% block title %}Portfolio - Our Interior Design Projects{% endblock %}
+
+
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/portfolio.css') }}">
+{% endblock %}
+
+{% block content %}
   <div class="hero">
     <div class="overlay"></div>
     <div class="hero-content">
@@ -150,8 +155,16 @@
   </div>
 
 
-  
-  <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
+    <div class="portfolio-cta">
+        <h2>Ready to Transform Your Space?</h2>
+        <p>Let us help you create your dream home</p>
+        <a href="{{ url_for('schedule_consultation') }}" class="cta-button">Schedule a Consultation</a>
+    </div>
+</div>
+{% endblock %}
 
-</body>
-</html>
+{% block scripts_extra %}
+<script src="{{ url_for('static', filename='javascript/portfolio.js') }}"></script>
+
+{% endblock %} 
+
