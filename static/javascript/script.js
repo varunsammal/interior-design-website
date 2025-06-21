@@ -125,9 +125,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Run once on page load
     animateOnScroll();
-<<<<<<< ashu
-});
-
 
 
 // portfolio script
@@ -206,8 +203,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
-=======
-});document.addEventListener('DOMContentLoaded', function() {
+
+    document.addEventListener('DOMContentLoaded', function() {
     // Mobile Navigation Toggle
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
@@ -334,4 +331,4 @@ document.addEventListener('DOMContentLoaded', function () {
     // Run once on page load
     animateOnScroll();
 });
->>>>>>> main
+
