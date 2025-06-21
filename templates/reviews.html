@@ -1,222 +1,287 @@
 {% extends "base.html" %}
 
-
-{% block title %}Design Reviews{% endblock %}
+{% block title %}Design Reviews - Client Testimonials & Feedback{% endblock %}
 
 {% block head_extra %}
-
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/reviews.css') }}">
 {% endblock %}
 
 {% block content %}
+<!-- Scroll Progress Indicator -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Back to Top Button -->
+<button class="back-to-top" id="backToTop">
+  <i class="fas fa-chevron-up"></i>
+</button>
 
 <div class="reviews-container">
-    <div class="reviews-header">
-        <div class="reviews-header-content">
-            <h1>Design Reviews</h1>
-            <p>Share your thoughts and experiences with our interior designs</p>
-        </div>
+  <!-- Hero Section -->
+  <div class="reviews-header">
+    <div class="reviews-header-content">
+      <h1>Client Reviews & Testimonials</h1>
+      <p>Discover what our clients say about their interior design transformations and experiences</p>
+    </div>
+  </div>
+
+  <div class="reviews-content">
+    <!-- Filters Section -->
+    <div class="reviews-filters">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchReviews" placeholder="Search reviews by keywords...">
+      </div>
+      <div class="filter-options">
+        <select id="ratingFilter">
+          <option value="">All Ratings</option>
+          <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+          <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+          <option value="3">⭐⭐⭐ 3 Stars</option>
+          <option value="2">⭐⭐ 2 Stars</option>
+          <option value="1">⭐ 1 Star</option>
+        </select>
+        <select id="sortFilter">
+          <option value="recent">Most Recent</option>
+          <option value="rating">Highest Rated</option>
+          <option value="helpful">Most Helpful</option>
+        </select>
+      </div>
     </div>
 
-    <div class="reviews-content">
-        <div class="reviews-filters">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchReviews" placeholder="Search reviews...">
-            </div>
-            <div class="filter-options">
-                <select id="ratingFilter">
-                    <option value="">All Ratings</option>
-                    <option value="5">5 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="2">2 Stars</option>
-                    <option value="1">1 Star</option>
-                </select>
-                <select id="sortFilter">
-                    <option value="recent">Most Recent</option>
-                    <option value="rating">Highest Rated</option>
-                    <option value="helpful">Most Helpful</option>
-                </select>
-            </div>
-        </div>
+    <!-- Loading State -->
+    <div class="loading" id="loadingState" style="display: none;">
+      <div class="loading-spinner"></div>
+    </div>
 
-        <div class="reviews-stats">
-            <div class="overall-rating">
-                <div class="rating-number">{{ average_rating|default('0.0') }}</div>
-                <div class="rating-stars">
-                    {% for i in range(5) %}
-                        {% if i < (average_rating|default(0)|int) %}
-                            <i class="fas fa-star"></i>
-                        {% elif i < (average_rating|default(0)|round(1)) %}
-                            <i class="fas fa-star-half-alt"></i>
-                        {% else %}
-                            <i class="far fa-star"></i>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="rating-count">{{ total_reviews|default(0) }} reviews</div>
-            </div>
-            <div class="rating-bars">
-                {% for i in range(5, 0, -1) %}
-                <div class="rating-bar">
-                    <span class="stars">{{ i }} <i class="fas fa-star"></i></span>
-                    <div class="bar-container">
-                        <div class="bar rating-{{ i }}" data-width="{{ rating_distribution[i]|default(0) }}"></div>
-                    </div>
-                    <span class="percentage">{{ rating_distribution[i]|default(0) }}%</span>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="reviews-list">
-            {% if reviews %}
-                {% for review in reviews %}
-                <div class="review-card" data-rating="{{ review.rating }}">
-                    <div class="review-header">
-                        <div class="reviewer-info">
-                            <div class="reviewer-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="reviewer-details">
-                                <h3>{% if review is mapping %}{{ review.username }}{% else %}{{ review.user.username }}{% endif %}</h3>
-                                <div class="review-meta">
-                                    <span class="review-date">{% if review is mapping %}{{ review.created_at.strftime('%B %d, %Y') }}{% else %}{{ review.created_at.strftime('%B %d, %Y') }}{% endif %}</span>
-                                    <span class="review-rating">
-                                        {% for i in range(5) %}
-                                            {% if i < (review.rating if not review is mapping else review['rating']) %}
-                                                <i class="fas fa-star"></i>
-                                            {% else %}
-                                                <i class="far fa-star"></i>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="review-actions">
-                            <button class="btn-helpful" data-review-id="{% if review is mapping %}sample-{{ loop.index }}{% else %}{{ review.id }}{% endif %}">
-                                <i class="far fa-thumbs-up"></i>
-                                <span>Helpful ({% if review is mapping %}{{ review.helpful_count }}{% else %}{{ review.helpful_count|default(0) }}{% endif %})</span>
-                            </button>
-                            {% if not review is mapping and current_user.is_authenticated and current_user.id == review.user_id %}
-                            <button class="btn-edit" data-review-id="{{ review.id }}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-delete" data-review-id="{{ review.id }}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="review-content">
-                        <p>{% if review is mapping %}{{ review.comment }}{% else %}{{ review.comment }}{% endif %}</p>
-                    </div>
-                    {% if not review is mapping and review.design_image %}
-                    <div class="review-design">
-                        <img src="{{ url_for('static', filename=review.design_image.image_path) }}" 
-                             alt="Design Image" 
-                             class="design-thumbnail"
-                             onclick="openImageModal(this.src)">
-                    </div>
-                    {% endif %}
-                </div>
-                {% endfor %}
+    <!-- Reviews Stats -->
+    <div class="reviews-stats">
+      <div class="overall-rating">
+        <div class="rating-number">{{ average_rating|default('0.0') }}</div>
+        <div class="rating-stars">
+          {% for i in range(5) %}
+            {% if i < (average_rating|default(0)|int) %}
+              <i class="fas fa-star"></i>
+            {% elif i < (average_rating|default(0)|round(1)) %}
+              <i class="fas fa-star-half-alt"></i>
             {% else %}
-                <div class="no-reviews">
-                    <i class="far fa-comment-dots"></i>
-                    <h2>No Reviews Yet</h2>
-                    <p>Be the first to share your thoughts about our designs!</p>
-                </div>
+              <i class="far fa-star"></i>
             {% endif %}
+          {% endfor %}
         </div>
-
-        {% if reviews and reviews|length > 10 %}
-        <div class="pagination">
-            <button class="btn-prev" {% if not has_prev %}disabled{% endif %}>
-                <i class="fas fa-chevron-left"></i> Previous
-            </button>
-            <div class="page-numbers">
-                {% for page in range(1, total_pages + 1) %}
-                <button class="page-number {% if page == current_page %}active{% endif %}" 
-                        data-page="{{ page }}">
-                    {{ page }}
-                </button>
-                {% endfor %}
-            </div>
-            <button class="btn-next" {% if not has_next %}disabled{% endif %}>
-                Next <i class="fas fa-chevron-right"></i>
-            </button>
+        <div class="rating-count">{{ total_reviews|default(0) }} reviews</div>
+      </div>
+      <div class="rating-bars">
+        {% for i in range(5, 0, -1) %}
+        <div class="rating-bar">
+          <span class="stars">{{ i }} <i class="fas fa-star"></i></span>
+          <div class="bar-container">
+            <div class="bar rating-{{ i }}" data-width="{{ rating_distribution[i]|default(0) }}"></div>
+          </div>
+          <span class="percentage">{{ rating_distribution[i]|default(0) }}%</span>
         </div>
-        {% endif %}
+        {% endfor %}
+      </div>
     </div>
+
+    <!-- Reviews List -->
+    <div class="reviews-list" id="reviewsList">
+      {% if reviews %}
+        {% for review in reviews %}
+        <div class="review-card" data-rating="{{ review.rating }}" data-review-id="{% if review is mapping %}sample-{{ loop.index }}{% else %}{{ review.id }}{% endif %}">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="reviewer-details">
+                <h3>{% if review is mapping %}{{ review.username }}{% else %}{{ review.user.username }}{% endif %}</h3>
+                <div class="review-meta">
+                  <span class="review-date">{% if review is mapping %}{{ review.created_at.strftime('%B %d, %Y') }}{% else %}{{ review.created_at.strftime('%B %d, %Y') }}{% endif %}</span>
+                  <span class="review-rating">
+                    {% for i in range(5) %}
+                      {% if i < (review.rating if not review is mapping else review['rating']) %}
+                        <i class="fas fa-star"></i>
+                      {% else %}
+                        <i class="far fa-star"></i>
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="review-actions">
+              <button class="btn-helpful" data-review-id="{% if review is mapping %}sample-{{ loop.index }}{% else %}{{ review.id }}{% endif %}">
+                <i class="far fa-thumbs-up"></i>
+                <span>Helpful ({% if review is mapping %}{{ review.helpful_count }}{% else %}{{ review.helpful_count|default(0) }}{% endif %})</span>
+              </button>
+              {% if not review is mapping and current_user.is_authenticated and current_user.id == review.user_id %}
+              <button class="btn-edit" data-review-id="{{ review.id }}">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn-delete" data-review-id="{{ review.id }}">
+                <i class="fas fa-trash"></i>
+              </button>
+              {% endif %}
+            </div>
+          </div>
+          <div class="review-content">
+            <p>{% if review is mapping %}{{ review.comment }}{% else %}{{ review.comment }}{% endif %}</p>
+          </div>
+          {% if not review is mapping and review.design_image %}
+          <div class="review-design">
+            <img src="{{ url_for('static', filename=review.design_image.image_path) }}" 
+                 alt="Design Image" 
+                 class="design-thumbnail"
+                 onclick="openImageModal(this.src)">
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="no-reviews">
+          <i class="far fa-comment-dots"></i>
+          <h2>No Reviews Yet</h2>
+          <p>Be the first to share your thoughts about our designs and help others discover amazing transformations!</p>
+          <a href="{{ url_for('schedule_consultation') }}" class="cta-button" style="
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af87 0%, #c49a6b 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 135, 0.3);
+          ">Share Your Experience</a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    {% if reviews and reviews|length > 10 %}
+    <div class="pagination">
+      <button class="btn-prev" {% if not has_prev %}disabled{% endif %}>
+        <i class="fas fa-chevron-left"></i> Previous
+      </button>
+      <div class="page-numbers">
+        {% for page in range(1, total_pages + 1) %}
+        <button class="page-number {% if page == current_page %}active{% endif %}" 
+                data-page="{{ page }}">
+          {{ page }}
+        </button>
+        {% endfor %}
+      </div>
+      <button class="btn-next" {% if not has_next %}disabled{% endif %}>
+        Next <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+    {% endif %}
+
+    <!-- CTA Section -->
+    {% if reviews %}
+    <div class="portfolio-cta" style="
+      text-align: center;
+      background: linear-gradient(135deg, #2c2621 0%, #3c3530 100%);
+      color: white;
+      padding: 4rem 2rem;
+      border-radius: 30px;
+      margin-top: 4rem;
+      position: relative;
+      overflow: hidden;
+    ">
+      <div style="
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(212, 175, 135, 0.1) 0%, transparent 70%);
+        animation: float 15s ease-in-out infinite;
+      "></div>
+      <h2 style="
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 800;
+        position: relative;
+        z-index: 1;
+      ">Ready to Share Your Experience?</h2>
+      <p style="
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        color: rgba(255, 255, 255, 0.9);
+        position: relative;
+        z-index: 1;
+      ">Help others discover the magic of great interior design by sharing your story</p>
+      <a href="{{ url_for('schedule_consultation') }}" style="
+        display: inline-block;
+        background: linear-gradient(135deg, #d4af87 0%, #c49a6b 100%);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: all 0.4s ease;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 8px 25px rgba(212, 175, 135, 0.3);
+      ">Write a Review</a>
+    </div>
+    {% endif %}
+  </div>
 </div>
 
 <!-- Image Modal -->
 <div class="modal" id="imageModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Design Image</h3>
-            <button class="close-modal" onclick="closeImageModal()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="modal-body">
-            <img id="modalImage" src="" alt="Design Image">
-        </div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Design Image</h3>
+      <button class="close-modal" onclick="closeImageModal()">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
+    <div class="modal-body">
+      <img id="modalImage" src="" alt="Design Image">
+    </div>
+  </div>
 </div>
 
 <!-- Edit Review Modal -->
 <div class="modal" id="editReviewModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Edit Review</h3>
-            <button class="close-modal" onclick="closeEditModal()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="editReviewForm">
-                <input type="hidden" id="editReviewId">
-                <div class="form-group">
-                    <label for="editRating">Rating</label>
-                    <div class="rating-input">
-                        {% for i in range(5, 0, -1) %}
-                        <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}">
-                        <label for="star{{ i }}"><i class="far fa-star"></i></label>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="editComment">Review</label>
-                    <textarea id="editComment" rows="4" required></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-secondary" onclick="closeEditModal()">Cancel</button>
-                    <button type="submit" class="btn-primary">Save Changes</button>
-                </div>
-            </form>
-        </div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Edit Review</h3>
+      <button class="close-modal" onclick="closeEditModal()">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
+    <div class="modal-body">
+      <form id="editReviewForm">
+        <input type="hidden" id="editReviewId">
+        <div class="form-group">
+          <label for="editRating">Rating</label>
+          <div class="rating-input">
+            {% for i in range(5, 0, -1) %}
+            <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}">
+            <label for="star{{ i }}"><i class="far fa-star"></i></label>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="editComment">Review</label>
+          <textarea id="editComment" rows="4" required placeholder="Share your thoughts about the design experience..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}
 
-{% block scripts %}
-<script src="{{ url_for('static', filename='javascript/reviews.js') }}"></script>
-{% endblock %}
-
 {% block scripts_extra %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Set rating bar widths
-    const bars = document.querySelectorAll('.bar');
-    bars.forEach(bar => {
-        const width = bar.getAttribute('data-width');
-        bar.style.width = width + '%';
-    });
-});
-</script>
-
+<script src="{{ url_for('static', filename='javascript/reviews.js') }}"></script>
 {% endblock %} 

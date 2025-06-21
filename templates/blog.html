@@ -2,78 +2,327 @@
 
 {% block title %}Blog - Interior Design Tips & Inspiration{% endblock %}
 
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/blog.css') }}">
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-5">Interior Design Blog</h1>
+ <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1 style="margin: 0; line-height: 1.2;">Interior Design Styles 101:</h1>
+<h1 style="margin: 0; line-height: 1.2;">The Ultimate Guide to</h1>
+<h1 style="margin: 0; line-height: 1.2;">Decorating Style in 2025</h1>
+
+    </div>
+  </section>
+
+  <!-- Blog Section -->
+  <h2 class="section-title">Recent Stories</h2>
+
+  <div class="blog-grid">
+    <!-- Card 1 -->
+     <a href="{{ url_for('story1') }}" class="blog-link">
+    <div class="blog-card">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/04/Classic-contemporary-interior-design-for-a-condo-living-room-by-Decorilla-2048x1158.jpeg" alt="Condo Design">
+      <div class="blog-content">
+        <h3>Before & After: Classic Contemporary Interior Design for a Condo</h3>
+        <p>6/11/2025</p>
+      </div>
+    </div>
+    </a>
+
+    <!-- Card 2 -->
+     <a href="{{ url_for('story2') }}" class="blog-link">
+    <div class="blog-card">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/05/mixed-wood-dining-room-design-by-DECORILLA-designer-Leanna-S-2048x1361.jpg" alt="Wood Tones">
+      <div class="blog-content">
+        <h3>Master the Art of Mixing Wood Tones in Your Home</h3>
+        <p>6/9/2025</p>
+      </div>
+    </div>
+    </a>
+
+    <!-- Card 3 -->
+     <a href="{{ url_for('story3') }}" class="blog-link">
+    <div class="blog-card">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2020/12/Moody-home-office-background-with-builtin-shelves-2048x1365.jpeg" alt="Zoom Ready Home Office">
+      <div class="blog-content">
+        <h3>Home Office Background Ideas to Always be "Zoom Ready"</h3>
+        <p>6/7/2025</p>
+      </div>
+    </div>
+    </a>
+
+    <!-- Card 4 -->
+     <a href="{{ url_for('story4') }}" class="blog-link">
+    <div class="blog-card">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/05/Transitional-eclectic-living-room-with-cow-print-decor-by-Decorilla-designer-Jason-D.--2048x1365.jpeg" alt="Cow Print Trend">
+      <div class="blog-content">
+        <h3>Moo-ve Over Leopard Print, the Cow Print Trend is Taking Over Interiors</h3>
+        <p>6/6/2025</p>
+      </div>
+    </div>
+    </a>
+
+    <!-- Card 5 -->
+     <a href="{{ url_for('story5') }}" class="blog-link">
+    <div class="blog-card">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2023/10/Best-TV-stands-in-a-living-room-by-Decorilla-designer-Matthew-R-2048x1543.jpg" alt="TV Stands">
+      <div class="blog-content">
+        <h3>Best TV Stands and Consoles: Where Function Meets Fashion!</h3>
+        <p>6/5/2025</p>
+      </div>
+    </div>
+    </a>
+
+    <!-- Card 6 -->
+     <a href="{{ url_for('story6') }}" class="blog-link">
+    <div class="blog-card">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2024/10/living-room-by-top-interior-design-website-Decorilla-2048x1148.jpg" alt="Interior Inspiration">
+      <div class="blog-content">
+        <h3>10 Best Interior Design Websites for Ideas & Inspiration</h3>
+        <p>6/5/2025</p>
+      </div>
+    </div>
+    </a>
+  </div>
     
-    <!-- Featured Post -->
-    <div class="row mb-5">
-        <div class="col-md-12">
-            <div class="card featured-post">
-                <img src="https://cdn.decorilla.com/images/1200/4b606d9a-94be-4e1e-b912-5e107b0ef3ed/Blue-White-Kitchen-Rustic-Home-Design-Rendering.jpg" class="card-img-top" alt="Featured Post">
-                <div class="card-body">
-                    <h2 class="card-title">Latest Trends in Kitchen Design for 2024</h2>
-                    <p class="card-text">Discover the most popular kitchen design trends that are making waves this year, from sustainable materials to smart technology integration.</p>
-                    <a href="#" class="btn btn-primary">Read More</a>
-                </div>
-            </div>
-        </div>
+
+
+  <!-- Before & After Section -->
+<section style="max-width: 1200px; margin: 60px auto; padding: 0 20px; font-family: 'Poppins', sans-serif;">
+  <h2 style="text-align: center; font-size: 2rem; font-weight: 500; margin-bottom: 20px;">Real Before & After Stories</h2>
+
+  <!-- Filter Buttons -->
+  <div style="text-align: center; margin-bottom: 30px;" id="category-buttons">
+    <button class="filter-btn active" data-category="full-home">FULL HOME</button>
+    <button class="filter-btn" data-category="offices">OFFICES</button>
+    <button class="filter-btn" data-category="living-dining">LIVING & DINING</button>
+    <button class="filter-btn" data-category="bedrooms">BEDROOMS</button>
+    <button class="filter-btn" data-category="kitchen-bath">KITCHEN & BATH</button>
+  </div>
+
+  <!-- Cards Container -->
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;" id="story-cards">
+
+    <!-- FULL HOME Cards -->
+    <div class="story-card" data-category="full-home" style="background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/02/Best-Decorilla-living-room-makeovers-2048x1357.jpg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">10 Living Room Makeovers for the Ultimate Inspiration</h3>
+        <p style="font-size: 0.85rem; color: #777;">April 15, 2025</p>
+      </div>
     </div>
 
-    <!-- Blog Posts Grid -->
-    <div class="row">
-        <!-- Post 1 -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <img src="https://cdn.decorilla.com/images/1200/fb9af78e-95bc-4eec-a185-ae1ade6894c6/Eclectic-Formal-Living-Room-Interior-Design-Rendering.jpg" class="card-img-top" alt="Living Room Design">
-                <div class="card-body">
-                    <h3 class="card-title">How to Create a Cozy Living Room</h3>
-                    <p class="card-text">Learn the secrets to designing a warm and inviting living space that your family will love.</p>
-                    <a href="#" class="btn btn-outline-primary">Read More</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Post 2 -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <img src="https://cdn.decorilla.com/images/1200/a6e50faf-b4b4-4636-ac9c-7336f3f74175/SpaInspired-Master-Bathroom-Design-Rendering.jpg" class="card-img-top" alt="Bathroom Design">
-                <div class="card-body">
-                    <h3 class="card-title">Spa-Inspired Bathroom Ideas</h3>
-                    <p class="card-text">Transform your bathroom into a luxurious retreat with these spa-inspired design tips.</p>
-                    <a href="#" class="btn btn-outline-primary">Read More</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Post 3 -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <img src="https://cdn.decorilla.com/images/1200/2d8bb3bd-f143-4d72-b9fb-f39b1b5a484e/Glam-Elegant-Home-Interior-Design-Rendering.jpg" class="card-img-top" alt="Bedroom Design">
-                <div class="card-body">
-                    <h3 class="card-title">Bedroom Design: Creating Your Perfect Sanctuary</h3>
-                    <p class="card-text">Expert tips for designing a bedroom that promotes relaxation and better sleep.</p>
-                    <a href="#" class="btn btn-outline-primary">Read More</a>
-                </div>
-            </div>
-        </div>
+    <div class="story-card" data-category="full-home" style="background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/02/Modern-farmhouse-living-room-by-Decorilla-2048x1365.jpeg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Custom Modern Farmhouse Interior Refresh</h3>
+        <p style="font-size: 0.85rem; color: #777;">April 2, 2025</p>
+      </div>
     </div>
 
-    <!-- Categories Section -->
-    <div class="row mt-5">
-        <div class="col-md-12">
-            <h2 class="mb-4">Categories</h2>
-            <div class="d-flex flex-wrap gap-2">
-                <a href="#" class="btn btn-outline-secondary">Kitchen Design</a>
-                <a href="#" class="btn btn-outline-secondary">Living Room</a>
-                <a href="#" class="btn btn-outline-secondary">Bathroom</a>
-                <a href="#" class="btn btn-outline-secondary">Bedroom</a>
-                <a href="#" class="btn btn-outline-secondary">Color Schemes</a>
-                <a href="#" class="btn btn-outline-secondary">Furniture</a>
-                <a href="#" class="btn btn-outline-secondary">Lighting</a>
-                <a href="#" class="btn btn-outline-secondary">Small Spaces</a>
-            </div>
-        </div>
+    <div class="story-card" data-category="full-home" style="background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/04/Transitional-modern-living-room-design-by-Decorilla-2048x1425.jpeg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Modern Transitional Home Refresh</h3>
+        <p style="font-size: 0.85rem; color: #777;">April 30, 2025</p>
+      </div>
     </div>
-</div>
+
+    <!-- OFFICES Card -->
+    <div class="story-card" data-category="offices" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/02/Eclectic-Home-Office-Den-by-Decorilla-2048x1365.jpeg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Funky Home Office Den Interior</h3>
+        <p style="font-size: 0.85rem; color: #777;">April 1, 2025</p>
+      </div>
+    </div>
+
+    <div class="story-card" data-category="offices" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/01/Tropical-eclectic-office-and-guest-room-combo-before-and-after-by-Decorilla-2048x1365.jpg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Tropical Eclectic Office and Guest Room Combo</h3>
+        <p style="font-size: 0.85rem; color: #777;">April 1, 2025</p>
+      </div>
+    </div>
+
+    <div class="story-card" data-category="offices" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2022/04/Backyard-home-office-shed-design-before-and-after-by-Decorilla.jpg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Feminine Backyard Home Office Shed Design</h3>
+        <p style="font-size: 0.85rem; color: #777;">April 1, 2025</p>
+      </div>
+    </div>
+
+    <!-- LIVING & DINING Card -->
+    <div class="story-card" data-category="living-dining" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/04/Classic-contemporary-interior-design-for-a-condo-living-room-by-Decorilla-2048x1158.jpeg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Classic Contemporary Interior Design for a Condo</h3>
+        <p style="font-size: 0.85rem; color: #777;">April 9, 2025</p>
+      </div>
+    </div>
+
+    <div class="story-card" data-category="living-dining" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/04/Transitional-modern-living-room-design-by-Decorilla-2048x1425.jpeg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Modern Transitional Home Refresh</h3>
+        <p style="font-size: 0.85rem; color: #777;">April 9, 2025</p>
+      </div>
+    </div>
+
+    <div class="story-card" data-category="living-dining" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/02/Luxury-glam-dining-room-by-Decorilla-2048x1603.jpeg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Luxury Glam Dining Room</h3>
+        <p style="font-size: 0.85rem; color: #777;">April 9, 2025</p>
+      </div>
+    </div>
+
+
+    <!-- BEDROOMS Card -->
+    <div class="story-card" data-category="bedrooms" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/04/Realxing-bedroom-design-by-Decorilla-designer-Leanna-S.jpg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Modern Relaxing Bedroom Design</h3>
+        <p style="font-size: 0.85rem; color: #777;">March 28, 2025</p>
+      </div>
+    </div>
+
+    <div class="story-card" data-category="bedrooms" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/02/Elegant-master-bedroom-design-by-Decorilla-2048x1365.jpg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Elegant Master Bedroom + Classy Boy's Bedroom</h3>
+        <p style="font-size: 0.85rem; color: #777;">March 28, 2025</p>
+      </div>
+    </div>
+
+    <div class="story-card" data-category="bedrooms" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/02/Refined-girls-pink-bedroom-design-by-Decorilla-2048x1425.jpeg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Refined Girl's Pink Bedroom Design</h3>
+        <p style="font-size: 0.85rem; color: #777;">March 28, 2025</p>
+      </div>
+    </div>
+
+    <!-- KITCHEN & BATH Card -->
+    <div class="story-card" data-category="kitchen-bath" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/02/Modern-minimalist-kitchen-design-by-Decorilla-2048x1365.jpeg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Modern Minimalist Kitchen Design</h3>
+        <p style="font-size: 0.85rem; color: #777;">March 15, 2025</p>
+      </div>
+    </div>
+
+    <div class="story-card" data-category="kitchen-bath" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/02/Luxury-spa-inspired-bathroom-design-by-Decorilla-2048x1365.jpeg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Luxury Spa-Inspired Bathroom Design</h3>
+        <p style="font-size: 0.85rem; color: #777;">March 10, 2025</p>
+      </div>
+    </div>
+
+    <div class="story-card" data-category="kitchen-bath" style="display: none; background: white; border-radius: 12px; overflow: hidden; width: 320px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <img src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-7de7212/www.decorilla.com/online-decorating/wp-content/uploads/2025/01/Contemporary-kitchen-remodel-by-Decorilla-2048x1365.jpg" style="width: 100%; height: 200px; object-fit: cover;">
+      <div style="padding: 15px;">
+        <h3 style="font-size: 1rem; font-weight: 500; margin: 0 0 10px;">Before & After: Contemporary Kitchen Remodel</h3>
+        <p style="font-size: 0.85rem; color: #777;">March 5, 2025</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filter functionality for blog stories
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const storyCards = document.querySelectorAll('.story-card');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            button.classList.add('active');
+
+            const category = button.getAttribute('data-category');
+
+            // Filter story cards
+            storyCards.forEach(card => {
+                if (category === 'full-home' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeIn 0.5s ease-in-out';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Add hover effects to blog cards
+    const blogCards = document.querySelectorAll('.blog-card');
+    blogCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-8px)';
+            card.style.boxShadow = '0 15px 35px rgba(0,0,0,0.2)';
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+            card.style.boxShadow = '0 6px 15px rgba(0,0,0,0.12)';
+        });
+    });
+
+    // Add animation to story cards
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe all story cards
+    storyCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+});
+
+// Add CSS animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .blog-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .story-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .story-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+`;
+document.head.appendChild(style);
+</script>
 {% endblock %} 

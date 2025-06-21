@@ -318,6 +318,50 @@ footer a:hover {
     }
 }
 
+/* Dropdown Menu for portfolio*/
+.nav-item {
+    position: relative;
+    list-style: none;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 15px;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    min-width: 250px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    border-radius: 8px;
+    padding: 10px 0;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 20px;
+    color: #222;
+    text-decoration: none;
+    transition: background 0.3s;
+    font-size: 14px;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.nav-item:hover .dropdown-content {
+    display: block;
+}
+
+
 /* Hero Section */
 .hero {
     margin-top: 70px;

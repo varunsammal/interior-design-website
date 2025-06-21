@@ -7,69 +7,188 @@
 {% block title %}Edit Profile | Decorilla{% endblock %}
 
 {% block content %}
-<div class="edit-profile-container">
-    <div class="edit-profile-card">
-        <h2>Edit Your Profile</h2>
-        <form method="POST" class="edit-profile-form" enctype="multipart/form-data">
-            <div class="profile-picture-section">
-                <label>Profile Picture</label>
-                <div class="profile-picture-preview-area">
-                    {% if user.profile_image %}
-                        <img id="currentProfilePic" src="/static/uploads/{{ user.profile_image }}" alt="Profile Picture" class="d-block">
-                    {% else %}
-                        <img id="currentProfilePic" src="{{ url_for('static', filename='images/default_profile.png') }}" alt="Profile Picture" class="d-none">
-                    {% endif %}
-                    <img id="newProfilePicPreview" src="" alt="New Profile Picture" class="d-none">
-                    <i id="defaultProfileIcon" class="fas fa-user-circle {{ 'd-none' if user.profile_image else 'd-block' }}"></i>
-                </div>
-                <input type="file" id="profile_image" name="profile_image" accept="image/*" class="d-none">
-                <input type="hidden" id="remove_profile_image" name="remove_profile_image" value="0">
-                <div class="profile-picture-actions">
-                    <button type="button" id="changePictureBtn" class="btn-secondary">Change Picture</button>
-                    <button type="button" id="removePictureBtn" class="btn-danger {{ 'd-block' if user.profile_image else 'd-none' }}">Remove Picture</button>
-                </div>
-            </div>
+<!-- Scroll Progress Indicator -->
+<div class="scroll-progress" id="scrollProgress"></div>
 
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" value="{{ user.username }}" required>
+<!-- Back to Top Button -->
+<button class="back-to-top" id="backToTop">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- Hero Section -->
+<header class="edit-hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1><i class="fas fa-user-edit"></i> Edit Your Profile</h1>
+    <p>Update your personal information and preferences to personalize your interior design experience</p>
+  </div>
+</header>
+
+<!-- Edit Profile Form -->
+<div class="edit-profile-container">
+  <div class="edit-profile-card">
+    <form method="POST" class="edit-profile-form" enctype="multipart/form-data">
+      <!-- Profile Picture Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2><i class="fas fa-camera"></i> Profile Picture</h2>
+        </div>
+        <div class="profile-picture-section">
+          <div class="profile-picture-preview-area">
+            {% if user.profile_image %}
+              <img id="currentProfilePic" src="/static/uploads/{{ user.profile_image }}" alt="Profile Picture" class="d-block">
+            {% else %}
+              <img id="currentProfilePic" src="{{ url_for('static', filename='images/default_profile.png') }}" alt="Profile Picture" class="d-none">
+            {% endif %}
+            <img id="newProfilePicPreview" src="" alt="New Profile Picture" class="d-none">
+            <i id="defaultProfileIcon" class="fas fa-user-circle {{ 'd-none' if user.profile_image else 'd-block' }}"></i>
+            <div class="upload-overlay">
+              <i class="fas fa-camera"></i>
+              <span>Click to upload</span>
             </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" value="{{ user.email }}" required>
-            </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" value="{{ user.address or '' }}">
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone</label>
-                <input type="text" id="phone" name="phone" value="{{ user.phone or '' }}">
-            </div>
-            <div class="form-group">
-                <label for="design_style">Preferred Design Style</label>
-                <select id="design_style" name="design_style">
-                    <option value="">Select a style</option>
-                    <option value="Modern" {% if user.design_style == 'Modern' %}selected{% endif %}>Modern</option>
-                    <option value="Minimalist" {% if user.design_style == 'Minimalist' %}selected{% endif %}>Minimalist</option>
-                    <option value="Bohemian" {% if user.design_style == 'Bohemian' %}selected{% endif %}>Bohemian</option>
-                    <option value="Industrial" {% if user.design_style == 'Industrial' %}selected{% endif %}>Industrial</option>
-                    <option value="Mid-Century Modern" {% if user.design_style == 'Mid-Century Modern' %}selected{% endif %}>Mid-Century Modern</option>
-                    <option value="Traditional" {% if user.design_style == 'Traditional' %}selected{% endif %}>Traditional</option>
-                    <option value="Farmhouse" {% if user.design_style == 'Farmhouse' %}selected{% endif %}>Farmhouse</option>
-                    <option value="Coastal" {% if user.design_style == 'Coastal' %}selected{% endif %}>Coastal</option>
-                    <option value="Scandinavian" {% if user.design_style == 'Scandinavian' %}selected{% endif %}>Scandinavian</option>
-                </select>
-            </div>
-            <div class="form-actions">
-                <button type="submit" class="btn-primary">Save Changes</button>
-                <a href="{{ url_for('profile') }}" class="btn-secondary">Cancel</a>
-            </div>
-        </form>
-    </div>
+          </div>
+          <input type="file" id="profile_image" name="profile_image" accept="image/*" class="d-none">
+          <input type="hidden" id="remove_profile_image" name="remove_profile_image" value="0">
+          <div class="profile-picture-actions">
+            <button type="button" id="changePictureBtn" class="btn btn-secondary">
+              <i class="fas fa-upload"></i> Change Picture
+            </button>
+            <button type="button" id="removePictureBtn" class="btn btn-danger {{ 'd-block' if user.profile_image else 'd-none' }}">
+              <i class="fas fa-trash"></i> Remove Picture
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal Information Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2><i class="fas fa-user"></i> Personal Information</h2>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="username">
+              <i class="fas fa-user-tag"></i> Username
+            </label>
+            <input type="text" id="username" name="username" value="{{ user.username }}" required>
+          </div>
+          <div class="form-group">
+            <label for="email">
+              <i class="fas fa-envelope"></i> Email
+            </label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" required>
+          </div>
+          <div class="form-group">
+            <label for="address">
+              <i class="fas fa-map-marker-alt"></i> Address
+            </label>
+            <input type="text" id="address" name="address" value="{{ user.address or '' }}" placeholder="Enter your address">
+          </div>
+          <div class="form-group">
+            <label for="phone">
+              <i class="fas fa-phone"></i> Phone
+            </label>
+            <input type="text" id="phone" name="phone" value="{{ user.phone or '' }}" placeholder="Enter your phone number">
+          </div>
+        </div>
+      </div>
+
+      <!-- Design Preferences Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2><i class="fas fa-palette"></i> Design Preferences</h2>
+        </div>
+        <div class="form-group">
+          <label for="design_style">
+            <i class="fas fa-paint-brush"></i> Preferred Design Style
+          </label>
+          <select id="design_style" name="design_style">
+            <option value="">Select your preferred design style</option>
+            <option value="Modern" {% if user.design_style == 'Modern' %}selected{% endif %}>Modern</option>
+            <option value="Minimalist" {% if user.design_style == 'Minimalist' %}selected{% endif %}>Minimalist</option>
+            <option value="Bohemian" {% if user.design_style == 'Bohemian' %}selected{% endif %}>Bohemian</option>
+            <option value="Industrial" {% if user.design_style == 'Industrial' %}selected{% endif %}>Industrial</option>
+            <option value="Mid-Century Modern" {% if user.design_style == 'Mid-Century Modern' %}selected{% endif %}>Mid-Century Modern</option>
+            <option value="Traditional" {% if user.design_style == 'Traditional' %}selected{% endif %}>Traditional</option>
+            <option value="Farmhouse" {% if user.design_style == 'Farmhouse' %}selected{% endif %}>Farmhouse</option>
+            <option value="Coastal" {% if user.design_style == 'Coastal' %}selected{% endif %}>Coastal</option>
+            <option value="Scandinavian" {% if user.design_style == 'Scandinavian' %}selected{% endif %}>Scandinavian</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <a href="{{ url_for('profile') }}" class="btn btn-outline">
+          <i class="fas fa-arrow-left"></i> Cancel
+        </a>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i> Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}
 
 {% block scripts_extra %}
 <script src="{{ url_for('static', filename='javascript/edit_profile.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize scroll progress indicator
+    const scrollProgress = document.getElementById('scrollProgress');
+    
+    if (scrollProgress) {
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.body.offsetHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            
+            scrollProgress.style.width = scrollPercent + '%';
+        });
+    }
+
+    // Initialize back to top button
+    const backToTop = document.getElementById('backToTop');
+    
+    if (backToTop) {
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // Initialize form animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all form sections
+    const sections = document.querySelectorAll('.form-section');
+    sections.forEach((section, index) => {
+        setTimeout(() => {
+            observer.observe(section);
+        }, index * 200);
+    });
+});
+</script>
 {% endblock %} 

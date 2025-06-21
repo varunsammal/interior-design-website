@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block head_extra %}
@@ -8,164 +7,258 @@
 {% block title %}Profile | Decorilla{% endblock %}
 
 {% block content %}
-<div class="profile-container">
-    <!-- Profile Header -->
-    <div class="profile-header">
-        <div class="profile-cover"></div>
-        <div class="profile-avatar">
-            {% if user.profile_image %}
-            <img src="{{ url_for('static', filename='uploads/' ~ user.profile_image) }}" alt="Profile Picture" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-            {% else %}
-                <i class="fas fa-user-circle"></i>
-            {% endif %}
-        </div>
-        <div class="profile-info">
-            <div class="profile-details">
-                <h1>{{ user.username or 'User' }}</h1>
-                <p class="profile-email">{{ user.email }}</p>
-                <div class="profile-stats">
-                    <div class="stat">
-                        <span class="stat-value">{{ user.designs.count() }}</span>
-                        <span class="stat-label">Designs</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-value">{{ user.projects|length }}</span>
-                        <span class="stat-label">Projects</span>
-                    </div>
-                </div>
-                <div class="profile-actions" style="margin-top: 1.5rem;">
-                    <a href="{{ url_for('edit_profile') }}" class="btn-primary">
-                        <i class="fas fa-edit"></i> Edit Profile
-                    </a>
-                </div>
-            </div>
-        </div>
+<!-- Scroll Progress Indicator -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Back to Top Button -->
+<button class="back-to-top" id="backToTop">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- Hero Section -->
+<header class="profile-hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="profile-avatar">
+      {% if user.profile_image %}
+      <img src="{{ url_for('static', filename='uploads/' ~ user.profile_image) }}" alt="Profile Picture">
+      {% else %}
+        <i class="fas fa-user-circle"></i>
+      {% endif %}
     </div>
-
-    <!-- Profile Content -->
-    <div class="profile-content">
-        <!-- User Information -->
-        <div class="profile-section">
-            <h2>Personal Information</h2>
-            <div class="info-grid">
-                <div class="info-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div class="info-content">
-                        <h3>Address</h3>
-                        <p>{{ user.address or 'Not provided' }}</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-phone"></i>
-                    <div class="info-content">
-                        <h3>Phone</h3>
-                        <p>{{ user.phone or 'Not provided' }}</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-palette"></i>
-                    <div class="info-content">
-                        <h3>Design Style</h3>
-                        <p>{{ user.design_style or 'Not specified' }}</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <div class="info-content">
-                        <h3>Member Since</h3>
-                        <p>{{ user.created_at.strftime('%B %d, %Y') }}</p>
-                    </div>
-                </div>
-            </div>
+    <div class="profile-info">
+      <h1 class="profile-name">{{ user.username or 'User' }}</h1>
+      <p class="profile-email">{{ user.email }}</p>
+      <div class="profile-stats">
+        <div class="stat">
+          <span class="stat-value">{{ user.designs.count() }}</span>
+          <span class="stat-label">Designs</span>
         </div>
-
-        <!-- Projects Section -->
-        <div class="profile-section">
-            <div class="section-header">
-                <h2>Your Projects</h2>
-                <a href="{{ url_for('new_project') }}" class="btn-new">
-                    <i class="fas fa-plus"></i> New Project
-                </a>
-            </div>
-            {% if projects %}
-            <div class="projects-grid">
-                {% for project in projects %}
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>{{ project.title }}</h3>
-                        <span class="project-status {{ project.status }}">{{ project.status }}</span>
-                    </div>
-                    <p class="project-description">{{ project.description or 'No description provided' }}</p>
-                    <div class="project-footer">
-                        <span class="project-budget">
-                            <i class="fas fa-dollar-sign"></i>
-                            {{ "%.2f"|format(project.budget) if project.budget else 'Not specified' }}
-                        </span>
-                        <span class="project-date">
-                            <i class="fas fa-calendar"></i>
-                            {{ project.created_at.strftime('%b %d, %Y') }}
-                        </span>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            {% else %}
-            <div class="no-projects">
-                <i class="fas fa-folder-open"></i>
-                <p>You haven't created any projects yet.</p>
-                <a href="{{ url_for('new_project') }}" class="btn-primary">Create Your First Project</a>
-            </div>
-            {% endif %}
+        <div class="stat">
+          <span class="stat-value">{{ user.projects|length }}</span>
+          <span class="stat-label">Projects</span>
         </div>
-
-        <!-- Recent Designs Section -->
-        <div class="profile-section">
-            <h2>Recent Designs</h2>
-            {% if user.designs.count() > 0 %}
-            <div class="designs-grid">
-                {% for design in user.designs.order_by(DesignImage.upload_date.desc()).limit(4).all() %}
-                <div class="design-card">
-                    <div class="design-image" onclick="viewDesign('{{ url_for('static', filename='uploads/' + design.filename) }}')">
-                        <img src="{{ url_for('static', filename='uploads/' + design.filename) }}" alt="{{ design.filename }}">
-                    </div>
-                    <div class="design-info">
-                        <p class="design-date">{{ design.upload_date.strftime('%B %d, %Y') }}</p>
-                        <p class="design-notes">{{ design.design_notes or 'No notes' }}</p>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            {% if user.designs.count() > 4 %}
-            <div class="view-more">
-                <a href="{{ url_for('upload') }}" class="btn-view-more">View All Designs</a>
-            </div>
-            {% endif %}
-            {% else %}
-            <div class="no-designs">
-                <i class="fas fa-images"></i>
-                <p>You haven't uploaded any designs yet.</p>
-                <a href="{{ url_for('upload') }}" class="btn-primary">Upload Your First Design</a>
-            </div>
-            {% endif %}
+        <div class="stat">
+          <span class="stat-value">{{ user.created_at.strftime('%Y') }}</span>
+          <span class="stat-label">Member Since</span>
         </div>
+      </div>
+      <div class="profile-actions">
+        <a href="{{ url_for('edit_profile') }}" class="btn btn-primary">
+          <i class="fas fa-edit"></i> Edit Profile
+        </a>
+      </div>
     </div>
+  </div>
+</header>
+
+<!-- Profile Content -->
+<div class="profile-content">
+  <!-- Personal Information Section -->
+  <section class="profile-section">
+    <div class="section-header">
+      <h2><i class="fas fa-user"></i> Personal Information</h2>
+    </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-icon">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="info-content">
+          <h3>Address</h3>
+          <p>{{ user.address or 'Not provided' }}</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">
+          <i class="fas fa-phone"></i>
+        </div>
+        <div class="info-content">
+          <h3>Phone</h3>
+          <p>{{ user.phone or 'Not provided' }}</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">
+          <i class="fas fa-palette"></i>
+        </div>
+        <div class="info-content">
+          <h3>Design Style</h3>
+          <p>{{ user.design_style or 'Not specified' }}</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="info-content">
+          <h3>Member Since</h3>
+          <p>{{ user.created_at.strftime('%B %d, %Y') }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="profile-section">
+    <div class="section-header">
+      <h2><i class="fas fa-folder"></i> Your Projects</h2>
+      <a href="{{ url_for('new_project') }}" class="btn btn-secondary">
+        <i class="fas fa-plus"></i> New Project
+      </a>
+    </div>
+    {% if projects %}
+    <div class="projects-grid">
+      {% for project in projects %}
+      <div class="project-card">
+        <div class="project-header">
+          <h3>{{ project.title }}</h3>
+          <span class="project-status {{ project.status }}">{{ project.status }}</span>
+        </div>
+        <p class="project-description">{{ project.description or 'No description provided' }}</p>
+        <div class="project-footer">
+          <div class="project-meta">
+            <span class="project-budget">
+              <i class="fas fa-dollar-sign"></i>
+              {{ "%.2f"|format(project.budget) if project.budget else 'Not specified' }}
+            </span>
+            <span class="project-date">
+              <i class="fas fa-calendar"></i>
+              {{ project.created_at.strftime('%b %d, %Y') }}
+            </span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">
+        <i class="fas fa-folder-open"></i>
+      </div>
+      <h3>No Projects Yet</h3>
+      <p>You haven't created any projects yet. Start your first interior design project!</p>
+      <a href="{{ url_for('new_project') }}" class="btn btn-primary">Create Your First Project</a>
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- Recent Designs Section -->
+  <section class="profile-section">
+    <div class="section-header">
+      <h2><i class="fas fa-images"></i> Recent Designs</h2>
+      <a href="{{ url_for('upload') }}" class="btn btn-secondary">
+        <i class="fas fa-upload"></i> Upload Design
+      </a>
+    </div>
+    {% if user.designs.count() > 0 %}
+    <div class="designs-grid">
+      {% for design in user.designs.order_by(DesignImage.upload_date.desc()).limit(6).all() %}
+      <div class="design-card">
+        <div class="design-image" onclick="viewDesign('{{ url_for('static', filename='uploads/' + design.filename) }}')">
+          <img src="{{ url_for('static', filename='uploads/' + design.filename) }}" alt="{{ design.filename }}">
+          <div class="design-overlay">
+            <i class="fas fa-eye"></i>
+          </div>
+        </div>
+        <div class="design-info">
+          <p class="design-date">{{ design.upload_date.strftime('%B %d, %Y') }}</p>
+          <p class="design-notes">{{ design.design_notes or 'No notes' }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if user.designs.count() > 6 %}
+    <div class="view-more">
+      <a href="{{ url_for('upload') }}" class="btn btn-outline">View All Designs</a>
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">
+        <i class="fas fa-images"></i>
+      </div>
+      <h3>No Designs Yet</h3>
+      <p>You haven't uploaded any designs yet. Share your interior design work!</p>
+      <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload Your First Design</a>
+    </div>
+    {% endif %}
+  </section>
 </div>
 
 <!-- Image Preview Modal -->
 <div id="imageModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Design Preview</h3>
-            <button class="close-modal" onclick="closeImageModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <img id="modalImage" src="" alt="Design Preview">
-        </div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Design Preview</h3>
+      <button class="close-modal" onclick="closeImageModal()">&times;</button>
     </div>
+    <div class="modal-body">
+      <img id="modalImage" src="" alt="Design Preview">
+    </div>
+  </div>
 </div>
 {% endblock %}
 
 {% block scripts_extra %}
 <script src="{{ url_for('static', filename='javascript/profile.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize scroll progress indicator
+    const scrollProgress = document.getElementById('scrollProgress');
+    
+    if (scrollProgress) {
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.body.offsetHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            
+            scrollProgress.style.width = scrollPercent + '%';
+        });
+    }
+
+    // Initialize back to top button
+    const backToTop = document.getElementById('backToTop');
+    
+    if (backToTop) {
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // Initialize animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all cards
+    const cards = document.querySelectorAll('.info-card, .project-card, .design-card');
+    cards.forEach((card, index) => {
+        setTimeout(() => {
+            observer.observe(card);
+        }, index * 100);
+    });
+});
+</script>
 {% endblock %}
 
