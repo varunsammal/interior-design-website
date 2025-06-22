@@ -1,96 +1,138 @@
-
 {% extends "base.html" %}
 
 {% block head_extra %}
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/schedule_consultation.css') }}">
 {% endblock %}
 
-{% block title %}Tell Us Your Story - Decorilla{% endblock %}
+{% block title %}Schedule Consultation - Decorilla{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="form-wrapper">
-        <div class="form-container">
-            <h1>Tell Us Your Story</h1>
-            <p class="subheading">Share your vision, and we'll help bring it to life!</p>
-            <form action="/submit_consultation" method="POST">
-                <h2>Contact Information</h2>
-                <div class="form-row">
-                    <div class="form-col">
-                        <label for="full_name">Full Name</label>
-                        <input type="text" id="full_name" name="full_name" required>
-                    </div>
-                    <div class="form-col">
-                        <label for="email">Email</label>
-                        <input type="text" id="email" name="email" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-col">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone">
-                    </div>
-                    <div class="form-col">
-                        <label for="zip_code">Zip Code</label>
-                        <input type="text" id="zip_code" name="zip_code">
-                    </div>
-                </div>
-
-                <h2>Project Details</h2>
-                <div class="form-row">
-                    <div class="form-col">
-                        <label for="project_type">Project Type</label>
-                        <select id="project_type" name="project_type">
-                            <option value="">Select...</option>
-                            <option value="residential">Residential</option>
-                            <option value="commercial">Commercial</option>
-                            <option value="single_room">Single Room</option>
-                            <option value="full_home">Full Home</option>
-                        </select>
-                    </div>
-                    <div class="form-col">
-                        <label for="room_count">Number of Rooms</label>
-                        <input type="number" id="room_count" name="room_count" min="1" value="1">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="style_preference">Style Preference (e.g., Modern, Traditional, Eclectic)</label>
-                    <input type="text" id="style_preference" name="style_preference">
-                </div>
-                <div class="form-group">
-                    <label for="project_description">Tell us about your project</label>
-                    <textarea id="project_description" name="project_description" placeholder="Describe your design goals, inspiration, challenges, and any specific requirements."></textarea>
-                </div>
-
-                <div class="btn-container">
-                    <button type="submit" class="btn">Schedule Consultation</button>
-                    <span class="btn-text">No obligation, free consultation</span>
-                </div>
-            </form>
+<section class="consultation-section" style="background: var(--gradient-light); min-height: 100vh; padding: 60px 0 40px;">
+    <div class="container">
+        <div class="section-header">
+            <h1>Schedule Your Free Consultation</h1>
+            <p class="subtitle">Tell us your story and let our expert designers help bring your vision to life. Get personalized advice and discover tailored solutions for your space.</p>
         </div>
+        
+        <div class="form-wrapper">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Project Details</h2>
+                    <p class="form-subtitle">Share your vision, and we'll help bring it to life!</p>
+                </div>
+                
+                <form action="/submit_consultation" method="POST">
+                    <div class="form-section">
+                        <h3>Contact Information</h3>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="full_name">Full Name</label>
+                                <input type="text" id="full_name" name="full_name" required>
+                            </div>
+                            <div class="form-col">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            <div class="form-col">
+                                <label for="zip_code">Zip Code</label>
+                                <input type="text" id="zip_code" name="zip_code">
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="benefits-container">
-            <h3 class="benefits-title">Benefits of a Free Consultation</h3>
-            <ul class="benefits-list">
-                <li class="benefit-item">
-                    <i class="fas fa-check-circle benefit-icon"></i>
-                    <p class="benefit-text"><strong>Expert Guidance:</strong> Get personalized advice from experienced interior designers.</p>
-                </li>
-                <li class="benefit-item">
-                    <i class="fas fa-lightbulb benefit-icon"></i>
-                    <p class="benefit-text"><strong>Tailored Solutions:</strong> Discover design solutions that fit your unique style and budget.</p>
-                </li>
-                <li class="benefit-item">
-                    <i class="fas fa-clock benefit-icon"></i>
-                    <p class="benefit-text"><strong>Save Time & Money:</strong> Avoid costly mistakes with professional planning.</p>
-                </li>
-                <li class="benefit-item">
-                    <i class="fas fa-comment benefit-icon"></i>
-                    <p class="benefit-text"><strong>Ask Anything:</strong> Your opportunity to ask any questions about our process or your project.</p>
-                </li>
-            </ul>
+                    <div class="form-section">
+                        <h3>Project Details</h3>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="project_type">Project Type</label>
+                                <select id="project_type" name="project_type">
+                                    <option value="">Select project type...</option>
+                                    <option value="residential">Residential Design</option>
+                                    <option value="commercial">Commercial Design</option>
+                                    <option value="single_room">Single Room Makeover</option>
+                                    <option value="full_home">Full Home Design</option>
+                                </select>
+                            </div>
+                            <div class="form-col">
+                                <label for="room_count">Number of Rooms</label>
+                                <input type="number" id="room_count" name="room_count" min="1" value="1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="style_preference">Style Preference</label>
+                            <input type="text" id="style_preference" name="style_preference" placeholder="e.g., Modern, Traditional, Eclectic, Minimalist">
+                        </div>
+                        <div class="form-group">
+                            <label for="project_description">Tell us about your project</label>
+                            <textarea id="project_description" name="project_description" placeholder="Describe your design goals, inspiration, challenges, and any specific requirements. What's your vision for the space?"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="btn-container">
+                        <button type="submit" class="btn">Schedule Free Consultation</button>
+                        <span class="btn-text">No obligation, completely free</span>
+                    </div>
+                </form>
+            </div>
+
+            <div class="benefits-container">
+                <div class="benefits-header">
+                    <h3 class="benefits-title">Why Choose a Free Consultation?</h3>
+                    <p class="benefits-subtitle">Get expert guidance and discover the perfect design solution for your space.</p>
+                </div>
+                
+                <ul class="benefits-list">
+                    <li class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Expert Guidance</h4>
+                            <p>Get personalized advice from experienced interior designers who understand your vision.</p>
+                        </div>
+                    </li>
+                    <li class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Tailored Solutions</h4>
+                            <p>Discover design solutions that perfectly fit your unique style, budget, and lifestyle.</p>
+                        </div>
+                    </li>
+                    <li class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Save Time & Money</h4>
+                            <p>Avoid costly mistakes with professional planning and expert recommendations.</p>
+                        </div>
+                    </li>
+                    <li class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Ask Anything</h4>
+                            <p>Your opportunity to ask any questions about our process, timeline, or your specific project.</p>
+                        </div>
+                    </li>
+                </ul>
+                
+                <div class="consultation-cta">
+                    <p class="cta-text">Ready to transform your space?</p>
+                    <p class="cta-subtext">Book your free consultation today and take the first step toward your dream home.</p>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
 

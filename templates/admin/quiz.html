@@ -1,0 +1,171 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Manage Quiz{% endblock %}
+{% block page_title %}Manage Quiz Questions{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="mb-0">Quiz Questions</h4>
+        <p class="text-muted mb-0">Manage style preference quiz questions</p>
+    </div>
+    <a href="{{ url_for('admin_add_quiz') }}" class="btn btn-admin">
+        <i class="fas fa-plus"></i> Add New Question
+    </a>
+</div>
+
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-6">
+                <label for="type" class="form-label">Question Type</label>
+                <select class="form-select" id="type" name="type">
+                    <option value="">All Types</option>
+                    {% for question_type in question_types %}
+                        <option value="{{ question_type }}" {% if request.args.get('type') == question_type %}selected{% endif %}>{{ question_type.replace('_', ' ').title() }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 d-flex align-items-end">
+                <button type="submit" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+                <a href="{{ url_for('admin_quiz') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Quiz Questions Table -->
+<div class="card">
+    <div class="card-body">
+        {% if questions.items %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>Type</th>
+                            <th>Options</th>
+                            <th>Order</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for question in questions.items %}
+                        <tr>
+                            <td>
+                                <strong>{{ question.question_text[:50] }}{% if question.question_text|length > 50 %}...{% endif %}</strong>
+                            </td>
+                            <td>
+                                <span class="badge bg-info">{{ question.question_type.replace('_', ' ').title() }}</span>
+                            </td>
+                            <td>
+                                {% if question.question_type == 'image_comparison' %}
+                                    <div class="d-flex align-items-center">
+                                        {% if question.image_left %}
+                                            <img src="{{ question.image_left }}" alt="Option 1" 
+                                                 style="width: 30px; height: 30px; object-fit: cover; border-radius: 4px;" 
+                                                 class="me-2">
+                                            <small class="text-muted me-2">{{ question.style_left or 'Style 1' }}</small>
+                                        {% endif %}
+                                        <span class="text-muted">vs</span>
+                                        {% if question.image_right %}
+                                            <img src="{{ question.image_right }}" alt="Option 2" 
+                                                 style="width: 30px; height: 30px; object-fit: cover; border-radius: 4px;" 
+                                                 class="ms-2 me-2">
+                                            <small class="text-muted">{{ question.style_right or 'Style 2' }}</small>
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    <span class="text-muted">N/A</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ question.order_position }}</td>
+                            <td>
+                                {% if question.is_active %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ question.created_at.strftime('%m/%d/%Y') }}</td>
+                            <td class="table-actions">
+                                <a href="{{ url_for('admin_edit_quiz', question_id=question.id) }}" 
+                                   class="btn btn-sm btn-outline-primary" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form method="POST" action="{{ url_for('admin_toggle_quiz', question_id=question.id) }}" class="d-inline">
+                                    <button type="submit" 
+                                            class="btn btn-sm btn-outline-{% if question.is_active %}warning{% else %}success{% endif %}"
+                                            title="{% if question.is_active %}Deactivate{% else %}Activate{% endif %}">
+                                        <i class="fas fa-{% if question.is_active %}pause{% else %}play{% endif %}"></i>
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ url_for('admin_delete_quiz', question_id=question.id) }}" 
+                                      class="d-inline" onsubmit="return confirm('Are you sure you want to delete this quiz question?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {% if questions.pages > 1 %}
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if questions.has_prev %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('admin_quiz', page=questions.prev_num, type=request.args.get('type', '')) }}">Previous</a>
+                            </li>
+                        {% endif %}
+                        
+                        {% for page_num in questions.iter_pages() %}
+                            {% if page_num %}
+                                {% if page_num != questions.page %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('admin_quiz', page=page_num, type=request.args.get('type', '')) }}">{{ page_num }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ page_num }}</span>
+                                    </li>
+                                {% endif %}
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if questions.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('admin_quiz', page=questions.next_num, type=request.args.get('type', '')) }}">Next</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-clipboard-question fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">No quiz questions found</h4>
+                <p class="text-muted">{% if request.args.get('type') %}Try adjusting your filters or{% endif %} create your first quiz question.</p>
+                <a href="{{ url_for('admin_add_quiz') }}" class="btn btn-admin">
+                    <i class="fas fa-plus"></i> Add New Question
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

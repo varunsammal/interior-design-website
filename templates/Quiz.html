@@ -7,30 +7,33 @@
 {% block title %}Interior Style Selector{% endblock %}
 
 {% block content %}
-
-    <!-- Animated background elements -->
-    <div class="bg-element"></div>
-    <div class="bg-element"></div>
-    <div class="bg-element"></div>
-    <div class="bg-element"></div>
-    
-    <!-- Content -->
-    <div class="header-container">
-        <h2>Click on the style you prefer</h2>
-        <p>Point us to the styles you like by clicking on an image</p>
+<section class="quiz-section" style="background: var(--gradient-light); min-height: 100vh; padding: 60px 0 40px;">
+    <div class="container">
+        <div class="section-header">
+            <h1>Discover Your Interior Style</h1>
+            <p class="subtitle">Click on the style you prefer. We'll use your choices to match you with the perfect designer and ideas!</p>
+        </div>
+        <!-- Animated background elements -->
+        <div class="quiz-bg-element"></div>
+        <div class="quiz-bg-element"></div>
+        <div class="quiz-bg-element"></div>
+        <div class="quiz-bg-element"></div>
+        <!-- Content -->
+        <div class="header-container">
+            <h2 class="fw-semibold">Choose Your Favorite Style</h2>
+            <p>Point us to the styles you like by clicking on an image</p>
+        </div>
+        <div class="comparison-container" id="comparisonContainer">
+            <img src="" class="style-option" onclick="selectImage(1)" id="leftImage">
+            <div class="or-text" onclick="loadNewPair()">OR</div>
+            <img src="" class="style-option" onclick="selectImage(2)" id="rightImage">
+        </div>
+        <div class="dots-container" id="dotsContainer">
+            <!-- Empty dots will be created dynamically -->
+        </div>
+        <button class="skip-btn btn btn-secondary btn-lg" onclick="skipAll()" style="border-radius: var(--border-radius-pill);">SKIP ALL</button>
     </div>
-    
-    <div class="comparison-container" id="comparisonContainer">
-        <img src="" class="style-option" onclick="selectImage(1)" id="leftImage">
-        <div class="or-text" onclick="loadNewPair()">OR</div>
-        <img src="" class="style-option" onclick="selectImage(2)" id="rightImage">
-    </div>
-    
-    <div class="dots-container" id="dotsContainer">
-        <!-- Empty dots will be created dynamically -->
-    </div>
-    
-    <button class="skip-btn" onclick="skipAll()">SKIP ALL</button>
+</section>
 {% endblock %}
 
 {% block scripts_extra %}

@@ -43,6 +43,12 @@
     <p>Discover stunning interior transformations that bring dreams to life. Each project showcases our commitment to excellence and attention to detail.</p>
   </div>
 
+    <div class="portfolio-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        {% for category in categories %}
+            <button class="filter-btn" data-filter="{{ category.lower().replace(' ', '-') }}">{{ category.replace('_', ' ').title() }}</button>
+        {% endfor %}
+    </div>
   <!-- Portfolio Filters -->
   <div class="portfolio-filters">
     <button class="filter-btn active" data-filter="all">All Projects</button>

@@ -1,0 +1,110 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Add New FAQ{% endblock %}
+{% block page_title %}Add New FAQ{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Create New FAQ</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="category">
+                                <option value="">Select Category</option>
+                                <option value="general">General</option>
+                                <option value="pricing">Pricing</option>
+                                <option value="design">Design Process</option>
+                                <option value="services">Services</option>
+                                <option value="support">Support</option>
+                                <option value="account">Account</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="order_position" class="form-label">Order Position</label>
+                            <input type="number" class="form-control" id="order_position" name="order_position" value="0" min="0">
+                            <small class="form-text text-muted">Lower numbers appear first</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="question" class="form-label">Question *</label>
+                        <textarea class="form-control" id="question" name="question" rows="2" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="answer" class="form-label">Answer *</label>
+                        <textarea class="form-control" id="answer" name="answer" rows="4" required></textarea>
+                        <small class="form-text text-muted">You can use HTML tags for formatting</small>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('admin_faqs') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to FAQs
+                        </a>
+                        <button type="submit" class="btn btn-admin">
+                            <i class="fas fa-save"></i> Create FAQ
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Preview</h5>
+            </div>
+            <div class="card-body">
+                <div id="faq-preview" class="border rounded p-3">
+                    <h6 id="preview-question" class="text-muted">Enter question to see preview</h6>
+                    <p id="preview-answer" class="small text-muted"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li><strong>Categories:</strong></li>
+                    <li><small>• General: Basic questions</small></li>
+                    <li><small>• Pricing: Cost-related questions</small></li>
+                    <li><small>• Design: Design process questions</small></li>
+                    <li><small>• Services: Service-specific questions</small></li>
+                    <li class="mt-2"><strong>Order Position:</strong></li>
+                    <li><small>Controls display order (0 = first)</small></li>
+                    <li class="mt-2"><strong>Formatting:</strong></li>
+                    <li><small>Use HTML tags for formatting answers</small></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const questionInput = document.getElementById('question');
+    const answerInput = document.getElementById('answer');
+    
+    const previewQuestion = document.getElementById('preview-question');
+    const previewAnswer = document.getElementById('preview-answer');
+    
+    function updatePreview() {
+        previewQuestion.textContent = questionInput.value || 'Enter question to see preview';
+        previewAnswer.innerHTML = answerInput.value || '';
+    }
+    
+    questionInput.addEventListener('input', updatePreview);
+    answerInput.addEventListener('input', updatePreview);
+});
+</script>
+{% endblock %}

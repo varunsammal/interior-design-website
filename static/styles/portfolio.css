@@ -422,6 +422,23 @@ body {
   }
 }
 
+.no-portfolio-items {
+    text-align: center;
+    padding: 60px 20px;
+    grid-column: 1 / -1;
+}
+
+.no-portfolio-items h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.no-portfolio-items p {
+    color: #666;
+    font-size: 1rem;
+}
+
 @media (max-width: 768px) {
   .hero-content h1 {
     font-size: 2.5rem;
