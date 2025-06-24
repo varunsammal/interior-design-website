@@ -1,7 +1,19 @@
-document.addEventListener('DOMContentLoaded', function () {
-  // Mobile Navigation Toggle
-  const hamburger = document.querySelector('.hamburger');
-  const navLinks = document.querySelector('.nav-links');
+document.addEventListener('DOMContentLoaded', function() {
+    // Navbar scroll effect for homepage
+    const navbar = document.querySelector('.navbar-overlay');
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(0, 0, 0, 0.95)';
+            } else {
+                navbar.style.background = 'rgba(0, 0, 0, 0.85)';
+            }
+        });
+    }
+
+    // Mobile Navigation Toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
 
     if (hamburger && navLinks) {
         hamburger.addEventListener('click', () => {

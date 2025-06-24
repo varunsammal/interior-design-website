@@ -1,0 +1,170 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Add Portfolio Item{% endblock %}
+{% block page_title %}Add Portfolio Item{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Create New Portfolio Item</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="title" class="form-label">Title *</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="order_position" class="form-label">Order Position</label>
+                            <input type="number" class="form-control" id="order_position" name="order_position" value="0" min="0">
+                            <small class="form-text text-muted">Lower numbers appear first</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="image_url" class="form-label">Main Image URL *</label>
+                            <input type="url" class="form-control" id="image_url" name="image_url" required>
+                            <small class="form-text text-muted">High-quality image showcasing the design</small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="before_image" class="form-label">Before Image URL</label>
+                            <input type="url" class="form-control" id="before_image" name="before_image">
+                            <small class="form-text text-muted">Optional: Before transformation image</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="category">
+                                <option value="">Select Category</option>
+                                <option value="living_room">Living Room</option>
+                                <option value="bedroom">Bedroom</option>
+                                <option value="kitchen">Kitchen</option>
+                                <option value="bathroom">Bathroom</option>
+                                <option value="office">Office</option>
+                                <option value="dining_room">Dining Room</option>
+                                <option value="outdoor">Outdoor</option>
+                                <option value="commercial">Commercial</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="style" class="form-label">Style</label>
+                            <select class="form-select" id="style" name="style">
+                                <option value="">Select Style</option>
+                                <option value="modern">Modern</option>
+                                <option value="contemporary">Contemporary</option>
+                                <option value="traditional">Traditional</option>
+                                <option value="minimalist">Minimalist</option>
+                                <option value="rustic">Rustic</option>
+                                <option value="industrial">Industrial</option>
+                                <option value="scandinavian">Scandinavian</option>
+                                <option value="coastal">Coastal</option>
+                                <option value="eclectic">Eclectic</option>
+                                <option value="elegant">Elegant</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="client_name" class="form-label">Client Name</label>
+                            <input type="text" class="form-control" id="client_name" name="client_name">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" placeholder="City, State">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="completion_date" class="form-label">Completion Date</label>
+                            <input type="date" class="form-control" id="completion_date" name="completion_date">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="project_details" class="form-label">Project Details</label>
+                        <textarea class="form-control" id="project_details" name="project_details" rows="4" 
+                                  placeholder="Additional project information, challenges, solutions, etc."></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('admin_portfolio') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Portfolio
+                        </a>
+                        <button type="submit" class="btn btn-admin">
+                            <i class="fas fa-save"></i> Create Portfolio Item
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Image Preview</h5>
+            </div>
+            <div class="card-body text-center">
+                <div id="image-preview" class="border rounded p-3 mb-3" style="min-height: 200px;">
+                    <i class="fas fa-image fa-3x text-muted"></i>
+                    <p class="text-muted mt-2">Enter image URL to see preview</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li><strong>Image Requirements:</strong></li>
+                    <li><small>• Use high-quality images (min 800px width)</small></li>
+                    <li><small>• JPG or PNG format recommended</small></li>
+                    <li><small>• Aspect ratio: 16:9 or 4:3 preferred</small></li>
+                    <li class="mt-2"><strong>Categories:</strong></li>
+                    <li><small>• Choose the primary room type</small></li>
+                    <li><small>• Commercial for business spaces</small></li>
+                    <li class="mt-2"><strong>Styles:</strong></li>
+                    <li><small>• Select the dominant design style</small></li>
+                    <li><small>• Mix styles can use "Eclectic"</small></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imageUrlInput = document.getElementById('image_url');
+    const imagePreview = document.getElementById('image-preview');
+    
+    function updateImagePreview() {
+        const url = imageUrlInput.value.trim();
+        if (url) {
+            imagePreview.innerHTML = `<img src="${url}" alt="Preview" class="img-fluid" style="max-height: 200px; border-radius: 8px;">`;
+        } else {
+            imagePreview.innerHTML = `
+                <i class="fas fa-image fa-3x text-muted"></i>
+                <p class="text-muted mt-2">Enter image URL to see preview</p>
+            `;
+        }
+    }
+    
+    imageUrlInput.addEventListener('input', updateImagePreview);
+});
+</script>
+{% endblock %}
