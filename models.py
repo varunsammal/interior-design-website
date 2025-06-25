@@ -219,7 +219,8 @@ def init_models():
         
         def __init__(self, title, description, image_url, category=None, style=None, 
                      before_image=None, project_details=None, client_name=None, 
-                     location=None, completion_date=None, order_position=0):
+                     location=None, completion_date=None, order_position=0,
+                     is_featured=False, is_active=True):
             self.title = title
             self.description = description
             self.image_url = image_url
@@ -231,6 +232,8 @@ def init_models():
             self.location = location
             self.completion_date = completion_date
             self.order_position = order_position
+            self.is_featured = is_featured
+            self.is_active = is_active
 
     # Store the classes in the module's globals
     globals()['User'] = User
