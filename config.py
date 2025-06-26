@@ -7,7 +7,7 @@ class Config:
     
     # PostgreSQL settings
     POSTGRES_USER = 'postgres'  # default superuser
-    POSTGRES_PASSWORD = 'qwertyuiop'  # replace with the password you set during installation
+    POSTGRES_PASSWORD = '6969'  # updated password
     POSTGRES_HOST = 'localhost'
     POSTGRES_PORT = '5432'
     POSTGRES_DB = 'interior_design'
